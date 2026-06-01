@@ -581,3 +581,77 @@ Focused tests:
 - `tests/approvals/test_approval.py` -> `7 passed`
 
 This step intentionally does not include Streamlit or any approval UI.
+
+## 2026-06-01 - Evaluation Harness
+
+### Goal
+
+Add a deterministic evaluation layer:
+
+```text
+Scenario
+  -> expected severity
+  -> actual severity
+  -> pass / fail
+```
+
+This first harness evaluates the severity policy only. It does not call the
+telemetry model, Qdrant, RAG command, or any external service.
+
+### What Changed
+
+- Added `src/industrial_ai/evaluation/harness.py`.
+- Added scenario data in `data/evaluation/scenarios.json`.
+- Added tests under `tests/evaluation`.
+- Added CLI command:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.evaluation.harness
+```
+
+### Scenario Set
+
+Current scenario count: `12`.
+
+The scenarios cover:
+
+- SEV1 high probability + high RAG confidence
+- SEV2 high probability without high RAG confidence
+- SEV2 moderate probability
+- SEV3 exact 50 percent boundary
+- SEV3 low probability
+- percentage-style probability inputs
+- exact 80 percent boundary behavior
+
+### Example Summary
+
+```json
+{
+  "total": 12,
+  "passed": 12,
+  "failed": 0,
+  "pass_rate": 1.0
+}
+```
+
+Each result includes:
+
+- `scenario_id`
+- `description`
+- `expected_severity`
+- `actual_severity`
+- `passed`
+- `reason`
+
+### Verification
+
+Focused tests:
+
+- `tests/evaluation/test_harness.py` -> `4 passed`
+
+Real harness run:
+
+- `12` total scenarios
+- `12` passed
+- `0` failed
+- `1.0` pass rate

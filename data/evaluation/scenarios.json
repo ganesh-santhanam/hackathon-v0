@@ -1,0 +1,86 @@
+[
+  {
+    "scenario_id": "sev1_high_probability_high_rag",
+    "description": "High failure probability with high retrieval confidence",
+    "failure_probability": 0.82,
+    "rag_confidence": "high",
+    "expected_severity": "SEV1"
+  },
+  {
+    "scenario_id": "sev2_high_probability_medium_rag",
+    "description": "High failure probability without high retrieval confidence",
+    "failure_probability": 0.82,
+    "rag_confidence": "medium",
+    "expected_severity": "SEV2"
+  },
+  {
+    "scenario_id": "sev2_moderate_probability_no_rag",
+    "description": "Moderate failure probability with no retrieval evidence",
+    "failure_probability": 0.65,
+    "rag_confidence": "none",
+    "expected_severity": "SEV2"
+  },
+  {
+    "scenario_id": "sev2_above_50_boundary",
+    "description": "Probability just above 50 percent",
+    "failure_probability": 0.51,
+    "rag_confidence": "low",
+    "expected_severity": "SEV2"
+  },
+  {
+    "scenario_id": "sev3_at_50_boundary",
+    "description": "Probability exactly at 50 percent",
+    "failure_probability": 0.5,
+    "rag_confidence": "high",
+    "expected_severity": "SEV3"
+  },
+  {
+    "scenario_id": "sev3_low_probability_high_rag",
+    "description": "Low failure probability despite high retrieval confidence",
+    "failure_probability": 0.35,
+    "rag_confidence": "high",
+    "expected_severity": "SEV3"
+  },
+  {
+    "scenario_id": "sev1_percentage_input",
+    "description": "Percentage-style input should normalize before policy evaluation",
+    "failure_probability": 91,
+    "rag_confidence": "high",
+    "expected_severity": "SEV1"
+  },
+  {
+    "scenario_id": "sev2_percentage_input",
+    "description": "Percentage-style input above 50 percent without high confidence",
+    "failure_probability": 75,
+    "rag_confidence": "medium",
+    "expected_severity": "SEV2"
+  },
+  {
+    "scenario_id": "sev3_percentage_boundary",
+    "description": "Percentage-style 50 percent boundary",
+    "failure_probability": 50,
+    "rag_confidence": "high",
+    "expected_severity": "SEV3"
+  },
+  {
+    "scenario_id": "sev3_no_evidence",
+    "description": "No evidence and low probability",
+    "failure_probability": 0.1,
+    "rag_confidence": "none",
+    "expected_severity": "SEV3"
+  },
+  {
+    "scenario_id": "sev2_exact_80_high_rag",
+    "description": "Exactly 80 percent is not greater than 80 percent",
+    "failure_probability": 0.8,
+    "rag_confidence": "high",
+    "expected_severity": "SEV2"
+  },
+  {
+    "scenario_id": "sev1_clear_critical_case",
+    "description": "Critical case with very high probability and high evidence confidence",
+    "failure_probability": 0.97,
+    "rag_confidence": "high",
+    "expected_severity": "SEV1"
+  }
+]

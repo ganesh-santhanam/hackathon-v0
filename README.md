@@ -182,3 +182,26 @@ PYTHONPATH=src .venv/bin/python -m industrial_ai.approvals.approval show INCIDEN
 SEV1 incidents require approval and start as `pending`. SEV2 and SEV3 incidents
 do not require approval and start as `not_required`. The local approval store is
 written to `data/approvals/`, which is ignored by Git.
+
+## Evaluation Harness
+
+Run deterministic evaluation scenarios:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.evaluation.harness
+```
+
+Scenarios live in:
+
+```text
+data/evaluation/scenarios.json
+```
+
+The harness reports:
+
+- scenario
+- expected severity
+- actual severity
+- pass/fail
+
+The current scenario set contains 12 severity-policy scenarios.
