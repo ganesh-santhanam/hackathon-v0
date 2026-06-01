@@ -1,0 +1,14 @@
+pandas
+numpy
+scikit-learn
+xgboost
+qdrant-client
+sentence-transformers
+streamlit
+pydantic
+pyyaml
+python-dotenv
+loguru
+pytest
+ruff
+mypy

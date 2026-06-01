@@ -1,0 +1,22 @@
+.venv/
+
+__pycache__/
+*.pyc
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+.env
+
+data/processed/
+models/
+
+*.db
+*.sqlite
+
+# datasets
+ai4i_dataset/
+dev_data_fan/
+dev_data_pump/
+mvtec_anomaly_detection/
