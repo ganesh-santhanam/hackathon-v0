@@ -1,0 +1,2 @@
+"""Industrial incident investigation assistant."""
+

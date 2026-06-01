@@ -1,0 +1,12 @@
+{
+  "corpus_file": "ai4i_incident_corpus.jsonl",
+  "document_count": 300,
+  "document_types": [
+    "incident_report",
+    "maintenance_note",
+    "rca_report"
+  ],
+  "generator_version": 1,
+  "source_dataset": "AI4I",
+  "source_row_count": 100
+}

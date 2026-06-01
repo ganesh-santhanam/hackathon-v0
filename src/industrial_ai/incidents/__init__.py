@@ -1,0 +1,2 @@
+"""Synthetic incident corpus generation."""
+
