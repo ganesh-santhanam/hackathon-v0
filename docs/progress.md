@@ -505,3 +505,79 @@ Focused tests:
 
 This step intentionally does not include UI, workflow orchestration, or LLM
 calls.
+
+## 2026-06-01 - Human Approval JSON Backend
+
+### Goal
+
+Add a minimal human approval layer without UI:
+
+```text
+Incident severity
+  -> approval_required
+  -> pending / approved / rejected / not_required
+```
+
+### Rules
+
+- `SEV1` requires approval and starts as `pending`.
+- `SEV2` and `SEV3` do not require approval and start as `not_required`.
+
+### What Changed
+
+- Added `src/industrial_ai/approvals/approval.py`.
+- Added JSON-backed local storage at `data/approvals/approvals.json`.
+- Added CLI commands:
+  - `create`
+  - `show`
+  - `approve`
+  - `reject`
+- Added tests under `tests/approvals`.
+- Ignored `data/approvals/` because it is local mutable demo state.
+
+### Commands
+
+Create:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.approvals.approval create \
+  INCIDENT-001 \
+  --severity SEV1
+```
+
+Approve:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.approvals.approval approve INCIDENT-001
+```
+
+Reject:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.approvals.approval reject INCIDENT-001
+```
+
+Show:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.approvals.approval show INCIDENT-001
+```
+
+### Example Record
+
+```json
+{
+  "incident_id": "INCIDENT-001",
+  "severity": "SEV1",
+  "approval_required": true,
+  "status": "pending"
+}
+```
+
+### Verification
+
+Focused tests:
+
+- `tests/approvals/test_approval.py` -> `7 passed`
+
+This step intentionally does not include Streamlit or any approval UI.

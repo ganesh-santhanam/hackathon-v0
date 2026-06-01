@@ -155,3 +155,30 @@ Failure probability > 80% AND RAG confidence = high -> SEV1
 Failure probability > 50% -> SEV2
 Else -> SEV3
 ```
+
+## Human Approval
+
+Create a JSON-backed approval record:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.approvals.approval create \
+  INCIDENT-001 \
+  --severity SEV1
+```
+
+Approve or reject:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.approvals.approval approve INCIDENT-001
+PYTHONPATH=src .venv/bin/python -m industrial_ai.approvals.approval reject INCIDENT-001
+```
+
+Show current status:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.approvals.approval show INCIDENT-001
+```
+
+SEV1 incidents require approval and start as `pending`. SEV2 and SEV3 incidents
+do not require approval and start as `not_required`. The local approval store is
+written to `data/approvals/`, which is ignored by Git.
