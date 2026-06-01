@@ -136,3 +136,22 @@ answer with:
 
 This step does not call an external LLM. If retrieval finds no relevant
 incidents, it returns a clear no-evidence response.
+
+## Severity Policy
+
+Assign deterministic incident severity from failure probability and retrieval
+confidence:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.policy.severity \
+  --failure-probability 0.82 \
+  --rag-confidence high
+```
+
+Rules:
+
+```text
+Failure probability > 80% AND RAG confidence = high -> SEV1
+Failure probability > 50% -> SEV2
+Else -> SEV3
+```

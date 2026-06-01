@@ -440,3 +440,68 @@ Focused tests:
 
 This step intentionally does not include Streamlit, LangGraph, or external LLM
 calls.
+
+## 2026-06-01 - Severity Policy Engine
+
+### Goal
+
+Add deterministic severity assignment:
+
+```text
+Failure probability + RAG confidence
+  -> SEV1 / SEV2 / SEV3
+```
+
+### Rules
+
+```text
+Failure probability > 80%
+AND RAG confidence = high
+-> SEV1
+
+Failure probability > 50%
+-> SEV2
+
+Else
+-> SEV3
+```
+
+The boundary behavior is intentional:
+
+- Exactly `0.80` is not SEV1 unless probability is greater than `0.80`.
+- Exactly `0.50` is SEV3 unless probability is greater than `0.50`.
+
+### What Changed
+
+- Added `src/industrial_ai/policy/severity.py`.
+- Added command:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.policy.severity \
+  --failure-probability 0.82 \
+  --rag-confidence high
+```
+
+- Added tests under `tests/policy`.
+
+### Example Output
+
+```json
+{
+  "severity": "SEV1",
+  "reason": "Failure probability is above 80% and RAG confidence is high.",
+  "inputs": {
+    "failure_probability": 0.82,
+    "rag_confidence": "high"
+  }
+}
+```
+
+### Verification
+
+Focused tests:
+
+- `tests/policy/test_severity.py` -> `9 passed`
+
+This step intentionally does not include UI, workflow orchestration, or LLM
+calls.
