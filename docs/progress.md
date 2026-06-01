@@ -250,3 +250,193 @@ Qdrant memory
 ```
 
 The corpus now exists, so the next step can focus only on storage and retrieval.
+
+## 2026-06-01 - Local Qdrant Memory
+
+### Goal
+
+Index the generated incident corpus locally and retrieve similar incident
+documents:
+
+```text
+Question
+  -> sentence-transformers embedding
+  -> local Qdrant search
+  -> similar incident documents
+```
+
+LLM/RAG answering is intentionally not implemented in this step.
+
+### What Changed
+
+- Added `src/industrial_ai/incidents/memory.py`.
+- Added local Qdrant indexing for `data/incidents/ai4i_incident_corpus.jsonl`.
+- Added sentence-transformers embeddings using
+  `sentence-transformers/all-MiniLM-L6-v2`.
+- Added retrieval with:
+  - query text
+  - `top_k`
+  - optional `document_type` filter
+  - configurable score threshold
+- Added CLI commands for indexing and searching.
+- Added tests with a temporary corpus, fake embedder, and temporary Qdrant path.
+- Ignored `data/qdrant/` because it is a rebuildable local index.
+
+### Stored Payload
+
+Each indexed Qdrant point stores:
+
+- `document_id`
+- `document_type`
+- `machine_id`
+- `title`
+- `body`
+- `metadata`
+- `evidence`
+
+### Index Command
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.incidents.memory index
+```
+
+Verified result:
+
+```json
+{
+  "indexed_documents": 300,
+  "collection_name": "incident_documents"
+}
+```
+
+### Search Command
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.incidents.memory search \
+  "tool wear and torque anomaly" \
+  --top-k 2 \
+  --score-threshold 0.5
+```
+
+Filtered search:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.incidents.memory search \
+  "tool wear and torque anomaly" \
+  --top-k 2 \
+  --document-type rca_report \
+  --score-threshold 0.5
+```
+
+Search output includes `top_score`, `score_threshold`, `message`, and
+`results`. If every retrieved document is below the configured threshold, the
+message is `No relevant incidents found` and `results` is empty.
+
+Example top-level output:
+
+```json
+{
+  "query": "tool wear and torque anomaly",
+  "top_k": 2,
+  "score_threshold": 0.5,
+  "top_score": 0.7210513969669443,
+  "message": "Relevant incidents found",
+  "results": [
+    {
+      "score": 0.7210513969669443,
+      "document_id": "ai4i-01997-rca_report",
+      "document_type": "rca_report",
+      "machine_id": "AI4I-01997",
+      "title": "RCA Report - AI4I-01997"
+    }
+  ]
+}
+```
+
+### Verification
+
+Current checks:
+
+```bash
+.venv/bin/pytest -q
+.venv/bin/ruff check src tests
+```
+
+Focused memory tests:
+
+- `tests/incidents/test_memory.py` covers indexing, search, document type
+  filtering, score thresholds, top score, and no-relevant-results handling.
+
+Real local Qdrant verification:
+
+- Indexed `300` documents into collection `incident_documents`
+- Searched unfiltered query successfully
+- Searched with `--document-type rca_report` successfully
+
+Note: the first real run may need network access to download or validate the
+sentence-transformers model from Hugging Face. The Qdrant index itself remains
+local.
+
+## 2026-06-01 - Simple RAG Answer Command
+
+### Goal
+
+Add a small answer layer on top of incident retrieval:
+
+```text
+Question
+  -> retrieve top 3 relevant incidents
+  -> deterministic structured answer
+```
+
+This is not an LLM integration. The answer is generated only from retrieved
+incident documents.
+
+### What Changed
+
+- Added `src/industrial_ai/rag/answer.py`.
+- Added command:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.rag.answer \
+  "What is the likely cause of a tool wear failure?"
+```
+
+- Reuses existing incident retrieval.
+- Retrieves top 3 relevant documents by default.
+- Returns a no-evidence response when retrieval finds no relevant incidents.
+- Formats answers with:
+  - `likely_root_cause`
+  - `confidence`
+  - `supporting_incidents`
+  - `evidence`
+  - `recommended_action`
+
+### Behavior
+
+If relevant incidents are found, the command infers the likely root cause from
+the retrieved documents' `metadata.failure_modes`, assigns confidence from the
+top retrieval score, and lists supporting incident IDs and evidence.
+
+If no relevant incidents are found, the command returns:
+
+```json
+{
+  "likely_root_cause": "No evidence available",
+  "confidence": "none",
+  "supporting_incidents": [],
+  "evidence": [
+    "No relevant incidents found"
+  ],
+  "recommended_action": "Do not infer a root cause. Collect more evidence or lower the retrieval threshold."
+}
+```
+
+### Verification
+
+Focused tests:
+
+- `tests/rag/test_answer.py` -> `6 passed`
+
+This step intentionally does not include Streamlit, LangGraph, or external LLM
+calls.

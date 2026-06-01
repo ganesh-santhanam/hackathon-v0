@@ -81,3 +81,58 @@ This writes:
 
 The default output is 300 documents: 100 incident reports, 100 RCA reports, and
 100 maintenance notes. Qdrant is intentionally not part of this step.
+
+## Local Qdrant Memory
+
+Index the generated incident corpus into a local Qdrant collection:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.incidents.memory index
+```
+
+Search the indexed corpus:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.incidents.memory search \
+  "tool wear and torque anomaly" \
+  --top-k 2 \
+  --score-threshold 0.5
+```
+
+Filter by document type:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.incidents.memory search \
+  "tool wear and torque anomaly" \
+  --top-k 2 \
+  --document-type rca_report \
+  --score-threshold 0.5
+```
+
+The local Qdrant index is written under `data/qdrant/`, which is ignored by Git.
+This step only retrieves similar documents; it does not generate LLM/RAG answers.
+Search output includes `top_score`, `score_threshold`, and a message. If all
+retrieved documents are below the threshold, the message is
+`No relevant incidents found` and `results` is empty.
+
+## Simple RAG Answer
+
+Generate a deterministic evidence-based answer from retrieved incident
+documents:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.rag.answer \
+  "What is the likely cause of a tool wear failure?"
+```
+
+The command retrieves the top 3 relevant incident documents and formats an
+answer with:
+
+- `likely_root_cause`
+- `confidence`
+- `supporting_incidents`
+- `evidence`
+- `recommended_action`
+
+This step does not call an external LLM. If retrieval finds no relevant
+incidents, it returns a clear no-evidence response.
