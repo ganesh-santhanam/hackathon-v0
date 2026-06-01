@@ -10,6 +10,7 @@ __pycache__/
 .env
 
 data/processed/
+data/raw/
 models/
 
 *.db
@@ -21,4 +22,8 @@ dev_data_fan/
 dev_data_pump/
 mvtec_anomaly_detection/
 
+# Windows download metadata
+*:Zone.Identifier
+
+# local planning input
 Hackathon.pdf
