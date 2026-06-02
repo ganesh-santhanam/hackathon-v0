@@ -707,7 +707,7 @@ AI4I telemetry row
 
 Latest recorded checks:
 
-- `45 passed`
+- `72 passed`
 - `All checks passed`
 
 ### Remaining Gap
@@ -715,3 +715,607 @@ Latest recorded checks:
 The current implementation is still mostly deterministic and local. The next
 step is to wire these pieces into a more complete agent workflow with richer
 orchestration and, if required, UI support.
+
+## 2026-06-02 - Thin Streamlit Demo UI
+
+### Goal
+
+Add a one-page demo app that runs the existing local investigation workflow:
+
+```text
+telemetry inputs
+  -> prediction
+  -> retrieval from local Qdrant
+  -> deterministic RAG answer
+  -> severity policy
+  -> approval record
+```
+
+### What Changed
+
+- Added `src/industrial_ai/demo/investigation.py`.
+- Added `src/industrial_ai/demo/streamlit_app.py`.
+- Added tests under `tests/demo`.
+- Updated demo documentation with the Streamlit launch command.
+
+### Launch Command
+
+```bash
+PYTHONPATH=src .venv/bin/streamlit run src/industrial_ai/demo/streamlit_app.py
+```
+
+### UI Output
+
+The app displays:
+
+- failure probability
+- risk level
+- prediction evidence
+- similar incidents
+- likely root cause
+- recommended action
+- severity
+- approval ID and status
+
+### Scope Boundaries
+
+This step intentionally does not include:
+
+- LangGraph
+- vision
+- external LLM calls
+
+### Verification
+
+Focused tests:
+
+- `tests/demo/test_investigation.py` -> `3 passed`
+
+## 2026-06-02 - MVTec Vision Baseline And Autoencoder
+
+### Goal
+
+Add the first vision slice in two steps:
+
+```text
+MVTec image
+  -> comparison baseline against good references
+  -> deep-learning autoencoder anomaly score
+```
+
+### What Changed
+
+- Added `src/industrial_ai/vision/mvtec_compare.py`.
+- Added `src/industrial_ai/vision/mvtec_autoencoder.py`.
+- Added `src/industrial_ai/vision/__init__.py`.
+- Added MVTec dataset path constant in `src/industrial_ai/paths.py`.
+- Added focused tests under `tests/vision`.
+- Updated demo commands and README documentation.
+
+### Comparison Baseline
+
+The comparison CLI uses good MVTec training images as references. It computes a
+mean good reference image and reports the highest local patch difference as the
+anomaly score.
+
+Run:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_compare \
+  mvtec_anomaly_detection/cable/test/bent_wire/000.png
+```
+
+Calibration examples showed why this baseline is only a first step:
+global nearest-reference distance missed visible defects, while local patch
+distance separated obvious defects better. Subtle defects still overlap
+with normal samples.
+
+### Deep Learning Autoencoder
+
+The autoencoder CLI trains a small PyTorch convolutional autoencoder on good
+MVTec reference images and saves the model under `models/`.
+
+Train:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_autoencoder train cable \
+  --epochs 5 \
+  --reference-limit 50
+```
+
+Predict:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_autoencoder predict \
+  mvtec_anomaly_detection/cable/test/bent_wire/000.png \
+  --model-path models/mvtec_autoencoder_cable.pt
+```
+
+### Scope Boundaries
+
+This step does not connect vision to the Streamlit investigation workflow yet.
+It also does not use pretrained external vision models or external LLM calls.
+
+### Verification
+
+Focused checks:
+
+- `tests/vision` -> `8 passed`
+- `ruff check src/industrial_ai/vision tests/vision` -> `All checks passed`
+
+## 2026-06-02 - Per-Category Vision Evaluation And ResNet Embeddings
+
+### Goal
+
+Measure image anomaly detection by category first, then add a stronger
+ResNet-based anomaly detector:
+
+```text
+industrial MVTec categories
+  -> per-category comparison metrics
+  -> ResNet embedding normal profile
+  -> per-category ResNet evaluation
+```
+
+### Active Categories
+
+The active demo set is now:
+
+- `cable`
+- `grid`
+- `metal_nut`
+- `screw`
+- `transistor`
+
+Other MVTec folders are kept under `mvtec_anomaly_detection/To Avoid` and are
+ignored by the evaluator.
+
+### What Changed
+
+- Added `src/industrial_ai/vision/evaluate.py`.
+- Added `src/industrial_ai/vision/mvtec_resnet.py`.
+- Added per-category evaluation tests.
+- Added ResNet profile/scoring tests.
+- Added `torchvision` to requirements for ResNet18 support.
+- Updated demo commands for cable-focused vision examples.
+
+### Comparison Baseline Metrics
+
+Command:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.evaluate comparison
+```
+
+Measured on the five active categories:
+
+| Category | Total | Accuracy | Precision | Recall | F1 |
+|---|---:|---:|---:|---:|---:|
+| cable | 150 | 0.6133 | 0.6133 | 1.0000 | 0.7603 |
+| grid | 78 | 0.7308 | 0.7308 | 1.0000 | 0.8444 |
+| metal_nut | 115 | 0.8087 | 0.8087 | 1.0000 | 0.8942 |
+| screw | 160 | 0.7438 | 0.7438 | 1.0000 | 0.8530 |
+| transistor | 100 | 0.5100 | 0.4471 | 0.9500 | 0.6080 |
+| overall | 603 | 0.6833 | 0.6786 | 0.9950 | 0.8069 |
+
+The comparison baseline is high-recall but over-flags good images. That is why
+the ResNet embedding detector is the next candidate for higher accuracy.
+
+### ResNet Embedding Detector
+
+The ResNet detector uses ResNet18 as a feature extractor:
+
+```text
+good images -> ResNet18 embeddings -> normal center
+test image -> embedding distance from normal center -> anomaly score
+```
+
+Train one profile per category:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet train cable \
+  --reference-limit 50
+```
+
+Predict:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet predict \
+  mvtec_anomaly_detection/cable/test/bent_wire/000.png \
+  --model-path models/mvtec_resnet_cable.npz
+```
+
+Evaluate:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet evaluate \
+  --model-path models/mvtec_resnet_cable.npz
+```
+
+For highest accuracy, use pretrained ResNet weights. If they are not already
+cached locally, the first train command may need network access to download
+them. Use `--no-pretrained` only for local smoke testing.
+
+### Verification
+
+Focused checks:
+
+- `tests/vision` -> `14 passed`
+- `ruff check src/industrial_ai/vision tests/vision` -> `All checks passed`
+
+## 2026-06-02 - Vision UI Wiring And ResNet Calibration
+
+### Goal
+
+Close the two remaining Tier 0-plus vision gaps:
+
+```text
+Streamlit investigation
+  -> optional image inspection
+  -> vision evidence added to retrieval
+  -> RAG/severity/approval continue unchanged
+
+ResNet profile
+  -> score category test images
+  -> choose best threshold for F1/accuracy/precision/recall
+  -> save calibrated threshold
+```
+
+### What Changed
+
+- Updated `src/industrial_ai/demo/investigation.py` to accept optional vision
+  image input.
+- Updated `src/industrial_ai/demo/streamlit_app.py` with visual inspection
+  controls.
+- Added normalized vision output to investigation results.
+- Vision evidence now augments the retrieval query when a defect is detected.
+- Added `calibrate` and `train-all` commands to
+  `src/industrial_ai/vision/mvtec_resnet.py`.
+- Added tests for vision retrieval context and ResNet threshold calibration.
+
+### Streamlit Vision Behavior
+
+The UI now supports:
+
+- enabling visual inspection
+- uploading an inspection image
+- selecting one of the active industrial MVTec categories
+- choosing `auto`, `resnet`, or `comparison`
+
+`auto` uses a saved ResNet profile when one exists under `models/`; otherwise it
+falls back to the comparison baseline.
+
+### Severity Policy Update
+
+Visual defects now participate in severity assignment:
+
+```text
+Failure probability > 80% AND visual defect detected -> SEV1
+Failure probability > 80% AND RAG confidence = high -> SEV1
+Failure probability > 50% -> SEV2
+Else -> SEV3
+```
+
+This means a case like `81% failure probability + detected visual defect` now
+requires human approval because it becomes `SEV1`.
+
+### ResNet Calibration Commands
+
+Calibrate one profile:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet calibrate \
+  --model-path models/mvtec_resnet_cable.npz \
+  --metric f1
+```
+
+Train and calibrate all active categories:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet train-all \
+  --reference-limit 50 \
+  --metric f1
+```
+
+### Calibration Snapshot
+
+Cable pretrained ResNet profile after F1 calibration:
+
+- threshold: `0.2772`
+- accuracy: `0.7333`
+- precision: `0.7241`
+- recall: `0.9130`
+- F1: `0.8077`
+
+### Verification
+
+Current checks:
+
+- `tests/demo tests/vision` -> `20 passed`
+- `ruff check src/industrial_ai/demo src/industrial_ai/vision tests/demo tests/vision`
+  -> `All checks passed`
+
+Full suite:
+
+- `72 passed`
+- `ruff check src tests` -> `All checks passed`
+
+## 2026-06-02 - Vision Evidence Workflow Integration
+
+### Goal
+
+Integrate vision outputs into the investigation workflow without changing vision
+inference internals:
+
+```text
+telemetry prediction
+  -> optional vision result
+  -> normalized evidence objects
+  -> RAG query construction
+  -> severity policy
+  -> approval state
+  -> Streamlit combined evidence display
+```
+
+### What Changed
+
+- Added normalized `EvidenceItem` objects in
+  `src/industrial_ai/demo/investigation.py`.
+- Investigation results now include combined telemetry and vision evidence.
+- RAG query construction now uses normalized evidence summaries when vision is
+  available.
+- Streamlit now shows a `Combined Evidence` section.
+- Severity policy now enforces:
+
+```text
+high telemetry risk + visual defect -> SEV1
+high telemetry risk + no visual defect -> SEV2
+low telemetry risk + visual defect -> SEV3
+low telemetry risk + no visual defect -> Normal
+SEV1 -> human approval required
+```
+
+### Test Coverage
+
+Added/updated tests for:
+
+- high telemetry + visual defect
+- low telemetry + visual defect
+- high telemetry + no visual defect
+- no vision input
+- normalized telemetry/vision evidence objects
+
+### Verification
+
+Full suite:
+
+- `86 passed`
+- `ruff check src tests` -> `All checks passed`
+
+## 2026-06-02 - Telemetry-Aware Incident Reranking
+
+### Goal
+
+Improve similar incident retrieval when exact AI4I telemetry inputs are
+available while keeping vector retrieval as the first stage.
+
+### What Changed
+
+- Added optional telemetry-aware reranking in
+  `src/industrial_ai/incidents/memory.py`.
+- Added `TelemetryQuery` and telemetry similarity scoring for:
+  - `tool_wear_min`
+  - `torque_nm`
+  - `rotational_speed_rpm`
+  - `air_temperature_k`
+  - `process_temperature_k`
+- Search results now expose:
+  - `vector_score`
+  - `telemetry_similarity_score`
+  - `combined_score`
+- Added `--telemetry-rerank` and telemetry CLI flags to incident search.
+- The investigation workflow now passes the current telemetry reading into
+  retrieval reranking.
+- Streamlit similar-incident cards now show the combined score and score
+  components.
+- Added synthetic document tests for telemetry reranking.
+
+### CLI
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.incidents.memory search \
+  "tool wear and torque anomaly" \
+  --top-k 3 \
+  --score-threshold 0.5 \
+  --telemetry-rerank \
+  --tool-wear-min 210 \
+  --torque-nm 55.5 \
+  --rotational-speed-rpm 1266 \
+  --air-temperature-k 301.1 \
+  --process-temperature-k 311.6
+```
+
+### Verification
+
+Focused checks:
+
+- `tests/incidents tests/demo` -> `26 passed`
+- `ruff check src/industrial_ai/incidents src/industrial_ai/demo tests/incidents tests/demo`
+  -> `All checks passed`
+
+Full suite:
+
+- `86 passed`
+- `ruff check src tests` -> `All checks passed`
+
+## 2026-06-02 - Dashboard Policy Management
+
+### Goal
+
+Add policy management visibility without duplicating or editing production
+policy logic in the UI.
+
+### What Changed
+
+- Added `SeverityPolicy` metadata in `src/industrial_ai/policy/severity.py`.
+- Added policy name, version, and last modified timestamp from the production
+  policy source.
+- Added a `Policy Management` tab to Streamlit.
+- The tab displays active rules, approval requirements, and the latest triggered
+  severity decision when an investigation has run.
+- Added visible `Edit Policy` action with simulated/read-only editing.
+- Added policy and dashboard tests for metadata loading.
+
+### Verification
+
+Focused checks:
+
+- `tests/policy tests/demo` -> `27 passed`
+- `ruff check src/industrial_ai/policy src/industrial_ai/demo tests/policy tests/demo`
+  -> `All checks passed`
+
+Full suite:
+
+- `84 passed`
+- `ruff check src tests` -> `All checks passed`
+
+## 2026-06-02 - Dashboard Severity Rules Visibility
+
+### Goal
+
+Show severity policy rules in the Streamlit dashboard without duplicating rule
+logic in the UI.
+
+### What Changed
+
+- Added production rule metadata in `src/industrial_ai/policy/severity.py`.
+- Approval requirement checks now use the same policy source.
+- Added an expandable `Severity Rules` section to the investigation dashboard.
+- The section shows SEV criteria, approval requirements, triggered reason, and
+  inputs used.
+- Added policy and dashboard tests for rule metadata.
+
+### Verification
+
+Focused checks:
+
+- `tests/policy tests/approvals tests/demo` -> `32 passed`
+- `ruff check src/industrial_ai/policy src/industrial_ai/approvals src/industrial_ai/demo tests/policy tests/approvals tests/demo`
+  -> `All checks passed`
+
+Full suite:
+
+- `82 passed`
+- `ruff check src tests` -> `All checks passed`
+
+## 2026-06-02 - Dashboard Evaluation Visibility
+
+### Goal
+
+Expose evaluation results in the Streamlit dashboard without creating a second
+evaluation implementation.
+
+### What Changed
+
+- Added an `Evaluation` tab to `src/industrial_ai/demo/streamlit_app.py`.
+- Reused `industrial_ai.evaluation.test_rig.run_rig`.
+- Added dashboard helpers for pass rate, key-input formatting, and scenario
+  filtering.
+- Added `tests/demo/test_streamlit_app.py`.
+
+### Dashboard Output
+
+The Evaluation tab shows:
+
+- data sources used
+- number of scenarios
+- passed count
+- failed count
+- pass rate
+- scenario table with area, scenario, expected, actual, pass/fail, and key inputs
+- filters: `All`, `Passed`, `Failed`
+- `Run Evaluation` button
+
+### Verification
+
+Focused checks:
+
+- `tests/demo tests/evaluation` -> `19 passed`
+- `ruff check src/industrial_ai/demo src/industrial_ai/evaluation tests/demo tests/evaluation`
+  -> `All checks passed`
+
+Full suite:
+
+- `80 passed`
+- `ruff check src tests` -> `All checks passed`
+
+## 2026-06-02 - Held-Out Demo Correctness Rig
+
+### Goal
+
+Add a test rig that checks the dashboard story against data not used for
+training:
+
+```text
+AI4I held-out split
+MVTec test images
+severity rules
+approval status
+```
+
+### What Changed
+
+- Added `src/industrial_ai/evaluation/test_rig.py`.
+- Added `tests/evaluation/test_test_rig.py`.
+- Dashboard `auto` vision no longer silently falls back to comparison when a
+  ResNet profile is missing.
+- ResNet profiles now store good-reference embeddings and use nearest-neighbor
+  embedding distance instead of only distance to the normal center.
+- Rebuilt ignored local ResNet profiles under `models/` for the five active
+  categories.
+
+### Rig Command
+
+```bash
+TORCH_HOME=/tmp/torch-cache PYTHONPATH=src .venv/bin/python -m industrial_ai.evaluation.test_rig \
+  --category cable \
+  --category grid \
+  --category metal_nut \
+  --category screw \
+  --category transistor
+```
+
+### Current Rig Result
+
+Current result:
+
+- total scenarios: `14`
+- passed: `12`
+- failed: `2`
+
+Passing areas:
+
+- AI4I held-out positive and negative telemetry cases
+- cable good/defect image cases
+- grid good image case
+- metal_nut good/defect image cases
+- screw good image case
+- transistor good/defect image cases
+- severity and approval rules
+
+Failing areas:
+
+- `grid_defect_image`: sampled defect image is missed
+- `screw_defect_image`: sampled defect image is missed
+
+The rig confirms the earlier dashboard issue: the old comparison fallback could
+over-flag good images. The current ResNet nearest-neighbor profiles fix the
+sampled good-image false positives, but grid and screw defect recall still need
+model work before those categories should be treated as reliable.
+
+### Verification
+
+Full suite:
+
+- `72 passed`
+- `ruff check src tests` -> `All checks passed`

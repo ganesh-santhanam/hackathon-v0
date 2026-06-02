@@ -5,6 +5,8 @@ xgboost
 qdrant-client
 sentence-transformers
 streamlit
+torch
+torchvision
 pydantic
 pyyaml
 python-dotenv

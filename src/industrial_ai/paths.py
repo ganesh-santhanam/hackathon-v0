@@ -10,6 +10,7 @@ QDRANT_DATA_DIR = DATA_DIR / "qdrant"
 APPROVALS_DATA_DIR = DATA_DIR / "approvals"
 EVALUATION_DATA_DIR = DATA_DIR / "evaluation"
 MODELS_DIR = PROJECT_ROOT / "models"
+MVTEC_DATASET_DIR = PROJECT_ROOT / "mvtec_anomaly_detection"
 
 AI4I_DATASET_PATH = PROJECT_ROOT / "ai4i_dataset" / "ai4i2020.csv"
 TELEMETRY_MODEL_PATH = MODELS_DIR / "telemetry_model.joblib"

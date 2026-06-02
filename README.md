@@ -81,9 +81,140 @@ The current implementation includes:
 - severity assignment
 - JSON-backed human approval records
 - deterministic evaluation scenarios
+- thin Streamlit demo UI
+- MVTec comparison and autoencoder vision anomaly CLIs
 
 The remaining work is to replace the deterministic stand-ins with the
 fuller agentic workflow described in the hackathon brief.
+
+## Streamlit Demo UI
+
+Run the one-page demo app:
+
+```bash
+PYTHONPATH=src .venv/bin/streamlit run src/industrial_ai/demo/streamlit_app.py
+```
+
+The app accepts telemetry inputs and runs the local investigation workflow:
+
+```text
+prediction -> optional visual inspection -> retrieval -> deterministic RAG answer -> severity -> approval
+```
+
+It does not use LangGraph or external LLM calls.
+
+The dashboard also includes an `Evaluation` tab. It reuses the held-out test rig
+and shows:
+
+- data sources used
+- scenario count
+- pass/fail counts
+- pass rate
+- scenario table with expected, actual, result, and key inputs
+- filters for all, passed, and failed scenarios
+
+The investigation view includes an expandable `Severity Rules` section loaded
+from the production severity policy source. It shows criteria, approval
+requirements, the triggered rule reason, and the exact inputs used.
+
+The `Policy Management` tab shows the active production policy name, version,
+last modified timestamp, active rules, approval requirements, and the currently
+triggered severity decision. Its `Edit Policy` action is simulated/read-only.
+
+## MVTec Vision Checks
+
+Run the transparent comparison baseline first:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_compare \
+  mvtec_anomaly_detection/cable/test/bent_wire/000.png
+```
+
+This compares the image against good MVTec references and reports a local patch
+anomaly score. It is useful as a baseline, but subtle defects can overlap with
+normal images.
+
+Evaluate the comparison baseline by active MVTec category:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.evaluate comparison
+```
+
+Train the small deep-learning autoencoder on good references:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_autoencoder train cable \
+  --epochs 5 \
+  --reference-limit 50
+```
+
+Run the learned detector:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_autoencoder predict \
+  mvtec_anomaly_detection/cable/test/bent_wire/000.png \
+  --model-path models/mvtec_autoencoder_cable.pt
+```
+
+The autoencoder reconstructs images learned from good examples and uses
+reconstruction error as the anomaly score. It does not call external services.
+
+Train a ResNet18 embedding profile for one category:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet train cable \
+  --reference-limit 50
+```
+
+Calibrate that category threshold:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet calibrate \
+  --model-path models/mvtec_resnet_cable.npz \
+  --metric f1
+```
+
+Train and calibrate all active industrial categories:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet train-all \
+  --reference-limit 50 \
+  --metric f1
+```
+
+Predict with the ResNet embedding detector:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet predict \
+  mvtec_anomaly_detection/cable/test/bent_wire/000.png \
+  --model-path models/mvtec_resnet_cable.npz
+```
+
+Evaluate the ResNet detector for the trained category:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet evaluate \
+  --model-path models/mvtec_resnet_cable.npz
+```
+
+The ResNet detector uses embeddings rather than supervised defect labels:
+good images define the normal feature center, and distance from that center is
+the anomaly score. For best accuracy, use pretrained ResNet weights. If weights
+are not available locally, the first run may need to download them.
+
+Run the held-out demo correctness rig:
+
+```bash
+TORCH_HOME=/tmp/torch-cache PYTHONPATH=src .venv/bin/python -m industrial_ai.evaluation.test_rig \
+  --category cable \
+  --category grid \
+  --category metal_nut \
+  --category screw \
+  --category transistor
+```
+
+The rig checks AI4I held-out rows, MVTec `test/` images, severity rules, and
+approval behavior. It exits non-zero if any scenario fails.
 
 ## Incident Corpus
 
@@ -135,6 +266,24 @@ Search output includes `top_score`, `score_threshold`, and a message. If all
 retrieved documents are below the threshold, the message is
 `No relevant incidents found` and `results` is empty.
 
+Search can optionally rerank vector results using exact telemetry inputs:
+
+```bash
+PYTHONPATH=src .venv/bin/python -m industrial_ai.incidents.memory search \
+  "tool wear and torque anomaly" \
+  --top-k 3 \
+  --score-threshold 0.5 \
+  --telemetry-rerank \
+  --tool-wear-min 210 \
+  --torque-nm 55.5 \
+  --rotational-speed-rpm 1266 \
+  --air-temperature-k 301.1 \
+  --process-temperature-k 311.6
+```
+
+Telemetry-aware results include `vector_score`,
+`telemetry_similarity_score`, and `combined_score`.
+
 ## Simple RAG Answer
 
 Generate a deterministic evidence-based answer from retrieved incident
@@ -145,6 +294,18 @@ PYTHONPATH=src .venv/bin/python -m industrial_ai.rag.answer \
   "What is the likely cause of a tool wear failure?"
 ```
 
+Optionally synthesize the answer with a local Ollama model:
+
+```bash
+OLLAMA_MODEL=gemma3:4b PYTHONPATH=src .venv/bin/python -m industrial_ai.rag.answer \
+  "What is the likely cause of a tool wear failure?" \
+  --llm
+```
+
+`OLLAMA_MODEL` defaults to `gemma3:4b`. If Ollama is unavailable, the command
+falls back to deterministic RAG and reports the fallback reason in
+`limitations`. Use `--no-fallback` to fail instead.
+
 The command retrieves the top 3 relevant incident documents and formats an
 answer with:
 
@@ -153,9 +314,10 @@ answer with:
 - `supporting_incidents`
 - `evidence`
 - `recommended_action`
+- `limitations`
 
-This step does not call an external LLM. If retrieval finds no relevant
-incidents, it returns a clear no-evidence response.
+No cloud LLM is used. If retrieval finds no relevant incidents, it returns a
+clear no-evidence response.
 
 ## Severity Policy
 
@@ -171,6 +333,7 @@ PYTHONPATH=src .venv/bin/python -m industrial_ai.policy.severity \
 Rules:
 
 ```text
+Failure probability > 80% AND visual defect detected -> SEV1
 Failure probability > 80% AND RAG confidence = high -> SEV1
 Failure probability > 50% -> SEV2
 Else -> SEV3

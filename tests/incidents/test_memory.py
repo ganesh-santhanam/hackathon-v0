@@ -4,12 +4,14 @@ import numpy as np
 
 from industrial_ai.incidents.memory import (
     NO_RELEVANT_INCIDENTS_MESSAGE,
+    TelemetryQuery,
     build_document_type_filter,
     document_text,
     index_incident_corpus,
     load_incident_documents,
     retrieve_incidents,
     search_incidents,
+    telemetry_similarity_score,
 )
 
 
@@ -36,7 +38,16 @@ def write_temp_corpus(path):
             "machine_id": "AI4I-00001",
             "title": "Power Incident",
             "body": "Machine showed a power failure with abnormal torque.",
-            "metadata": {"failure_modes": ["power failure"]},
+            "metadata": {
+                "failure_modes": ["power failure"],
+                "telemetry": {
+                    "tool_wear_min": 20,
+                    "torque_nm": 10.0,
+                    "rotational_speed_rpm": 2800,
+                    "air_temperature_k": 299.0,
+                    "process_temperature_k": 309.0,
+                },
+            },
             "evidence": ["Torque outside normal range"],
         },
         {
@@ -45,7 +56,16 @@ def write_temp_corpus(path):
             "machine_id": "AI4I-00002",
             "title": "Tool Wear Maintenance",
             "body": "Technician replaced worn tooling after tool wear alarm.",
-            "metadata": {"failure_modes": ["tool wear failure"]},
+            "metadata": {
+                "failure_modes": ["tool wear failure"],
+                "telemetry": {
+                    "tool_wear_min": 210,
+                    "torque_nm": 55.5,
+                    "rotational_speed_rpm": 1266,
+                    "air_temperature_k": 301.1,
+                    "process_temperature_k": 311.6,
+                },
+            },
             "evidence": ["Tool wear unusually high"],
         },
     ]
@@ -185,3 +205,59 @@ def test_retrieve_incidents_returns_no_relevant_message_below_threshold(tmp_path
     assert response.top_score == 1.0
     assert response.message == NO_RELEVANT_INCIDENTS_MESSAGE
     assert response.results == []
+
+
+def test_telemetry_similarity_scores_exact_match_highest():
+    query = TelemetryQuery(
+        tool_wear_min=210,
+        torque_nm=55.5,
+        rotational_speed_rpm=1266,
+        air_temperature_k=301.1,
+        process_temperature_k=311.6,
+    )
+
+    assert telemetry_similarity_score(
+        query,
+        {
+            "tool_wear_min": 210,
+            "torque_nm": 55.5,
+            "rotational_speed_rpm": 1266,
+            "air_temperature_k": 301.1,
+            "process_temperature_k": 311.6,
+        },
+    ) == 1.0
+
+
+def test_retrieve_incidents_can_rerank_by_exact_telemetry_match(tmp_path):
+    corpus_path = tmp_path / "corpus.jsonl"
+    qdrant_path = tmp_path / "qdrant"
+    write_temp_corpus(corpus_path)
+    embedder = FakeEmbedder()
+    index_incident_corpus(
+        corpus_path=corpus_path,
+        qdrant_path=qdrant_path,
+        collection_name="test_incidents_telemetry_rerank",
+        embedder=embedder,
+    )
+
+    response = retrieve_incidents(
+        query="torque power issue",
+        top_k=2,
+        qdrant_path=qdrant_path,
+        collection_name="test_incidents_telemetry_rerank",
+        embedder=embedder,
+        score_threshold=0.0,
+        telemetry_query=TelemetryQuery(
+            tool_wear_min=210,
+            torque_nm=55.5,
+            rotational_speed_rpm=1266,
+            air_temperature_k=301.1,
+            process_temperature_k=311.6,
+        ),
+        vector_weight=0.2,
+    )
+
+    assert response.results[0].document_id == "doc-2"
+    assert response.results[0].vector_score == 0.0
+    assert response.results[0].telemetry_similarity_score == 1.0
+    assert response.results[0].combined_score == 0.8

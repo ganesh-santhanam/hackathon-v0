@@ -5,7 +5,7 @@ from enum import StrEnum
 from pathlib import Path
 
 from industrial_ai.paths import APPROVALS_STORE_PATH
-from industrial_ai.policy.severity import Severity
+from industrial_ai.policy.severity import Severity, approval_required_for_severity_value
 
 
 class ApprovalStatus(StrEnum):
@@ -24,7 +24,7 @@ class ApprovalRecord:
 
 
 def approval_required_for_severity(severity: Severity) -> bool:
-    return severity == Severity.SEV1
+    return approval_required_for_severity_value(severity)
 
 
 def initial_status_for_severity(severity: Severity) -> ApprovalStatus:
