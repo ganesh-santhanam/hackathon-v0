@@ -11,12 +11,17 @@ Datasets:
 ## Current Scope
 
 This repo is being built in small steps. The current working slice is the Tier 0
-AI4I telemetry agent:
+incident-analysis pipeline:
 
 ```text
-Telemetry row
+AI4I telemetry row
   -> failure prediction
-  -> confidence score
+  -> incident corpus generation
+  -> local Qdrant retrieval
+  -> deterministic RAG answer
+  -> severity policy
+  -> human approval
+  -> evaluation harness
 ```
 
 ## AI4I Telemetry Agent
@@ -64,6 +69,21 @@ Run tests:
 ```bash
 .venv/bin/pytest -q
 ```
+
+## Repository Status
+
+The current implementation includes:
+
+- AI4I telemetry prediction
+- structured incident corpus generation
+- local Qdrant indexing and retrieval
+- deterministic RAG-style answer formatting
+- severity assignment
+- JSON-backed human approval records
+- deterministic evaluation scenarios
+
+The remaining work is to replace the deterministic stand-ins with the
+fuller agentic workflow described in the hackathon brief.
 
 ## Incident Corpus
 

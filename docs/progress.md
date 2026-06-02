@@ -655,3 +655,63 @@ Real harness run:
 - `12` passed
 - `0` failed
 - `1.0` pass rate
+
+## 2026-06-01 - Current Project Status
+
+### Scope Completed So Far
+
+The repo now contains a complete local Tier 0 pipeline:
+
+```text
+AI4I telemetry row
+  -> failure prediction
+  -> incident corpus generation
+  -> local Qdrant retrieval
+  -> deterministic RAG answer
+  -> severity policy
+  -> human approval
+  -> evaluation harness
+```
+
+### Implemented Pieces
+
+- `src/industrial_ai/telemetry`
+  - dataset loading
+  - XGBoost training
+  - prediction CLI
+  - feature importance output
+- `src/industrial_ai/incidents`
+  - structured incident, RCA, and maintenance-note generation
+  - local Qdrant indexing and search
+- `src/industrial_ai/rag`
+  - deterministic evidence-based answer formatting
+- `src/industrial_ai/policy`
+  - severity assignment from probability and retrieval confidence
+- `src/industrial_ai/approvals`
+  - JSON-backed approval state machine
+- `src/industrial_ai/evaluation`
+  - deterministic severity-policy scenarios
+  - pass/fail summary output
+
+### Current Artifacts
+
+- `models/telemetry_model.joblib`
+- `models/telemetry_metrics.json`
+- `data/incidents/ai4i_incident_corpus.jsonl`
+- `data/incidents/manifest.json`
+- `data/qdrant/`
+- `data/approvals/`
+- `data/evaluation/scenarios.json`
+
+### Verification Snapshot
+
+Latest recorded checks:
+
+- `45 passed`
+- `All checks passed`
+
+### Remaining Gap
+
+The current implementation is still mostly deterministic and local. The next
+step is to wire these pieces into a more complete agent workflow with richer
+orchestration and, if required, UI support.
