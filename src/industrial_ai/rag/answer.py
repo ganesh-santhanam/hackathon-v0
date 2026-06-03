@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import time
 import urllib.error
 import urllib.request
 from collections import Counter
@@ -34,6 +35,52 @@ class SupportingIncident:
 
 
 @dataclass(frozen=True)
+class RagMetadata:
+    rag_mode: str
+    llm_provider: str | None = None
+    llm_model: str | None = None
+    endpoint_url: str | None = None
+    fallback_used: bool = False
+    fallback_reason: str | None = None
+    latency_ms: int | None = None
+    raw_error: str | None = None
+
+
+def deterministic_metadata() -> RagMetadata:
+    return RagMetadata(rag_mode="deterministic")
+
+
+def ollama_metadata(
+    model_name: str,
+    endpoint_url: str = DEFAULT_OLLAMA_URL,
+    fallback_used: bool = False,
+    fallback_reason: str | None = None,
+    latency_ms: int | None = None,
+    raw_error: str | None = None,
+) -> RagMetadata:
+    return RagMetadata(
+        rag_mode="llm",
+        llm_provider="Ollama",
+        llm_model=model_name,
+        endpoint_url=endpoint_url,
+        fallback_used=fallback_used,
+        fallback_reason=fallback_reason,
+        latency_ms=latency_ms,
+        raw_error=raw_error,
+    )
+
+
+@dataclass(frozen=True)
+class OllamaConnectionCheck:
+    success: bool
+    provider: str
+    model_name: str
+    endpoint_url: str
+    latency_ms: int
+    error_message: str | None = None
+
+
+@dataclass(frozen=True)
 class RagAnswer:
     question: str
     likely_root_cause: str
@@ -42,6 +89,7 @@ class RagAnswer:
     evidence: list[str]
     recommended_action: str
     limitations: list[str] = field(default_factory=list)
+    metadata: RagMetadata = field(default_factory=deterministic_metadata)
 
 
 def infer_likely_root_cause(results: list[SearchResult]) -> str:
@@ -272,6 +320,9 @@ def build_answer_from_ollama_response(
     question: str,
     results: list[SearchResult],
     raw_response: str,
+    model_name: str,
+    endpoint_url: str = DEFAULT_OLLAMA_URL,
+    latency_ms: int | None = None,
 ) -> RagAnswer:
     parsed = parse_json_object(raw_response)
     confidence = str(parsed.get("confidence", "low")).lower()
@@ -290,6 +341,12 @@ def build_answer_from_ollama_response(
             )
         ),
         limitations=normalize_string_list(parsed.get("limitations")),
+        metadata=ollama_metadata(
+            model_name=model_name,
+            endpoint_url=endpoint_url,
+            fallback_used=False,
+            latency_ms=latency_ms,
+        ),
     )
 
 
@@ -298,14 +355,51 @@ def build_llm_answer_from_results(
     results: list[SearchResult],
     fallback: bool = True,
 ) -> RagAnswer:
+    model_name = ollama_model_from_env()
+    endpoint_url = DEFAULT_OLLAMA_URL
     if not results:
-        return build_answer_from_results(question, results)
+        answer = build_answer_from_results(question, results)
+        fallback_reason = "No retrieved incidents met the threshold; Ollama was skipped because there was no evidence context."
+        return RagAnswer(
+            question=answer.question,
+            likely_root_cause=answer.likely_root_cause,
+            confidence=answer.confidence,
+            supporting_incidents=answer.supporting_incidents,
+            evidence=answer.evidence,
+            recommended_action=answer.recommended_action,
+            limitations=[
+                fallback_reason,
+                *answer.limitations,
+            ],
+            metadata=ollama_metadata(
+                model_name=model_name,
+                endpoint_url=endpoint_url,
+                fallback_used=True,
+                fallback_reason=fallback_reason,
+                latency_ms=0,
+            ),
+        )
+    started_at = time.perf_counter()
     try:
-        raw_response = call_ollama(build_ollama_prompt(question, results))
-        return build_answer_from_ollama_response(question, results, raw_response)
+        raw_response = call_ollama(
+            build_ollama_prompt(question, results),
+            model=model_name,
+            url=endpoint_url,
+        )
+        latency_ms = int((time.perf_counter() - started_at) * 1000)
+        return build_answer_from_ollama_response(
+            question,
+            results,
+            raw_response,
+            model_name=model_name,
+            endpoint_url=endpoint_url,
+            latency_ms=latency_ms,
+        )
     except (OllamaUnavailableError, ValueError, json.JSONDecodeError) as exc:
+        latency_ms = int((time.perf_counter() - started_at) * 1000)
         if not fallback:
             raise OllamaUnavailableError(f"Ollama unavailable and fallback disabled: {exc}") from exc
+        error_message = str(exc)
         answer = build_answer_from_results(question, results)
         return RagAnswer(
             question=answer.question,
@@ -315,9 +409,51 @@ def build_llm_answer_from_results(
             evidence=answer.evidence,
             recommended_action=answer.recommended_action,
             limitations=[
-                f"Ollama unavailable; used deterministic fallback. Error: {exc}",
+                f"Ollama unavailable; used deterministic fallback. Error: {error_message}",
                 *answer.limitations,
             ],
+            metadata=ollama_metadata(
+                model_name=model_name,
+                endpoint_url=endpoint_url,
+                fallback_used=True,
+                fallback_reason="Ollama LLM generation failed; deterministic RAG fallback was used.",
+                latency_ms=latency_ms,
+                raw_error=error_message,
+            ),
+        )
+
+
+def test_ollama_connection(
+    model_name: str | None = None,
+    endpoint_url: str = DEFAULT_OLLAMA_URL,
+    timeout_seconds: float = 10.0,
+) -> OllamaConnectionCheck:
+    model_name = model_name or ollama_model_from_env()
+    prompt = 'Return only valid JSON: {"status":"ok"}.'
+    started_at = time.perf_counter()
+    try:
+        raw_response = call_ollama(
+            prompt,
+            model=model_name,
+            url=endpoint_url,
+            timeout_seconds=timeout_seconds,
+        )
+        parse_json_object(raw_response)
+        return OllamaConnectionCheck(
+            success=True,
+            provider="Ollama",
+            model_name=model_name,
+            endpoint_url=endpoint_url,
+            latency_ms=int((time.perf_counter() - started_at) * 1000),
+        )
+    except (OllamaUnavailableError, ValueError, json.JSONDecodeError) as exc:
+        return OllamaConnectionCheck(
+            success=False,
+            provider="Ollama",
+            model_name=model_name,
+            endpoint_url=endpoint_url,
+            latency_ms=int((time.perf_counter() - started_at) * 1000),
+            error_message=str(exc),
         )
 
 

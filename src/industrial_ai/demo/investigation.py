@@ -1,4 +1,4 @@
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from industrial_ai.approvals.approval import (
@@ -20,6 +20,7 @@ from industrial_ai.paths import APPROVALS_STORE_PATH, QDRANT_DATA_DIR
 from industrial_ai.policy.severity import SeverityDecision, assign_severity
 from industrial_ai.rag.answer import RagAnswer, answer_to_dict, build_answer_from_results, build_llm_answer_from_results
 from industrial_ai.telemetry.predict import FailurePrediction, TelemetryReading, predict_failure
+from industrial_ai.vision.localization import VisionLocalization, localize_by_comparison, localize_by_resnet
 from industrial_ai.vision.mvtec_compare import compare_mvtec_image
 from industrial_ai.vision.mvtec_resnet import model_path_for_category, predict_resnet
 
@@ -37,6 +38,8 @@ class VisionCheck:
     anomaly_score: float
     threshold: float
     evidence: list[str]
+    image_path: str | None = None
+    localization: VisionLocalization | None = None
 
 
 @dataclass(frozen=True)
@@ -57,6 +60,7 @@ class InvestigationResult:
     rag_answer: RagAnswer
     severity: SeverityDecision
     approval: ApprovalRecord
+    agent_trace: list[str] = field(default_factory=list)
 
 
 def build_retrieval_query(
@@ -127,6 +131,17 @@ def run_vision_check(
                 f"calibrate --model-path {model_path} --metric f1"
             )
         result = predict_resnet(image_path=image_path, model_path=model_path)
+        localization = None
+        evidence = list(result.evidence)
+        if result.defect_detected:
+            try:
+                localization = localize_by_resnet(
+                    image_path=image_path,
+                    category=result.category,
+                    model_path=model_path,
+                )
+            except Exception as exc:  # pragma: no cover - defensive around optional explainability artifacts.
+                evidence.append(f"Localization unavailable: {exc}")
         return VisionCheck(
             method="resnet",
             category=result.category,
@@ -135,9 +150,21 @@ def run_vision_check(
             confidence=result.confidence,
             anomaly_score=result.anomaly_score,
             threshold=result.threshold,
-            evidence=result.evidence,
+            evidence=evidence,
+            image_path=result.image_path,
+            localization=localization,
         )
     result = compare_mvtec_image(image_path=image_path, category=category)
+    localization = None
+    evidence = list(result.evidence)
+    if result.defect_detected:
+        try:
+            localization = localize_by_comparison(
+                image_path=image_path,
+                category=result.category,
+            )
+        except Exception as exc:  # pragma: no cover - defensive around optional explainability artifacts.
+            evidence.append(f"Localization unavailable: {exc}")
     return VisionCheck(
         method="comparison",
         category=result.category,
@@ -146,7 +173,9 @@ def run_vision_check(
         confidence=result.confidence,
         anomaly_score=result.anomaly_score,
         threshold=result.threshold,
-        evidence=result.evidence,
+        evidence=evidence,
+        image_path=result.image_path,
+        localization=localization,
     )
 
 
@@ -228,4 +257,5 @@ def investigation_to_dict(result: InvestigationResult) -> dict:
         "rag_answer": answer_to_dict(result.rag_answer),
         "severity": asdict(result.severity),
         "approval": record_to_dict(result.approval),
+        "agent_trace": result.agent_trace,
     }

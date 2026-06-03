@@ -11,6 +11,7 @@ pydantic
 pyyaml
 python-dotenv
 loguru
+langgraph
 pytest
 ruff
 mypy

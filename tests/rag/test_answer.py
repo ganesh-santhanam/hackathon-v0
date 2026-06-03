@@ -2,6 +2,7 @@ from industrial_ai.incidents.memory import SearchResponse, SearchResult
 from industrial_ai.rag import answer as answer_module
 from industrial_ai.rag.answer import (
     DEFAULT_OLLAMA_MODEL,
+    DEFAULT_OLLAMA_URL,
     OllamaUnavailableError,
     build_answer_from_results,
     build_llm_answer_from_results,
@@ -10,6 +11,7 @@ from industrial_ai.rag.answer import (
     confidence_from_scores,
     infer_likely_root_cause,
     ollama_model_from_env,
+    test_ollama_connection as check_ollama_connection,
 )
 
 
@@ -121,9 +123,12 @@ def test_build_ollama_prompt_uses_retrieved_incident_context_only():
 
 def test_llm_answer_uses_mocked_ollama_response(monkeypatch):
     result = make_result()
+    monkeypatch.setenv("OLLAMA_MODEL", "gemma3:4b")
 
-    def fake_call_ollama(prompt):
+    def fake_call_ollama(prompt, model=None, url=DEFAULT_OLLAMA_URL):
         assert "doc-1" in prompt
+        assert model == "gemma3:4b"
+        assert url == DEFAULT_OLLAMA_URL
         return """
         {
           "likely_root_cause": "tool wear failure",
@@ -144,12 +149,23 @@ def test_llm_answer_uses_mocked_ollama_response(monkeypatch):
     assert answer.supporting_incidents[0].document_id == "doc-1"
     assert answer.evidence == ["Tool wear: 220 min"]
     assert answer.limitations == ["Only one retrieved incident was available."]
+    assert answer.metadata.rag_mode == "llm"
+    assert answer.metadata.llm_provider == "Ollama"
+    assert answer.metadata.llm_model == "gemma3:4b"
+    assert answer.metadata.endpoint_url == DEFAULT_OLLAMA_URL
+    assert answer.metadata.fallback_used is False
+    assert answer.metadata.fallback_reason is None
+    assert answer.metadata.latency_ms is not None
+    assert answer.metadata.raw_error is None
 
 
 def test_llm_answer_falls_back_when_ollama_unavailable(monkeypatch):
     result = make_result()
+    monkeypatch.setenv("OLLAMA_MODEL", "gemma3:4b")
 
-    def fake_call_ollama(prompt):
+    def fake_call_ollama(prompt, model=None, url=DEFAULT_OLLAMA_URL):
+        assert model == "gemma3:4b"
+        assert url == DEFAULT_OLLAMA_URL
         raise OllamaUnavailableError("connection refused")
 
     monkeypatch.setattr(answer_module, "call_ollama", fake_call_ollama)
@@ -158,12 +174,41 @@ def test_llm_answer_falls_back_when_ollama_unavailable(monkeypatch):
 
     assert answer.likely_root_cause == "tool wear failure"
     assert "Ollama unavailable; used deterministic fallback" in answer.limitations[0]
+    assert answer.metadata.rag_mode == "llm"
+    assert answer.metadata.llm_provider == "Ollama"
+    assert answer.metadata.llm_model == "gemma3:4b"
+    assert answer.metadata.endpoint_url == DEFAULT_OLLAMA_URL
+    assert answer.metadata.fallback_used is True
+    assert answer.metadata.fallback_reason == (
+        "Ollama LLM generation failed; deterministic RAG fallback was used."
+    )
+    assert answer.metadata.latency_ms is not None
+    assert answer.metadata.raw_error == "connection refused"
+
+
+def test_llm_answer_reports_fallback_when_no_retrieved_context(monkeypatch):
+    monkeypatch.setenv("OLLAMA_MODEL", "gemma3:4b")
+
+    answer = build_llm_answer_from_results("What happened?", [])
+
+    assert answer.likely_root_cause == "No evidence available"
+    assert answer.metadata.rag_mode == "llm"
+    assert answer.metadata.llm_provider == "Ollama"
+    assert answer.metadata.llm_model == "gemma3:4b"
+    assert answer.metadata.endpoint_url == DEFAULT_OLLAMA_URL
+    assert answer.metadata.fallback_used is True
+    assert answer.metadata.fallback_reason == (
+        "No retrieved incidents met the threshold; Ollama was skipped because there was no evidence context."
+    )
+    assert answer.metadata.latency_ms == 0
+    assert answer.metadata.raw_error is None
+    assert answer.metadata.fallback_reason in answer.limitations
 
 
 def test_llm_answer_raises_when_fallback_disabled(monkeypatch):
     result = make_result()
 
-    def fake_call_ollama(prompt):
+    def fake_call_ollama(prompt, model=None, url=DEFAULT_OLLAMA_URL):
         raise OllamaUnavailableError("connection refused")
 
     monkeypatch.setattr(answer_module, "call_ollama", fake_call_ollama)
@@ -182,3 +227,43 @@ def test_ollama_model_uses_env_var_with_default(monkeypatch):
 
     monkeypatch.setenv("OLLAMA_MODEL", "custom-model")
     assert ollama_model_from_env() == "custom-model"
+
+
+def test_ollama_connection_check_reports_success(monkeypatch):
+    monkeypatch.setenv("OLLAMA_MODEL", "gemma3:4b")
+
+    def fake_call_ollama(prompt, model=None, url=DEFAULT_OLLAMA_URL, timeout_seconds=10.0):
+        assert "status" in prompt
+        assert model == "gemma3:4b"
+        assert url == DEFAULT_OLLAMA_URL
+        assert timeout_seconds == 10.0
+        return '{"status":"ok"}'
+
+    monkeypatch.setattr(answer_module, "call_ollama", fake_call_ollama)
+
+    check = check_ollama_connection()
+
+    assert check.success is True
+    assert check.provider == "Ollama"
+    assert check.model_name == "gemma3:4b"
+    assert check.endpoint_url == DEFAULT_OLLAMA_URL
+    assert check.latency_ms is not None
+    assert check.error_message is None
+
+
+def test_ollama_connection_check_reports_failure(monkeypatch):
+    monkeypatch.setenv("OLLAMA_MODEL", "gemma3:4b")
+
+    def fake_call_ollama(prompt, model=None, url=DEFAULT_OLLAMA_URL, timeout_seconds=10.0):
+        raise OllamaUnavailableError("connection refused")
+
+    monkeypatch.setattr(answer_module, "call_ollama", fake_call_ollama)
+
+    check = check_ollama_connection()
+
+    assert check.success is False
+    assert check.provider == "Ollama"
+    assert check.model_name == "gemma3:4b"
+    assert check.endpoint_url == DEFAULT_OLLAMA_URL
+    assert check.latency_ms is not None
+    assert check.error_message == "connection refused"

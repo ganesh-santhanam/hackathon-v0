@@ -9,6 +9,8 @@ INCIDENTS_DATA_DIR = DATA_DIR / "incidents"
 QDRANT_DATA_DIR = DATA_DIR / "qdrant"
 APPROVALS_DATA_DIR = DATA_DIR / "approvals"
 EVALUATION_DATA_DIR = DATA_DIR / "evaluation"
+VISION_EXAMPLES_DIR = DATA_DIR / "vision_examples"
+VISION_OUTPUT_DIR = DATA_DIR / "vision_outputs"
 MODELS_DIR = PROJECT_ROOT / "models"
 MVTEC_DATASET_DIR = PROJECT_ROOT / "mvtec_anomaly_detection"
 

@@ -1,9 +1,11 @@
 from industrial_ai.demo.streamlit_app import (
+    DEMO_SCENARIOS,
     build_vision_upload_path,
     evaluation_rows,
     format_key_inputs,
     pass_rate,
     policy_summary,
+    rag_metadata_display,
     severity_rule_rows,
 )
 from industrial_ai.evaluation.test_rig import RigCaseResult, RigReport
@@ -120,3 +122,52 @@ def test_build_vision_upload_path_sanitizes_suffix_and_category(tmp_path):
 
     assert path.parent == tmp_path
     assert path.name == "tmp_pwn-grid.png"
+
+
+def test_rag_metadata_display_supports_new_and_stale_metadata_shapes():
+    class OldMetadata:
+        mode = "llm"
+        provider = "Ollama"
+        model_name = "gemma3:4b"
+        endpoint_url = "http://localhost:11434/api/generate"
+        fallback_used = True
+        error_message = "connection refused"
+
+    assert rag_metadata_display(OldMetadata()) == {
+        "rag_mode": "llm",
+        "llm_provider": "Ollama",
+        "llm_model": "gemma3:4b",
+        "endpoint_url": "http://localhost:11434/api/generate",
+        "fallback_used": True,
+        "fallback_reason": None,
+        "latency_ms": None,
+        "raw_error": "connection refused",
+    }
+
+
+def test_demo_scenarios_define_required_buttons_and_telemetry_inputs():
+    assert set(DEMO_SCENARIOS) == {
+        "tool_wear_failure",
+        "power_failure",
+        "cooling_failure",
+        "visual_defect",
+        "multi_modal_sev1",
+    }
+    for scenario in DEMO_SCENARIOS.values():
+        assert scenario["label"].startswith("Injected")
+        assert scenario["machine_id"]
+        assert scenario["machine_type"] in {"L", "M", "H"}
+        assert scenario["air_temperature_k"] > 0
+        assert scenario["process_temperature_k"] > 0
+        assert scenario["rotational_speed_rpm"] > 0
+        assert scenario["torque_nm"] > 0
+        assert scenario["tool_wear_min"] >= 0
+
+
+def test_visual_demo_scenarios_point_to_available_local_images():
+    for scenario_key in ["visual_defect", "multi_modal_sev1"]:
+        image_path = DEMO_SCENARIOS[scenario_key]["vision_image_path"]
+
+        assert image_path.exists()
+        assert image_path.suffix == ".png"
+        assert DEMO_SCENARIOS[scenario_key]["vision_enabled"] is True
