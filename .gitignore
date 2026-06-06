@@ -13,6 +13,7 @@ data/processed/
 data/raw/
 data/approvals/
 data/qdrant/
+data/vision_outputs/
 models/
 
 *.db

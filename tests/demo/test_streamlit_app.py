@@ -3,12 +3,19 @@ from industrial_ai.demo.streamlit_app import (
     build_vision_upload_path,
     evaluation_rows,
     format_key_inputs,
+    format_optional_score,
     pass_rate,
     policy_summary,
     rag_metadata_display,
     severity_rule_rows,
+    similar_incident_metadata,
+    similar_incident_match_reasoning,
+    similar_incident_score_breakdown,
+    similar_incident_score_label,
+    telemetry_comparison_table,
 )
 from industrial_ai.evaluation.test_rig import RigCaseResult, RigReport
+from industrial_ai.incidents.memory import SearchResult
 
 
 def make_report() -> RigReport:
@@ -86,6 +93,86 @@ def test_format_key_inputs_prioritizes_scenario_details():
         "image_path=000.png, score=0.1767, threshold=0.3568, "
         "confidence=0.95, defect_type=bent"
     )
+
+
+def test_similar_incident_score_helpers_format_demo_values():
+    incident = SearchResult(
+        score=0.72,
+        document_id="doc-1",
+        document_type="rca_report",
+        machine_id="AI4I-01997",
+        title="RCA Report - AI4I-01997",
+        body="Root cause analysis points to tool wear failure.",
+        metadata={},
+        evidence=[],
+        vector_score=0.71,
+        telemetry_similarity_score=0.84,
+        combined_score=0.76,
+        telemetry_comparison=[
+            {
+                "signal": "tool wear",
+                "current": "210",
+                "incident": "198",
+                "unit": "min",
+                "similarity": 0.88,
+            },
+            {
+                "signal": "torque",
+                "current": "55.5",
+                "incident": "n/a",
+                "unit": "Nm",
+                "similarity": None,
+            },
+        ],
+        failure_mode="tool wear failure",
+        match_reasons=[
+            "Same failure mode: tool wear failure",
+            "Similar tool wear: current 210 min vs incident 198 min",
+        ],
+    )
+
+    assert format_optional_score(None) == "n/a"
+    assert similar_incident_score_label(incident) == "combined 0.76"
+    assert similar_incident_metadata(incident) == {
+        "document_type": "rca_report",
+        "machine_id": "AI4I-01997",
+        "failure_mode": "tool wear failure",
+    }
+    assert similar_incident_score_breakdown(incident) == [
+        "Vector score: 0.71",
+        "Telemetry similarity: 0.84",
+        "Combined score: 0.76",
+    ]
+    assert telemetry_comparison_table(incident) == [
+        {
+            "signal": "tool wear",
+            "current": "210 min",
+            "incident": "198 min",
+            "similarity": "0.88",
+        },
+        {
+            "signal": "torque",
+            "current": "55.5 Nm",
+            "incident": "n/a",
+            "similarity": "n/a",
+        },
+    ]
+    assert similar_incident_match_reasoning(incident) == [
+        "Same failure mode: tool wear failure",
+        "Similar tool wear: current 210 min vs incident 198 min",
+    ]
+    assert similar_incident_match_reasoning(
+        SearchResult(
+            score=0.2,
+            document_id="doc-empty",
+            document_type="maintenance_note",
+            machine_id="AI4I-00001",
+            title="Maintenance Note",
+            body="No reason payload.",
+            metadata={},
+            evidence=[],
+        )
+    ) == ["No structured match reasons available."]
 
 
 def test_evaluation_rows_filters_all_passed_and_failed():

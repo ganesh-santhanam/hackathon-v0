@@ -1,6 +1,6 @@
 import argparse
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any, Protocol
 
@@ -32,6 +32,21 @@ TELEMETRY_TOLERANCES = {
     "air_temperature_k": 10.0,
     "process_temperature_k": 10.0,
 }
+TELEMETRY_LABELS = {
+    "tool_wear_min": ("tool wear", "min"),
+    "torque_nm": ("torque", "Nm"),
+    "rotational_speed_rpm": ("rotational speed", "rpm"),
+    "air_temperature_k": ("air temperature", "K"),
+    "process_temperature_k": ("process temperature", "K"),
+}
+TELEMETRY_COMPARISON_FIELDS = (
+    "tool_wear_min",
+    "torque_nm",
+    "rotational_speed_rpm",
+    "air_temperature_k",
+    "process_temperature_k",
+)
+TELEMETRY_REASON_THRESHOLD = 0.7
 
 
 class Embedder(Protocol):
@@ -52,6 +67,9 @@ class SearchResult:
     vector_score: float | None = None
     telemetry_similarity_score: float | None = None
     combined_score: float | None = None
+    match_reasons: list[str] = field(default_factory=list)
+    telemetry_comparison: list[dict[str, Any]] = field(default_factory=list)
+    failure_mode: str | None = None
 
 
 @dataclass(frozen=True)
@@ -61,6 +79,7 @@ class TelemetryQuery:
     rotational_speed_rpm: float
     air_temperature_k: float
     process_temperature_k: float
+    machine_type: str | None = None
 
 
 @dataclass(frozen=True)
@@ -165,9 +184,25 @@ def telemetry_from_metadata(metadata: dict[str, Any]) -> dict[str, float] | None
     telemetry = metadata.get("telemetry")
     if not isinstance(telemetry, dict):
         return None
-    if any(field not in telemetry for field in TELEMETRY_FIELDS):
+    if any(field_name not in telemetry for field_name in TELEMETRY_FIELDS):
         return None
-    return {field: float(telemetry[field]) for field in TELEMETRY_FIELDS}
+    return {field_name: float(telemetry[field_name]) for field_name in TELEMETRY_FIELDS}
+
+
+def partial_telemetry_from_metadata(metadata: dict[str, Any]) -> dict[str, float]:
+    telemetry = metadata.get("telemetry")
+    if not isinstance(telemetry, dict):
+        return {}
+
+    values = {}
+    for field_name in TELEMETRY_FIELDS:
+        if field_name not in telemetry:
+            continue
+        try:
+            values[field_name] = float(telemetry[field_name])
+        except (TypeError, ValueError):
+            continue
+    return values
 
 
 def telemetry_similarity_score(
@@ -177,12 +212,174 @@ def telemetry_similarity_score(
     if document_telemetry is None:
         return None
     scores = []
-    for field in TELEMETRY_FIELDS:
-        query_value = float(getattr(query, field))
-        document_value = float(document_telemetry[field])
-        tolerance = TELEMETRY_TOLERANCES[field]
+    for field_name in TELEMETRY_FIELDS:
+        query_value = float(getattr(query, field_name))
+        document_value = float(document_telemetry[field_name])
+        tolerance = TELEMETRY_TOLERANCES[field_name]
         scores.append(max(0.0, 1.0 - (abs(query_value - document_value) / tolerance)))
     return float(sum(scores) / len(scores))
+
+
+def format_telemetry_value(value: float) -> str:
+    if float(value).is_integer():
+        return str(int(value))
+    return f"{value:.1f}"
+
+
+def telemetry_match_reasons(
+    query: TelemetryQuery,
+    document_telemetry: dict[str, float] | None,
+    similarity_threshold: float = TELEMETRY_REASON_THRESHOLD,
+) -> list[str]:
+    if document_telemetry is None:
+        return []
+
+    reasons = []
+    for field_name in TELEMETRY_FIELDS:
+        if field_name not in document_telemetry:
+            continue
+        query_value = float(getattr(query, field_name))
+        document_value = float(document_telemetry[field_name])
+        tolerance = TELEMETRY_TOLERANCES[field_name]
+        similarity = max(0.0, 1.0 - (abs(query_value - document_value) / tolerance))
+        if similarity < similarity_threshold:
+            continue
+
+        label, unit = TELEMETRY_LABELS[field_name]
+        reasons.append(
+            f"Similar {label}: current {format_telemetry_value(query_value)} {unit} "
+            f"vs incident {format_telemetry_value(document_value)} {unit}"
+        )
+    return reasons
+
+
+def temperature_band_match_reason(
+    query: TelemetryQuery,
+    document_telemetry: dict[str, float],
+    similarity_threshold: float = TELEMETRY_REASON_THRESHOLD,
+) -> str | None:
+    temperature_fields = ("air_temperature_k", "process_temperature_k")
+    if any(field_name not in document_telemetry for field_name in temperature_fields):
+        return None
+    similarities = []
+    for field_name in temperature_fields:
+        query_value = float(getattr(query, field_name))
+        document_value = float(document_telemetry[field_name])
+        tolerance = TELEMETRY_TOLERANCES[field_name]
+        similarities.append(max(0.0, 1.0 - (abs(query_value - document_value) / tolerance)))
+    if sum(similarities) / len(similarities) < similarity_threshold:
+        return None
+    return (
+        "Similar temperature band: current "
+        f"{format_telemetry_value(query.air_temperature_k)} K air / "
+        f"{format_telemetry_value(query.process_temperature_k)} K process vs incident "
+        f"{format_telemetry_value(document_telemetry['air_temperature_k'])} K air / "
+        f"{format_telemetry_value(document_telemetry['process_temperature_k'])} K process"
+    )
+
+
+def semantic_match_reason(result: SearchResult) -> str:
+    if result.document_type == "rca_report":
+        return "Semantically similar RCA text"
+    return f"Semantically similar {result.document_type.replace('_', ' ')} text"
+
+
+def failure_mode_match_reasons(result: SearchResult) -> list[str]:
+    failure_modes = result.metadata.get("failure_modes", [])
+    if not isinstance(failure_modes, list):
+        return []
+    return [
+        f"Same failure mode: {failure_mode}"
+        for failure_mode in failure_modes
+        if isinstance(failure_mode, str)
+    ]
+
+
+def primary_failure_mode(metadata: dict[str, Any]) -> str | None:
+    failure_modes = metadata.get("failure_modes", [])
+    if not isinstance(failure_modes, list):
+        return None
+    return next((mode for mode in failure_modes if isinstance(mode, str)), None)
+
+
+def machine_type_match_reason(result: SearchResult, telemetry_query: TelemetryQuery | None) -> str | None:
+    if telemetry_query is None or telemetry_query.machine_type is None:
+        return None
+    historical_type = result.metadata.get("machine_type")
+    if not isinstance(historical_type, str) or historical_type != telemetry_query.machine_type:
+        return None
+    return f"Same machine type: {historical_type}"
+
+
+def telemetry_comparison_rows(
+    query: TelemetryQuery,
+    document_telemetry: dict[str, float],
+) -> list[dict[str, Any]]:
+    rows = []
+    for field_name in TELEMETRY_COMPARISON_FIELDS:
+        label, unit = TELEMETRY_LABELS[field_name]
+        row = {
+            "signal": label,
+            "current": format_telemetry_value(float(getattr(query, field_name))),
+            "incident": "n/a",
+            "unit": unit,
+        }
+        if field_name in document_telemetry:
+            row["incident"] = format_telemetry_value(document_telemetry[field_name])
+            tolerance = TELEMETRY_TOLERANCES[field_name]
+            row["similarity"] = round(
+                max(
+                    0.0,
+                    1.0 - (abs(float(getattr(query, field_name)) - document_telemetry[field_name]) / tolerance),
+                ),
+                3,
+            )
+        else:
+            row["similarity"] = None
+        rows.append(row)
+    return rows
+
+
+def build_match_reasons(
+    result: SearchResult,
+    telemetry_query: TelemetryQuery | None = None,
+) -> list[str]:
+    reasons = []
+    if telemetry_query is not None:
+        document_telemetry = partial_telemetry_from_metadata(result.metadata)
+        reasons.extend(
+            telemetry_match_reasons(
+                telemetry_query,
+                document_telemetry or None,
+            )
+        )
+        temperature_reason = temperature_band_match_reason(telemetry_query, document_telemetry)
+        if temperature_reason and temperature_reason not in reasons:
+            reasons.append(temperature_reason)
+        machine_type_reason = machine_type_match_reason(result, telemetry_query)
+        if machine_type_reason:
+            reasons.append(machine_type_reason)
+    if result.vector_score is None or result.vector_score >= DEFAULT_SCORE_THRESHOLD:
+        reasons.append(semantic_match_reason(result))
+    reasons.extend(failure_mode_match_reasons(result))
+    return reasons
+
+
+def with_match_reasons(
+    result: SearchResult,
+    telemetry_query: TelemetryQuery | None = None,
+) -> SearchResult:
+    document_telemetry = partial_telemetry_from_metadata(result.metadata)
+    return replace(
+        result,
+        match_reasons=build_match_reasons(result, telemetry_query),
+        telemetry_comparison=(
+            telemetry_comparison_rows(telemetry_query, document_telemetry)
+            if telemetry_query is not None
+            else []
+        ),
+        failure_mode=primary_failure_mode(result.metadata),
+    )
 
 
 def combine_scores(
@@ -211,21 +408,20 @@ def rerank_with_telemetry(
             telemetry_from_metadata(result.metadata),
         )
         combined_score = combine_scores(vector_score, telemetry_score, vector_weight=vector_weight)
-        reranked.append(
-            SearchResult(
-                score=combined_score,
-                document_id=result.document_id,
-                document_type=result.document_type,
-                machine_id=result.machine_id,
-                title=result.title,
-                body=result.body,
-                metadata=result.metadata,
-                evidence=result.evidence,
-                vector_score=vector_score,
-                telemetry_similarity_score=telemetry_score,
-                combined_score=combined_score,
-            )
+        reranked_result = SearchResult(
+            score=combined_score,
+            document_id=result.document_id,
+            document_type=result.document_type,
+            machine_id=result.machine_id,
+            title=result.title,
+            body=result.body,
+            metadata=result.metadata,
+            evidence=result.evidence,
+            vector_score=vector_score,
+            telemetry_similarity_score=telemetry_score,
+            combined_score=combined_score,
         )
+        reranked.append(with_match_reasons(reranked_result, telemetry_query))
     return sorted(reranked, key=lambda item: item.combined_score or item.score, reverse=True)
 
 
@@ -259,21 +455,20 @@ def search_incidents(
         if point.score < score_threshold:
             continue
         payload = point.payload or {}
-        results.append(
-            SearchResult(
-                score=float(point.score),
-                document_id=payload["document_id"],
-                document_type=payload["document_type"],
-                machine_id=payload["machine_id"],
-                title=payload["title"],
-                body=payload["body"],
-                metadata=payload["metadata"],
-                evidence=payload["evidence"],
-                vector_score=float(point.score),
-                telemetry_similarity_score=None,
-                combined_score=float(point.score),
-            )
+        result = SearchResult(
+            score=float(point.score),
+            document_id=payload["document_id"],
+            document_type=payload["document_type"],
+            machine_id=payload["machine_id"],
+            title=payload["title"],
+            body=payload["body"],
+            metadata=payload["metadata"],
+            evidence=payload["evidence"],
+            vector_score=float(point.score),
+            telemetry_similarity_score=None,
+            combined_score=float(point.score),
         )
+        results.append(with_match_reasons(result))
     return rerank_with_telemetry(
         results,
         telemetry_query=telemetry_query,

@@ -123,6 +123,7 @@ def memory_agent(state: InvestigationGraphState) -> InvestigationGraphState:
             rotational_speed_rpm=reading.rotational_speed_rpm,
             air_temperature_k=reading.air_temperature_k,
             process_temperature_k=reading.process_temperature_k,
+            machine_type=reading.type,
         ),
     )
     state["evidence"] = evidence

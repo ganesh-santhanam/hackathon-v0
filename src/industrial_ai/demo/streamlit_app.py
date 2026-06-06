@@ -244,6 +244,52 @@ def render_evidence(items: list[str]) -> None:
         st.write(f"- {item}")
 
 
+def format_optional_score(value: float | None) -> str:
+    return "n/a" if value is None else f"{value:.2f}"
+
+
+def similar_incident_score_label(incident) -> str:
+    if incident.combined_score is not None:
+        return f"combined {format_optional_score(incident.combined_score)}"
+    return f"score {format_optional_score(incident.score)}"
+
+
+def similar_incident_score_breakdown(incident) -> list[str]:
+    return [
+        f"Vector score: {format_optional_score(incident.vector_score)}",
+        f"Telemetry similarity: {format_optional_score(incident.telemetry_similarity_score)}",
+        f"Combined score: {format_optional_score(incident.combined_score)}",
+    ]
+
+
+def similar_incident_metadata(incident) -> dict[str, str]:
+    return {
+        "document_type": incident.document_type,
+        "machine_id": incident.machine_id,
+        "failure_mode": incident.failure_mode or "n/a",
+    }
+
+
+def telemetry_comparison_table(incident) -> list[dict[str, str]]:
+    rows = []
+    for row in incident.telemetry_comparison:
+        rows.append(
+            {
+                "signal": str(row["signal"]),
+                "current": f"{row['current']} {row['unit']}",
+                "incident": (
+                    "n/a" if row["incident"] == "n/a" else f"{row['incident']} {row['unit']}"
+                ),
+                "similarity": format_optional_score(row.get("similarity")),
+            }
+        )
+    return rows
+
+
+def similar_incident_match_reasoning(incident) -> list[str]:
+    return incident.match_reasons or ["No structured match reasons available."]
+
+
 def render_approval_status(approval) -> None:
     status_label = (
         "Pending Review"
@@ -636,20 +682,17 @@ def render_investigation_tab() -> None:
     if not result.similar_incidents:
         st.info("No relevant incidents found.")
     for incident in result.similar_incidents:
-        score_label = (
-            f"combined {incident.combined_score:.3f}"
-            if incident.combined_score is not None
-            else f"score {incident.score:.3f}"
-        )
-        with st.expander(f"{incident.title} | {score_label}"):
+        with st.expander(f"{incident.title} | {similar_incident_score_label(incident)}"):
+            st.write(similar_incident_metadata(incident))
             st.write(incident.body)
-            st.write(
-                {
-                    "vector_score": incident.vector_score,
-                    "telemetry_similarity_score": incident.telemetry_similarity_score,
-                    "combined_score": incident.combined_score,
-                }
-            )
+            st.write("Match reasoning")
+            render_evidence(similar_incident_match_reasoning(incident))
+            st.write("Score breakdown")
+            render_evidence(similar_incident_score_breakdown(incident))
+            telemetry_rows = telemetry_comparison_table(incident)
+            if telemetry_rows:
+                st.write("Telemetry comparison")
+                st.dataframe(telemetry_rows, use_container_width=True, hide_index=True)
             st.write("Evidence")
             render_evidence(incident.evidence)
 
