@@ -12,6 +12,7 @@ __pycache__/
 data/processed/
 data/raw/
 data/approvals/
+data/plant/events.jsonl
 data/qdrant/
 data/vision_outputs/
 models/

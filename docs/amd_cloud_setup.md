@@ -19,7 +19,7 @@ The image installs Python dependencies and project source only. It does not bake
 
 ## 3. Prepare Demo Artifacts
 
-Create local directories and generate the incident corpus:
+Create local directories, generate the incident corpus, index local Qdrant, and generate Live Plant Stream events:
 
 ```bash
 PYTHON_BIN=.venv/bin/python scripts/demo_setup.sh
@@ -37,6 +37,7 @@ Required local artifacts still need to be present before richer demos:
 - `models/telemetry_model.joblib` for prediction
 - optional `mvtec_anomaly_detection/` images for visual inspection
 - optional calibrated ResNet profiles under `models/`
+- generated `data/plant/events.jsonl` is created by setup for the Live Plant Stream tab
 
 ## 4. Index Qdrant
 
@@ -86,6 +87,8 @@ If incident retrieval returns no results, rebuild the local index:
 ```bash
 docker compose run --rm streamlit bash scripts/demo_setup.sh
 ```
+
+The same setup command also refreshes `data/plant/events.jsonl` for the Live Plant Stream tab.
 
 If Ollama is unavailable, the RAG path should fall back to deterministic answers. To point at another Ollama host:
 
