@@ -1,0 +1,26 @@
+services:
+  streamlit:
+    build:
+      context: .
+    image: industrial-ai-demo:local
+    environment:
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-gemma3:4b}
+      QDRANT_URL: ${QDRANT_URL:-http://qdrant:6333}
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./mvtec_anomaly_detection:/app/mvtec_anomaly_detection:ro
+      - ./ai4i_dataset:/app/ai4i_dataset:ro
+    depends_on:
+      - qdrant
+
+  qdrant:
+    image: qdrant/qdrant:v1.12.6
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - ./data/qdrant_service:/qdrant/storage
