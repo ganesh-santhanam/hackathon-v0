@@ -1,0 +1,92 @@
+<mxfile host="app.diagrams.net" modified="2026-06-06T00:00:00.000Z" agent="Codex" version="24.7.17">
+  <diagram id="industrial-ai-architecture" name="Industrial AI Architecture">
+    <mxGraphModel dx="1500" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Industrial AI Investigation Assistant&#xa;Explainable multi-agent copilot for industrial incident investigation, root cause analysis, and human-approved operational decisions." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#102A43;fontColor=#FFFFFF;strokeColor=#102A43;fontSize=20;fontStyle=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="60" y="35" width="1380" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="stage_sources" value="DATA SOURCES" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#64748B;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="92" y="145" width="180" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="stage_investigation" value="INVESTIGATION" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#64748B;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="145" width="180" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="stage_governance" value="GOVERNANCE" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#64748B;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="835" y="605" width="180" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="stage_outcome" value="OUTCOME" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#64748B;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="492" width="130" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="zone_ai" value="AI Investigation Layer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#BBF7D0;fontColor=#475569;fontSize=15;fontStyle=1;arcSize=12;" vertex="1" parent="1">
+          <mxGeometry x="315" y="176" width="805" height="400" as="geometry"/>
+        </mxCell>
+        <mxCell id="zone_intelligence" value="Investigation Intelligence Layer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#FDE68A;fontColor=#475569;fontSize=15;fontStyle=1;arcSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="188" width="294" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="zone_gov" value="Operational Governance Layer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAF5FF;strokeColor=#E9D5FF;fontColor=#475569;fontSize=15;fontStyle=1;arcSize=12;" vertex="1" parent="1">
+          <mxGeometry x="800" y="636" width="470" height="164" as="geometry"/>
+        </mxCell>
+        <mxCell id="telemetry" value="Telemetry Stream&#xa;machine signals" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F3FF;strokeColor=#2B6CB0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="70" y="205" width="210" height="82" as="geometry"/>
+        </mxCell>
+        <mxCell id="vision" value="Vision Inspection&#xa;inspection images" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F3FF;strokeColor=#2B6CB0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="70" y="340" width="210" height="82" as="geometry"/>
+        </mxCell>
+        <mxCell id="stream" value="Event Stream&#xa;alerts + operator notes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F3FF;strokeColor=#2B6CB0;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="70" y="475" width="210" height="82" as="geometry"/>
+        </mxCell>
+        <mxCell id="telemetry_agent" value="Telemetry Agent&#xa;• Failure Probability&#xa;• Risk Evidence" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#2F855A;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="350" y="222" width="230" height="92" as="geometry"/>
+        </mxCell>
+        <mxCell id="vision_agent" value="Vision Agent&#xa;• Defect Detection&#xa;• Localization" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#2F855A;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="350" y="375" width="230" height="92" as="geometry"/>
+        </mxCell>
+        <mxCell id="langgraph" value="◎&#xa;LangGraph Multi-Agent Investigation Engine&#xa;orchestrates: Telemetry • Vision • Memory&#xa;Investigation • Policy&#xa;system brain + visible trace" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EEF2FF;strokeColor=#4F46E5;strokeWidth=3;fontSize=17;fontStyle=1;arcSize=16;" vertex="1" parent="1">
+          <mxGeometry x="635" y="245" width="350" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="qdrant" value="Qdrant Memory&#xa;• Similar Incidents&#xa;• Match Reasoning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF7E6;strokeColor=#B7791F;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="222" width="250" height="92" as="geometry"/>
+        </mxCell>
+        <mxCell id="copilot" value="Investigation Copilot&#xa;• Root Cause Analysis&#xa;• Recommended Actions&#xa;• Evidence Synthesis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#2F855A;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="375" width="250" height="92" as="geometry"/>
+        </mxCell>
+        <mxCell id="severity" value="Severity Engine&#xa;classification" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5EEFF;strokeColor=#805AD5;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="820" y="680" width="190" height="76" as="geometry"/>
+        </mxCell>
+        <mxCell id="policy" value="Policy Engine&#xa;approval rules" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5EEFF;strokeColor=#805AD5;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="680" width="190" height="76" as="geometry"/>
+        </mxCell>
+        <mxCell id="approval" value="Human Approval&#xa;human-in-the-loop" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5EEFF;strokeColor=#805AD5;strokeWidth=2;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="900" y="790" width="250" height="76" as="geometry"/>
+        </mxCell>
+        <mxCell id="recommendation" value="Investigation Outcome&#xa;Incident Resolution&#xa;Severity Decision&#xa;Action Plan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEECEC;strokeColor=#C53030;strokeWidth=2;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1232" y="528" width="248" height="142" as="geometry"/>
+        </mxCell>
+        <mxCell id="trust" value="Trust &amp;amp; Explainability&#xa;✓ Agent Trace&#xa;✓ Similar Incident Reasoning&#xa;✓ Vision Localization&#xa;✓ Telemetry Risk&#xa;✓ Vision Confidence&#xa;✓ Retrieval Similarity&#xa;✓ Investigation Confidence" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CBD5E1;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="335" y="603" width="300" height="220" as="geometry"/>
+        </mxCell>
+        <mxCell id="evidence" value="Evidence Generated&#xa;✓ Failure Prediction&#xa;✓ Defect Detection&#xa;✓ Similar Incidents&#xa;✓ Root Cause + Action" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CBD5E1;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="620" width="240" height="178" as="geometry"/>
+        </mxCell>
+        <mxCell id="amd_path" value="AMD Roadmap&#xa;Local&#xa;↓&#xa;Docker&#xa;↓&#xa;AMD Cloud&#xa;↓&#xa;MI300&#xa;↓&#xa;LoRA Fine-Tuning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CBD5E1;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1240" y="190" width="220" height="222" as="geometry"/>
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="telemetry" target="telemetry_agent" style="endArrow=block;html=1;strokeColor=#2B6CB0;strokeWidth=2;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="vision" target="vision_agent" style="endArrow=block;html=1;strokeColor=#2B6CB0;strokeWidth=2;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="stream" target="langgraph" style="endArrow=block;html=1;strokeColor=#52606D;strokeWidth=2;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="telemetry_agent" target="langgraph" style="endArrow=block;html=1;strokeColor=#2F855A;strokeWidth=2;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="vision_agent" target="langgraph" style="endArrow=block;html=1;strokeColor=#2F855A;strokeWidth=2;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="langgraph" target="qdrant" style="endArrow=block;html=1;strokeColor=#52606D;strokeWidth=2;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="qdrant" target="copilot" style="endArrow=block;html=1;strokeColor=#B7791F;strokeWidth=2;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="copilot" target="severity" style="endArrow=block;html=1;strokeColor=#2F855A;strokeWidth=2;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="severity" target="policy" style="endArrow=block;html=1;strokeColor=#805AD5;strokeWidth=2;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="policy" target="approval" style="endArrow=block;html=1;strokeColor=#805AD5;strokeWidth=2;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="approval" target="recommendation" style="endArrow=block;html=1;strokeColor=#C53030;strokeWidth=2;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="langgraph" target="trust" style="endArrow=open;html=1;dashed=1;strokeColor=#7B8794;strokeWidth=2;"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="amd_path" target="copilot" style="endArrow=open;html=1;dashed=1;strokeColor=#7B8794;strokeWidth=2;"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

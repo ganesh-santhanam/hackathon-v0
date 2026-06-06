@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Scaling Evolution: Script to Team to Org to Enterprise</title>
+  <desc id="desc">Presentation diagram showing the Industrial AI Investigation Assistant scaling from a local demo to team deployment, organization platform, and enterprise AI operations.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#EEF2FF"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+    <style>
+      .title{font:700 42px Arial, Helvetica, sans-serif;fill:#0F172A}
+      .subtitle{font:400 20px Arial, Helvetica, sans-serif;fill:#475569}
+      .stage-title{font:700 25px Arial, Helvetica, sans-serif;fill:#0F172A}
+      .scale{font:700 16px Arial, Helvetica, sans-serif;fill:#FFFFFF}
+      .bullet{font:400 17px Arial, Helvetica, sans-serif;fill:#243447}
+      .why{font:700 15px Arial, Helvetica, sans-serif;fill:#334155}
+      .caption{font:400 14px Arial, Helvetica, sans-serif;fill:#64748B}
+      .badge{font:700 14px Arial, Helvetica, sans-serif;fill:#334155}
+      .arrow-label{font:700 14px Arial, Helvetica, sans-serif;fill:#475569}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <text x="70" y="74" class="title">Scaling Evolution: Script → Team → Org → Enterprise</text>
+  <text x="72" y="112" class="subtitle">The v0 demo stays deliberately simple, then adds repeatability, shared operations, and enterprise streaming only when scale justifies it.</text>
+
+  <g transform="translate(60,165)">
+    <rect x="0" y="0" width="335" height="500" rx="24" fill="#EAF6FF" stroke="#2563EB" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="24" y="26" width="118" height="30" rx="15" fill="#2563EB"/>
+    <text x="83" y="47" text-anchor="middle" class="scale">Scale: 1 user</text>
+    <text x="24" y="91" class="stage-title">1. Local Script / Demo</text>
+    <text x="24" y="133" class="bullet">• Streamlit</text>
+    <text x="24" y="166" class="bullet">• Local files</text>
+    <text x="24" y="199" class="bullet">• Local Qdrant</text>
+    <text x="24" y="232" class="bullet">• Local Ollama / model endpoint</text>
+    <text x="24" y="265" class="bullet">• JSON approvals</text>
+    <line x1="24" y1="315" x2="311" y2="315" stroke="#BFDBFE" stroke-width="2"/>
+    <text x="24" y="354" class="why">Why it exists</text>
+    <text x="24" y="386" class="caption">Fast to run, easy to inspect, and</text>
+    <text x="24" y="411" class="caption">reliable for hackathon judging.</text>
+    <text x="24" y="461" class="badge">v0 is intentionally simple</text>
+  </g>
+
+  <g transform="translate(435,165)">
+    <rect x="0" y="0" width="335" height="500" rx="24" fill="#ECFDF3" stroke="#16A34A" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="24" y="26" width="154" height="30" rx="15" fill="#16A34A"/>
+    <text x="101" y="47" text-anchor="middle" class="scale">Scale: 10-100 users</text>
+    <text x="24" y="91" class="stage-title">2. Team Deployment</text>
+    <text x="24" y="133" class="bullet">• Docker Compose</text>
+    <text x="24" y="166" class="bullet">• Shared VM</text>
+    <text x="24" y="199" class="bullet">• Streamlit or FastAPI</text>
+    <text x="24" y="232" class="bullet">• Qdrant service</text>
+    <text x="24" y="265" class="bullet">• Mounted data/models</text>
+    <text x="24" y="298" class="bullet">• Basic logging</text>
+    <line x1="24" y1="342" x2="311" y2="342" stroke="#BBF7D0" stroke-width="2"/>
+    <text x="24" y="381" class="why">What changes</text>
+    <text x="24" y="413" class="caption">Docker makes setup repeatable</text>
+    <text x="24" y="438" class="caption">without baking large artifacts.</text>
+    <text x="24" y="461" class="badge">Repeatable demo environment</text>
+  </g>
+
+  <g transform="translate(810,165)">
+    <rect x="0" y="0" width="335" height="500" rx="24" fill="#FFF7ED" stroke="#EA580C" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="24" y="26" width="136" height="30" rx="15" fill="#EA580C"/>
+    <text x="92" y="47" text-anchor="middle" class="scale">Scale: ~1000 users</text>
+    <text x="24" y="91" class="stage-title">3. Org Platform</text>
+    <text x="24" y="133" class="bullet">• ALB or API Gateway</text>
+    <text x="24" y="166" class="bullet">• FastAPI service</text>
+    <text x="24" y="199" class="bullet">• Background workers</text>
+    <text x="24" y="232" class="bullet">• Queue-based investigations</text>
+    <text x="24" y="265" class="bullet">• Postgres incidents/approvals</text>
+    <text x="24" y="298" class="bullet">• S3 images/documents</text>
+    <text x="24" y="331" class="bullet">• Qdrant service + model gateway</text>
+    <line x1="24" y1="367" x2="311" y2="367" stroke="#FED7AA" stroke-width="2"/>
+    <text x="24" y="406" class="why">What changes</text>
+    <text x="24" y="438" class="caption">Queues, workers, Postgres, and</text>
+    <text x="24" y="463" class="caption">S3 make shared operations durable.</text>
+  </g>
+
+  <g transform="translate(1185,165)">
+    <rect x="0" y="0" width="355" height="500" rx="24" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="24" y="26" width="196" height="30" rx="15" fill="#7C3AED"/>
+    <text x="122" y="47" text-anchor="middle" class="scale">Scale: millions of events</text>
+    <text x="24" y="91" class="stage-title">4. Enterprise AI Ops</text>
+    <text x="24" y="133" class="bullet">• Kinesis / MSK / Kafka</text>
+    <text x="24" y="166" class="bullet">• Flink or Spark Streaming</text>
+    <text x="24" y="199" class="bullet">• S3 lakehouse</text>
+    <text x="24" y="232" class="bullet">• Glue / Athena / Redshift / Snowflake</text>
+    <text x="24" y="265" class="bullet">• Bedrock or SageMaker</text>
+    <text x="24" y="298" class="bullet">• OpenSearch Vector or Qdrant</text>
+    <text x="24" y="331" class="bullet">• CloudWatch / OpenTelemetry</text>
+    <text x="24" y="364" class="bullet">• IAM / RBAC / audit / registry</text>
+    <line x1="24" y1="397" x2="331" y2="397" stroke="#DDD6FE" stroke-width="2"/>
+    <text x="24" y="436" class="why">What changes</text>
+    <text x="24" y="468" class="caption">Streaming, lakehouse, governed</text>
+    <text x="24" y="493" class="caption">model serving, MI300, ROCm, LoRA.</text>
+  </g>
+
+  <path d="M 397 415 L 425 415" stroke="#475569" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M 772 415 L 800 415" stroke="#475569" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M 1147 415 L 1175 415" stroke="#475569" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="411" y="390" text-anchor="middle" class="arrow-label">repeatable</text>
+  <text x="786" y="390" text-anchor="middle" class="arrow-label">org-ready</text>
+  <text x="1161" y="390" text-anchor="middle" class="arrow-label">enterprise-scale</text>
+
+  <g transform="translate(78,735)">
+    <rect x="0" y="0" width="1444" height="88" rx="22" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="28" y="35" class="why">Scaling rule</text>
+    <text x="28" y="64" class="subtitle">Add infrastructure only when it buys a real operating capability: repeatable setup, shared investigations, durable approvals, real-time streams, governed models, or millions of events.</text>
+  </g>
+</svg>

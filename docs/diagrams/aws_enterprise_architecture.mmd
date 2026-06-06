@@ -1,0 +1,93 @@
+flowchart TB
+    classDef layer fill:#F8FAFC,stroke:#CBD5E1,stroke-width:1px,color:#0F172A
+    classDef app fill:#EAF6FF,stroke:#2563EB,stroke-width:1px,color:#0F172A
+    classDef async fill:#ECFDF3,stroke:#16A34A,stroke-width:1px,color:#0F172A
+    classDef stream fill:#FFF7ED,stroke:#EA580C,stroke-width:1px,color:#0F172A
+    classDef ai fill:#F5F3FF,stroke:#7C3AED,stroke-width:1px,color:#0F172A
+    classDef data fill:#FEFCE8,stroke:#CA8A04,stroke-width:1px,color:#0F172A
+    classDef gov fill:#FEE2E2,stroke:#DC2626,stroke-width:1px,color:#0F172A
+
+    subgraph U["User / Operations Layer"]
+        Operators["Operators"]
+        Engineers["Maintenance engineers"]
+        Managers["Managers"]
+        Web["Streamlit or web app"]
+        Edge["API Gateway / ALB"]
+    end
+
+    subgraph A["Application Layer"]
+        API["FastAPI investigation API"]
+        Graph["LangGraph agent service"]
+        Approval["Approval service"]
+        Policy["Policy service"]
+    end
+
+    subgraph Q["Async Processing Layer"]
+        Jobs["SQS investigation jobs"]
+        Workers["Worker fleet on ECS / Fargate"]
+        EKS["Optional EKS for advanced scale"]
+    end
+
+    subgraph ST["Streaming Layer"]
+        Bus["Kinesis or MSK / Kafka"]
+        Features["Flink / Spark Streaming<br/>real-time feature generation"]
+    end
+
+    subgraph AI["AI / Model Layer"]
+        Gateway["Model gateway / router"]
+        Bedrock["Bedrock managed LLMs"]
+        SageMaker["SageMaker custom endpoints"]
+        AMD["MI300 / ROCm benchmark path"]
+        LoRA["LoRA adapters"]
+    end
+
+    subgraph M["Memory / Retrieval Layer"]
+        Embed["Embeddings service"]
+        Qdrant["Qdrant service"]
+        OpenSearch["OpenSearch Vector optional"]
+    end
+
+    subgraph D["Data Layer"]
+        S3["S3 images / docs / artifacts"]
+        RDS["RDS Postgres<br/>incidents / approvals / audit"]
+        Lake["S3 lakehouse"]
+        Catalog["Glue catalog"]
+        Analytics["Athena / Redshift / Snowflake"]
+    end
+
+    subgraph G["Observability / Governance Layer"]
+        CW["CloudWatch logs / metrics"]
+        OTel["OpenTelemetry traces"]
+        IAM["IAM / RBAC"]
+        Secrets["Secrets Manager"]
+        Registry["Model registry"]
+        Eval["Evaluation reports"]
+        Audit["Audit trail"]
+    end
+
+    Operators --> Web
+    Engineers --> Web
+    Managers --> Web
+    Web --> Edge --> API
+    API --> Graph
+    Graph --> Approval
+    Graph --> Policy
+    Graph --> Jobs --> Workers
+    Workers --> Embed --> Qdrant
+    Workers --> Gateway
+    Gateway --> Bedrock
+    Gateway --> SageMaker
+    Gateway --> AMD
+    AMD --> LoRA
+    Bus --> Features --> Jobs
+    Workers --> S3
+    Workers --> RDS
+    Features --> Lake --> Catalog --> Analytics
+    Qdrant -. alternative .- OpenSearch
+    Graph -. traces .-> OTel
+    API -. logs .-> CW
+    Approval -. audit .-> Audit
+    Policy -. access .-> IAM
+    Gateway -. secrets .-> Secrets
+    Gateway -. model metadata .-> Registry
+    Workers -. eval outputs .-> Eval

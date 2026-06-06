@@ -1,0 +1,40 @@
+flowchart LR
+    classDef source fill:#E8F3FF,stroke:#2B6CB0,stroke-width:1px,color:#102A43
+    classDef agent fill:#ECFDF3,stroke:#2F855A,stroke-width:1px,color:#102A43
+    classDef memory fill:#FFF7E6,stroke:#B7791F,stroke-width:1px,color:#102A43
+    classDef policy fill:#F5EEFF,stroke:#805AD5,stroke-width:1px,color:#102A43
+    classDef output fill:#FEECEC,stroke:#C53030,stroke-width:1px,color:#102A43
+    classDef platform fill:#EEF2F7,stroke:#4A5568,stroke-width:1px,color:#102A43
+
+    T["Telemetry Stream\nAI4I + plant metrics"]:::source
+    V["Vision Inspection\nMVTec defects + localization"]:::source
+    E["Event Stream\nfault injection + operator notes"]:::source
+
+    TA["Telemetry Agent\nXGBoost risk + evidence"]:::agent
+    VA["Vision Agent\ncomparison / autoencoder / ResNet"]:::agent
+    LG["LangGraph Orchestrator\nvisible investigation trace"]:::platform
+
+    Q["Qdrant Memory\nsimilar incidents + telemetry rerank"]:::memory
+    R["Gemma 3 RAG Agent\nOllama + deterministic fallback"]:::agent
+    SEV["Severity Engine\nSEV1 / SEV2 / SEV3"]:::policy
+    POL["Policy Engine\napproval rules"]:::policy
+    H["Human Approval Workflow\nreview high-impact actions"]:::policy
+
+    S["Investigation Summary"]:::output
+    SR["Severity Recommendation"]:::output
+    AR["Action Recommendation"]:::output
+
+    T --> TA --> LG
+    V --> VA --> LG
+    E --> LG
+    LG --> Q --> R --> SEV
+    POL --> SEV
+    SEV --> H
+    H --> S
+    H --> SR
+    H --> AR
+
+    LOCAL["Local First"]:::platform -. reliability .-> LG
+    EXPLAIN["Explainable AI"]:::platform -. evidence .-> Q
+    AMD["AMD MI300 Ready"]:::platform -. ROCm benchmark .-> R
+    LORA["LoRA Ready"]:::platform -. incident adapters .-> R
