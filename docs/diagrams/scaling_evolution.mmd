@@ -5,10 +5,10 @@ flowchart LR
     classDef enterprise fill:#F5F3FF,stroke:#7C3AED,stroke-width:2px,color:#0F172A
     classDef note fill:#F8FAFC,stroke:#94A3B8,stroke-width:1px,color:#334155
 
-    S0["Local Script / Demo<br/>Scale: 1 user<br/><br/>Streamlit<br/>Local files<br/>Local Qdrant<br/>Local Ollama / model endpoint<br/>JSON approvals"]:::local
-    S1["Team Deployment<br/>Scale: 10-100 users<br/><br/>Docker Compose<br/>Shared VM<br/>Streamlit or FastAPI<br/>Qdrant service<br/>Mounted data/models<br/>Basic logging"]:::team
-    S2["Org Platform<br/>Scale: ~1000 users<br/><br/>ALB or API Gateway<br/>FastAPI service<br/>Background workers<br/>Queue-based investigations<br/>Postgres incidents/approvals<br/>S3 images/documents<br/>Qdrant service<br/>Model gateway"]:::org
-    S3["Enterprise AI Ops<br/>Scale: millions of events<br/><br/>Kinesis / MSK / Kafka<br/>Flink or Spark Streaming<br/>S3 lakehouse<br/>Glue / Athena / Redshift / Snowflake<br/>Bedrock or SageMaker<br/>OpenSearch Vector or Qdrant<br/>CloudWatch / OpenTelemetry<br/>IAM / RBAC / audit / registry"]:::enterprise
+    S0["Local Script / Demo<br/>Scale: 1 user<br/>Question: Can it work?<br/><br/>Streamlit<br/>Local files<br/>Local Qdrant<br/>Local Ollama / model endpoint<br/>JSON approvals<br/><br/>Bottleneck solved: demo reliability<br/>Capability unlocked: proof of concept"]:::local
+    S1["Team Deployment<br/>Scale: 10-100 users<br/>Question: Can others run it?<br/><br/>Docker Compose<br/>Shared VM<br/>Streamlit or FastAPI<br/>Qdrant service<br/>Mounted data/models<br/>Basic logging<br/><br/>Bottleneck solved: setup drift<br/>Capability unlocked: repeatable demo"]:::team
+    S2["Org Platform<br/>Scale: ~1000 users<br/>Question: Can many people use it?<br/><br/>ALB or API Gateway<br/>FastAPI service<br/>Background workers<br/>Queue-based investigations<br/>Postgres incidents/approvals<br/>S3 images/documents<br/>Qdrant service<br/>Model gateway<br/><br/>Bottleneck solved: shared state<br/>Capability unlocked: shared operations"]:::org
+    S3["Enterprise AI Ops<br/>Scale: millions of events<br/>Question: Can the organization operate AI at scale?<br/><br/>Kinesis / MSK / Kafka<br/>Flink or Spark Streaming<br/>S3 lakehouse<br/>Glue / Athena / Redshift / Snowflake<br/>Bedrock or SageMaker<br/>OpenSearch Vector or Qdrant<br/>CloudWatch / OpenTelemetry<br/>IAM / RBAC / audit / registry<br/><br/>Bottleneck solved: volume + governance<br/>Capability unlocked: governed AI ops"]:::enterprise
 
     S0 -->|"simple by design"| S1
     S1 -->|"repeatable demo"| S2
