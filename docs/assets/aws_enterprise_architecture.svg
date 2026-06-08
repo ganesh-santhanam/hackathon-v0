@@ -33,48 +33,48 @@
   <g id="users" transform="translate(60,145)">
     <rect width="1580" height="100" rx="22" fill="#EAF6FF" stroke="#93C5FD" filter="url(#softShadow)"/>
     <text x="24" y="32" class="layer-title">1. User / Operations Layer</text>
-    <g transform="translate(265,23)">
-      <rect width="180" height="54" rx="14" fill="#FFFFFF" stroke="#BFDBFE"/><text x="90" y="24" text-anchor="middle" class="box-title">Operators</text><text x="90" y="43" text-anchor="middle" class="box-text">shop-floor decisions</text>
+    <g transform="translate(240,23)">
+      <rect width="220" height="54" rx="14" fill="#FFFFFF" stroke="#BFDBFE"/><text x="110" y="24" text-anchor="middle" class="box-title">Operators</text><text x="110" y="43" text-anchor="middle" class="box-text">shop-floor decisions</text>
     </g>
-    <g transform="translate(470,23)">
-      <rect width="220" height="54" rx="14" fill="#FFFFFF" stroke="#BFDBFE"/><text x="110" y="24" text-anchor="middle" class="box-title">Maintenance engineers</text><text x="110" y="43" text-anchor="middle" class="box-text">diagnosis + repair</text>
+    <g transform="translate(485,23)">
+      <rect width="220" height="54" rx="14" fill="#FFFFFF" stroke="#BFDBFE"/><text x="110" y="24" text-anchor="middle" class="box-title">Maintenance</text><text x="110" y="43" text-anchor="middle" class="box-text">engineer diagnosis</text>
     </g>
-    <g transform="translate(715,23)">
-      <rect width="165" height="54" rx="14" fill="#FFFFFF" stroke="#BFDBFE"/><text x="82" y="24" text-anchor="middle" class="box-title">Managers</text><text x="82" y="43" text-anchor="middle" class="box-text">risk overview</text>
+    <g transform="translate(730,23)">
+      <rect width="220" height="54" rx="14" fill="#FFFFFF" stroke="#BFDBFE"/><text x="110" y="24" text-anchor="middle" class="box-title">Managers</text><text x="110" y="43" text-anchor="middle" class="box-text">risk overview</text>
     </g>
-    <g transform="translate(970,23)">
-      <rect width="195" height="54" rx="14" fill="#FFFFFF" stroke="#BFDBFE"/><text x="98" y="24" text-anchor="middle" class="box-title">Streamlit / Web App</text><text x="98" y="43" text-anchor="middle" class="box-text">operator experience</text>
+    <g transform="translate(975,23)">
+      <rect width="220" height="54" rx="14" fill="#FFFFFF" stroke="#BFDBFE"/><text x="110" y="24" text-anchor="middle" class="box-title">Web App</text><text x="110" y="43" text-anchor="middle" class="box-text">Streamlit experience</text>
     </g>
-    <g transform="translate(1200,23)">
-      <rect width="200" height="54" rx="14" fill="#FFFFFF" stroke="#BFDBFE"/><text x="100" y="24" text-anchor="middle" class="box-title">API Gateway / ALB</text><text x="100" y="43" text-anchor="middle" class="box-text">edge routing</text>
+    <g transform="translate(1220,23)">
+      <rect width="220" height="54" rx="14" fill="#FFFFFF" stroke="#BFDBFE"/><text x="110" y="24" text-anchor="middle" class="box-title">Edge API</text><text x="110" y="43" text-anchor="middle" class="box-text">API Gateway / ALB</text>
     </g>
   </g>
 
   <g id="app" transform="translate(60,275)">
     <rect width="1580" height="105" rx="22" fill="#ECFDF3" stroke="#86EFAC" filter="url(#softShadow)"/>
     <text x="24" y="34" class="layer-title">2. Application Layer</text>
-    <g transform="translate(300,24)">
-      <rect width="230" height="58" rx="14" fill="#FFFFFF" stroke="#BBF7D0"/><text x="115" y="25" text-anchor="middle" class="box-title">FastAPI Investigation API</text><text x="115" y="45" text-anchor="middle" class="box-text">request + evidence contract</text>
+    <g transform="translate(270,24)">
+      <rect width="230" height="58" rx="14" fill="#FFFFFF" stroke="#BBF7D0"/><text x="115" y="25" text-anchor="middle" class="box-title">Investigation API</text><text x="115" y="45" text-anchor="middle" class="box-text">FastAPI evidence contract</text>
     </g>
-    <g transform="translate(570,24)">
-      <rect width="230" height="58" rx="14" fill="#FFFFFF" stroke="#BBF7D0"/><text x="115" y="25" text-anchor="middle" class="box-title">LangGraph Agent Service</text><text x="115" y="45" text-anchor="middle" class="box-text">multi-agent orchestration</text>
+    <g transform="translate(530,24)">
+      <rect width="230" height="58" rx="14" fill="#FFFFFF" stroke="#BBF7D0"/><text x="115" y="25" text-anchor="middle" class="box-title">LangGraph Agents</text><text x="115" y="45" text-anchor="middle" class="box-text">multi-agent orchestration</text>
     </g>
-    <g transform="translate(840,24)">
-      <rect width="190" height="58" rx="14" fill="#FFFFFF" stroke="#BBF7D0"/><text x="95" y="25" text-anchor="middle" class="box-title">Approval Service</text><text x="95" y="45" text-anchor="middle" class="box-text">human decisions</text>
+    <g transform="translate(790,24)">
+      <rect width="230" height="58" rx="14" fill="#FFFFFF" stroke="#BBF7D0"/><text x="115" y="25" text-anchor="middle" class="box-title">Approval Service</text><text x="115" y="45" text-anchor="middle" class="box-text">human decisions</text>
     </g>
-    <g transform="translate(1070,24)">
-      <rect width="175" height="58" rx="14" fill="#FFFFFF" stroke="#BBF7D0"/><text x="88" y="25" text-anchor="middle" class="box-title">Policy Service</text><text x="88" y="45" text-anchor="middle" class="box-text">severity rules</text>
+    <g transform="translate(1050,24)">
+      <rect width="230" height="58" rx="14" fill="#FFFFFF" stroke="#BBF7D0"/><text x="115" y="25" text-anchor="middle" class="box-title">Policy Service</text><text x="115" y="45" text-anchor="middle" class="box-text">severity rules</text>
     </g>
   </g>
 
   <g id="async" transform="translate(60,410)">
     <rect width="760" height="125" rx="22" fill="#FFF7ED" stroke="#FDBA74" filter="url(#softShadow)"/>
     <text x="24" y="34" class="layer-title">3. Async Processing Layer</text>
-    <g transform="translate(230,36)">
-      <rect width="190" height="58" rx="14" fill="#FFFFFF" stroke="#FED7AA"/><text x="95" y="25" text-anchor="middle" class="box-title">SQS Jobs</text><text x="95" y="45" text-anchor="middle" class="box-text">investigation queue</text>
+    <g transform="translate(220,36)">
+      <rect width="220" height="58" rx="14" fill="#FFFFFF" stroke="#FED7AA"/><text x="110" y="25" text-anchor="middle" class="box-title">SQS Jobs</text><text x="110" y="45" text-anchor="middle" class="box-text">investigation queue</text>
     </g>
     <g transform="translate(450,36)">
-      <rect width="230" height="58" rx="14" fill="#FFFFFF" stroke="#FED7AA"/><text x="115" y="25" text-anchor="middle" class="box-title">ECS / Fargate Workers</text><text x="115" y="45" text-anchor="middle" class="box-text">parallel investigations</text>
+      <rect width="220" height="58" rx="14" fill="#FFFFFF" stroke="#FED7AA"/><text x="110" y="25" text-anchor="middle" class="box-title">Fargate Workers</text><text x="110" y="45" text-anchor="middle" class="box-text">ECS investigations</text>
     </g>
     <text x="24" y="100" class="small">Optional EKS only when orchestration complexity justifies it.</text>
   </g>
@@ -82,65 +82,65 @@
   <g id="stream" transform="translate(880,410)">
     <rect width="760" height="125" rx="22" fill="#F5F3FF" stroke="#C4B5FD" filter="url(#softShadow)"/>
     <text x="24" y="34" class="layer-title">4. Streaming Layer</text>
-    <g transform="translate(230,36)">
-      <rect width="205" height="58" rx="14" fill="#FFFFFF" stroke="#DDD6FE"/><text x="102" y="25" text-anchor="middle" class="box-title">Kinesis / MSK / Kafka</text><text x="102" y="45" text-anchor="middle" class="box-text">industrial event streams</text>
+    <g transform="translate(220,36)">
+      <rect width="220" height="58" rx="14" fill="#FFFFFF" stroke="#DDD6FE"/><text x="110" y="25" text-anchor="middle" class="box-title">Event Streams</text><text x="110" y="45" text-anchor="middle" class="box-text">Kinesis / MSK / Kafka</text>
     </g>
-    <g transform="translate(470,36)">
-      <rect width="205" height="58" rx="14" fill="#FFFFFF" stroke="#DDD6FE"/><text x="102" y="25" text-anchor="middle" class="box-title">Flink / Spark</text><text x="102" y="45" text-anchor="middle" class="box-text">real-time features</text>
+    <g transform="translate(465,36)">
+      <rect width="220" height="58" rx="14" fill="#FFFFFF" stroke="#DDD6FE"/><text x="110" y="25" text-anchor="middle" class="box-title">Stream Processing</text><text x="110" y="45" text-anchor="middle" class="box-text">Flink / Spark features</text>
     </g>
   </g>
 
   <g id="ai" transform="translate(60,565)">
     <rect width="760" height="170" rx="22" fill="#EEF2FF" stroke="#A5B4FC" filter="url(#softShadow)"/>
     <text x="24" y="34" class="layer-title">5. AI / Model Layer</text>
-    <g transform="translate(195,32)">
-      <rect width="205" height="58" rx="14" fill="#FFFFFF" stroke="#C7D2FE"/><text x="102" y="24" text-anchor="middle" class="box-title">Model Gateway</text><text x="102" y="44" text-anchor="middle" class="box-text">router + fallback</text>
+    <g transform="translate(160,32)">
+      <rect width="185" height="58" rx="14" fill="#FFFFFF" stroke="#C7D2FE"/><text x="92" y="24" text-anchor="middle" class="box-title">Model Gateway</text><text x="92" y="44" text-anchor="middle" class="box-text">router + fallback</text>
     </g>
-    <g transform="translate(430,32)">
-      <rect width="130" height="58" rx="14" fill="#FFFFFF" stroke="#C7D2FE"/><text x="65" y="24" text-anchor="middle" class="box-title">Bedrock</text><text x="65" y="44" text-anchor="middle" class="box-text">managed LLMs</text>
+    <g transform="translate(365,32)">
+      <rect width="185" height="58" rx="14" fill="#FFFFFF" stroke="#C7D2FE"/><text x="92" y="24" text-anchor="middle" class="box-title">Bedrock</text><text x="92" y="44" text-anchor="middle" class="box-text">managed LLMs</text>
     </g>
-    <g transform="translate(585,32)">
-      <rect width="135" height="58" rx="14" fill="#FFFFFF" stroke="#C7D2FE"/><text x="68" y="24" text-anchor="middle" class="box-title">SageMaker</text><text x="68" y="44" text-anchor="middle" class="box-text">custom models</text>
+    <g transform="translate(570,32)">
+      <rect width="185" height="58" rx="14" fill="#FFFFFF" stroke="#C7D2FE"/><text x="92" y="24" text-anchor="middle" class="box-title">SageMaker</text><text x="92" y="44" text-anchor="middle" class="box-text">custom models</text>
     </g>
-    <g transform="translate(195,100)">
-      <rect width="250" height="48" rx="14" fill="#FFFFFF" stroke="#C7D2FE"/><text x="125" y="21" text-anchor="middle" class="box-title">MI300 / ROCm benchmark path</text><text x="125" y="39" text-anchor="middle" class="box-text">future acceleration comparison</text>
+    <g transform="translate(235,100)">
+      <rect width="220" height="48" rx="14" fill="#FFFFFF" stroke="#C7D2FE"/><text x="110" y="21" text-anchor="middle" class="box-title">MI300 / ROCm path</text><text x="110" y="39" text-anchor="middle" class="box-text">acceleration comparison</text>
     </g>
-    <g transform="translate(475,100)">
-      <rect width="185" height="48" rx="14" fill="#FFFFFF" stroke="#C7D2FE"/><text x="92" y="21" text-anchor="middle" class="box-title">LoRA adapters</text><text x="92" y="39" text-anchor="middle" class="box-text">domain adaptation</text>
+    <g transform="translate(485,100)">
+      <rect width="220" height="48" rx="14" fill="#FFFFFF" stroke="#C7D2FE"/><text x="110" y="21" text-anchor="middle" class="box-title">LoRA Adapters</text><text x="110" y="39" text-anchor="middle" class="box-text">domain adaptation</text>
     </g>
   </g>
 
   <g id="memory" transform="translate(880,565)">
     <rect width="760" height="170" rx="22" fill="#F0FDFA" stroke="#5EEAD4" filter="url(#softShadow)"/>
     <text x="24" y="34" class="layer-title">6. Memory / Retrieval Layer</text>
-    <g transform="translate(225,55)">
-      <rect width="185" height="58" rx="14" fill="#FFFFFF" stroke="#99F6E4"/><text x="92" y="24" text-anchor="middle" class="box-title">Embeddings Service</text><text x="92" y="44" text-anchor="middle" class="box-text">evidence vectors</text>
+    <g transform="translate(155,55)">
+      <rect width="185" height="58" rx="14" fill="#FFFFFF" stroke="#99F6E4"/><text x="92" y="24" text-anchor="middle" class="box-title">Embeddings</text><text x="92" y="44" text-anchor="middle" class="box-text">evidence vectors</text>
     </g>
-    <g transform="translate(445,55)">
-      <rect width="150" height="58" rx="14" fill="#FFFFFF" stroke="#99F6E4"/><text x="75" y="24" text-anchor="middle" class="box-title">Qdrant</text><text x="75" y="44" text-anchor="middle" class="box-text">similar incidents</text>
+    <g transform="translate(365,55)">
+      <rect width="185" height="58" rx="14" fill="#FFFFFF" stroke="#99F6E4"/><text x="92" y="24" text-anchor="middle" class="box-title">Qdrant</text><text x="92" y="44" text-anchor="middle" class="box-text">similar incidents</text>
     </g>
-    <g transform="translate(625,55)">
-      <rect width="100" height="58" rx="14" fill="#FFFFFF" stroke="#99F6E4"/><text x="50" y="24" text-anchor="middle" class="box-title">Vector</text><text x="50" y="44" text-anchor="middle" class="box-text">OpenSearch</text>
+    <g transform="translate(575,55)">
+      <rect width="185" height="58" rx="14" fill="#FFFFFF" stroke="#99F6E4"/><text x="92" y="24" text-anchor="middle" class="box-title">OpenSearch</text><text x="92" y="44" text-anchor="middle" class="box-text">managed vectors</text>
     </g>
   </g>
 
   <g id="data" transform="translate(60,765)">
     <rect width="980" height="180" rx="22" fill="#FEFCE8" stroke="#FDE68A" filter="url(#softShadow)"/>
     <text x="24" y="34" class="layer-title">7. Data Layer</text>
-    <g transform="translate(205,35)">
-      <rect width="160" height="58" rx="14" fill="#FFFFFF" stroke="#FEF08A"/><text x="80" y="24" text-anchor="middle" class="box-title">S3 Artifacts</text><text x="80" y="44" text-anchor="middle" class="box-text">images, docs, outputs</text>
+    <g transform="translate(150,35)">
+      <rect width="230" height="58" rx="14" fill="#FFFFFF" stroke="#FEF08A"/><text x="115" y="24" text-anchor="middle" class="box-title">S3 Artifacts</text><text x="115" y="44" text-anchor="middle" class="box-text">images, docs, outputs</text>
     </g>
-    <g transform="translate(395,35)">
-      <rect width="190" height="58" rx="14" fill="#FFFFFF" stroke="#FEF08A"/><text x="95" y="24" text-anchor="middle" class="box-title">RDS Postgres</text><text x="95" y="44" text-anchor="middle" class="box-text">incidents, approvals, audit</text>
+    <g transform="translate(410,35)">
+      <rect width="230" height="58" rx="14" fill="#FFFFFF" stroke="#FEF08A"/><text x="115" y="24" text-anchor="middle" class="box-title">RDS Postgres</text><text x="115" y="44" text-anchor="middle" class="box-text">incidents, approvals, audit</text>
     </g>
-    <g transform="translate(615,35)">
-      <rect width="150" height="58" rx="14" fill="#FFFFFF" stroke="#FEF08A"/><text x="75" y="24" text-anchor="middle" class="box-title">S3 Lakehouse</text><text x="75" y="44" text-anchor="middle" class="box-text">historical data</text>
+    <g transform="translate(670,35)">
+      <rect width="230" height="58" rx="14" fill="#FFFFFF" stroke="#FEF08A"/><text x="115" y="24" text-anchor="middle" class="box-title">S3 Lakehouse</text><text x="115" y="44" text-anchor="middle" class="box-text">historical data</text>
     </g>
-    <g transform="translate(205,110)">
-      <rect width="145" height="48" rx="14" fill="#FFFFFF" stroke="#FEF08A"/><text x="72" y="21" text-anchor="middle" class="box-title">Glue Catalog</text><text x="72" y="39" text-anchor="middle" class="box-text">metadata</text>
+    <g transform="translate(280,110)">
+      <rect width="230" height="48" rx="14" fill="#FFFFFF" stroke="#FEF08A"/><text x="115" y="21" text-anchor="middle" class="box-title">Glue Catalog</text><text x="115" y="39" text-anchor="middle" class="box-text">metadata</text>
     </g>
-    <g transform="translate(380,110)">
-      <rect width="275" height="48" rx="14" fill="#FFFFFF" stroke="#FEF08A"/><text x="138" y="21" text-anchor="middle" class="box-title">Athena / Redshift / Snowflake</text><text x="138" y="39" text-anchor="middle" class="box-text">analytics and reporting</text>
+    <g transform="translate(540,110)">
+      <rect width="230" height="48" rx="14" fill="#FFFFFF" stroke="#FEF08A"/><text x="115" y="21" text-anchor="middle" class="box-title">Analytics</text><text x="115" y="39" text-anchor="middle" class="box-text">Athena / Redshift / Snowflake</text>
     </g>
   </g>
 
@@ -148,22 +148,22 @@
     <rect width="560" height="180" rx="22" fill="#FEE2E2" stroke="#FCA5A5" filter="url(#softShadow)"/>
     <text x="24" y="34" class="layer-title">8. Observability / Governance Layer</text>
     <g transform="translate(35,55)">
-      <rect width="150" height="44" rx="12" fill="#FFFFFF" stroke="#FECACA"/><text x="75" y="27" text-anchor="middle" class="box-title">CloudWatch</text>
+      <rect width="165" height="44" rx="12" fill="#FFFFFF" stroke="#FECACA"/><text x="82" y="27" text-anchor="middle" class="box-title">CloudWatch</text>
     </g>
-    <g transform="translate(205,55)">
+    <g transform="translate(198,55)">
       <rect width="165" height="44" rx="12" fill="#FFFFFF" stroke="#FECACA"/><text x="82" y="27" text-anchor="middle" class="box-title">OpenTelemetry</text>
     </g>
-    <g transform="translate(390,55)">
-      <rect width="130" height="44" rx="12" fill="#FFFFFF" stroke="#FECACA"/><text x="65" y="27" text-anchor="middle" class="box-title">IAM / RBAC</text>
+    <g transform="translate(368,55)">
+      <rect width="165" height="44" rx="12" fill="#FFFFFF" stroke="#FECACA"/><text x="82" y="27" text-anchor="middle" class="box-title">IAM / RBAC</text>
     </g>
     <g transform="translate(35,115)">
-      <rect width="150" height="44" rx="12" fill="#FFFFFF" stroke="#FECACA"/><text x="75" y="27" text-anchor="middle" class="box-title">Secrets</text>
+      <rect width="165" height="44" rx="12" fill="#FFFFFF" stroke="#FECACA"/><text x="82" y="27" text-anchor="middle" class="box-title">Secrets</text>
     </g>
-    <g transform="translate(205,115)">
+    <g transform="translate(198,115)">
       <rect width="165" height="44" rx="12" fill="#FFFFFF" stroke="#FECACA"/><text x="82" y="27" text-anchor="middle" class="box-title">Model Registry</text>
     </g>
-    <g transform="translate(390,115)">
-      <rect width="130" height="44" rx="12" fill="#FFFFFF" stroke="#FECACA"/><text x="65" y="20" text-anchor="middle" class="box-title">Evaluation</text><text x="65" y="36" text-anchor="middle" class="box-text">Audit trail</text>
+    <g transform="translate(368,115)">
+      <rect width="165" height="44" rx="12" fill="#FFFFFF" stroke="#FECACA"/><text x="82" y="20" text-anchor="middle" class="box-title">Evaluation</text><text x="82" y="36" text-anchor="middle" class="box-text">audit trail</text>
     </g>
   </g>
 
@@ -176,13 +176,14 @@
   <path class="arrow" d="M440 735 L360 765"/>
   <path class="arrow" d="M535 735 L500 765"/>
   <path class="arrow" d="M1260 735 L1270 765"/>
-  <path class="dashed" d="M775 330 C980 345 1150 345 1270 410"/>
-  <path class="dashed" d="M810 330 C1000 360 1240 700 1340 765"/>
-  <path class="dashed" d="M760 650 C835 650 835 650 880 650"/>
+  <path class="dashed" d="M760 365 C990 395 1160 365 1270 410"/>
+  <path class="dashed" d="M795 365 C990 430 1240 710 1340 765"/>
+  <path class="dashed" d="M760 665 C835 665 835 665 880 665"/>
 
   <g transform="translate(72,990)">
-    <rect width="1558" height="62" rx="18" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <rect width="1558" height="76" rx="18" fill="#FFFFFF" stroke="#CBD5E1"/>
     <text x="24" y="27" class="box-title">Scope note</text>
-    <text x="24" y="47" class="box-text">The hackathon v0 implements the local-first investigation loop. Kafka, Flink, Snowflake, EKS, managed model serving, and enterprise governance become justified only after shared production scale is real.</text>
+    <text x="24" y="47" class="box-text">The hackathon v0 implements the local-first investigation loop. Kafka, Flink, Snowflake, EKS, managed model serving, and enterprise governance</text>
+    <text x="24" y="64" class="box-text">become justified only after shared production scale is real.</text>
   </g>
 </svg>

@@ -39,8 +39,8 @@
 
   <rect x="315" y="176" width="805" height="400" rx="28" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5"/>
   <text x="345" y="205" class="zone">AI Investigation Layer</text>
-  <rect x="1010" y="188" width="294" height="300" rx="24" fill="#fffbeb" stroke="#fde68a" stroke-width="1.4"/>
-  <text x="1038" y="214" class="zone">Investigation Intelligence Layer</text>
+  <rect x="1010" y="188" width="280" height="300" rx="24" fill="#fffbeb" stroke="#fde68a" stroke-width="1.4"/>
+  <text x="1038" y="214" class="zone">Intelligence Layer</text>
   <rect x="800" y="636" width="470" height="164" rx="28" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1.5"/>
   <text x="830" y="666" class="zone">Operational Governance Layer</text>
 
@@ -74,8 +74,8 @@
     <rect x="635" y="245" width="350" height="200" rx="30" fill="#eef2ff" stroke="#4f46e5" stroke-width="3.4"/>
     <circle cx="690" cy="305" r="27" fill="#4f46e5"/>
     <text x="678" y="315" style="font:700 27px Arial,sans-serif;fill:#fff">◎</text>
-    <text x="735" y="292" class="brain">LangGraph Multi-Agent</text>
-    <text x="735" y="319" class="brain">Investigation Engine</text>
+    <text x="735" y="292" class="brain">LangGraph Engine</text>
+    <text x="735" y="319" class="small">multi-agent investigation</text>
     <text x="735" y="350" class="small">orchestrates:</text>
     <text x="755" y="374" class="small">• Telemetry • Vision • Memory</text>
     <text x="755" y="397" class="small">• Investigation • Policy</text>
@@ -88,11 +88,11 @@
     <text x="1060" y="280" class="small">• Similar Incidents</text>
     <text x="1060" y="300" class="small">• Match Reasoning</text>
 
-    <rect x="1030" y="375" width="250" height="92" rx="16" fill="#dcfce7" stroke="#2f855a"/>
-    <text x="1060" y="407" class="label">Investigation Copilot</text>
-    <text x="1060" y="433" class="small">• Root Cause Analysis</text>
-    <text x="1060" y="453" class="small">• Recommended Actions</text>
-    <text x="1060" y="473" class="small">• Evidence Synthesis</text>
+    <rect x="1030" y="372" width="250" height="112" rx="16" fill="#dcfce7" stroke="#2f855a"/>
+    <text x="1060" y="405" class="label">Copilot</text>
+    <text x="1060" y="431" class="small">• Root Cause Analysis</text>
+    <text x="1060" y="451" class="small">• Recommended Actions</text>
+    <text x="1060" y="471" class="small">• Evidence Synthesis</text>
   </g>
 
   <g filter="url(#shadow)">
@@ -111,14 +111,14 @@
 
   <g filter="url(#shadow)">
     <rect x="1232" y="528" width="248" height="142" rx="20" fill="#feecec" stroke="#c53030" stroke-width="2.3"/>
-    <text x="1260" y="570" class="label">Investigation Outcome</text>
+    <text x="1260" y="570" class="label">Outcome</text>
     <text x="1260" y="600" class="small">Incident Resolution</text>
     <text x="1260" y="624" class="small">Severity Decision</text>
     <text x="1260" y="648" class="small">Action Plan</text>
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="335" y="603" width="300" height="220" rx="20" fill="#ffffff" stroke="#cbd5e1"/>
+    <rect x="335" y="603" width="300" height="232" rx="20" fill="#ffffff" stroke="#cbd5e1"/>
     <text x="362" y="638" class="panelTitle">Trust &amp; Explainability</text>
     <text x="362" y="668" class="panelItem">✓ Agent Trace</text>
     <text x="362" y="693" class="panelItem">✓ Similar Incident Reasoning</text>
@@ -139,17 +139,17 @@
   </g>
 
   <g filter="url(#shadow)">
-    <rect x="1240" y="190" width="220" height="222" rx="20" fill="#ffffff" stroke="#cbd5e1"/>
-    <text x="1266" y="225" class="panelTitle">AMD Roadmap</text>
-    <text x="1328" y="260" class="roadmap">Local</text>
-    <text x="1350" y="282" class="roadmap">↓</text>
-    <text x="1325" y="305" class="roadmap">Docker</text>
-    <text x="1350" y="327" class="roadmap">↓</text>
-    <text x="1308" y="350" class="roadmap">AMD Cloud</text>
-    <text x="1350" y="372" class="roadmap">↓</text>
-    <text x="1328" y="395" class="roadmap">MI300</text>
-    <text x="1350" y="417" class="roadmap">↓</text>
-    <text x="1298" y="440" class="roadmap">LoRA Fine-Tuning</text>
+    <rect x="1300" y="190" width="180" height="276" rx="20" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="1322" y="225" class="panelTitle">AMD Roadmap</text>
+    <text x="1368" y="260" class="roadmap">Local</text>
+    <text x="1390" y="282" class="roadmap">↓</text>
+    <text x="1365" y="305" class="roadmap">Docker</text>
+    <text x="1390" y="327" class="roadmap">↓</text>
+    <text x="1348" y="350" class="roadmap">AMD Cloud</text>
+    <text x="1390" y="372" class="roadmap">↓</text>
+    <text x="1368" y="395" class="roadmap">MI300</text>
+    <text x="1390" y="417" class="roadmap">↓</text>
+    <text x="1338" y="440" class="roadmap">LoRA Fine-Tuning</text>
   </g>
 
   <path class="arrow" d="M280 246 H350"/>
@@ -164,5 +164,5 @@
   <path class="arrow" d="M1025 756 V790"/>
   <path class="arrow" d="M1150 828 C1215 795 1250 705 1320 670"/>
   <path class="dash" d="M635 415 C592 505 545 570 500 603"/>
-  <path class="dash" d="M1240 286 C1195 305 1172 350 1155 390"/>
+  <path class="dash" d="M1300 286 C1220 305 1180 350 1155 390"/>
 </svg>
