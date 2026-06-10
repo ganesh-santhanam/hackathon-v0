@@ -8,15 +8,18 @@ from pathlib import Path
 from typing import Any
 
 
-DEFAULT_MODEL_NAME = "google/gemma-3-4b-it"
+DEFAULT_MODEL_NAME = "Qwen/Qwen3-4B-Instruct-2507"
 DEFAULT_TRAIN_FILE = Path("data/lora/train.jsonl")
 DEFAULT_EVAL_FILE = Path("data/lora/eval.jsonl")
 DEFAULT_OUTPUT_DIR = Path("data/amd/lora")
-DEFAULT_ADAPTER_DIR = DEFAULT_OUTPUT_DIR / "gemma3b_adapter"
+DEFAULT_ADAPTER_DIR = DEFAULT_OUTPUT_DIR / "qwen4b_adapter"
 DEFAULT_METRICS_PATH = DEFAULT_OUTPUT_DIR / "training_metrics.json"
 DEFAULT_LOG_PATH = DEFAULT_OUTPUT_DIR / "training_log.txt"
 DEFAULT_BASE_RESULTS_PATH = Path("data/evals/base_results.jsonl")
 DEFAULT_LORA_RESULTS_PATH = Path("data/evals/lora_results.jsonl")
+DEFAULT_TRAIN_EVAL_SUBSET_SIZE = 64
+DEFAULT_GENERATION_SUBSET_SIZE = 10
+DEFAULT_MAX_NEW_TOKENS = 128
 
 
 def utc_timestamp() -> str:
@@ -33,6 +36,12 @@ def write_jsonl(path: Path, records: list[dict[str, Any]]) -> None:
     with path.open("w", encoding="utf-8") as output_file:
         for record in records:
             output_file.write(json.dumps(record, sort_keys=True) + "\n")
+
+
+def append_jsonl(path: Path, record: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as output_file:
+        output_file.write(json.dumps(record, sort_keys=True) + "\n")
 
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
@@ -284,6 +293,16 @@ def load_generation_model(args: argparse.Namespace, use_lora: bool):
 
 def generate_text(args: argparse.Namespace, prompt: str, use_lora: bool) -> str:
     stack, tokenizer, model = load_generation_model(args, use_lora=use_lora)
+    return generate_text_with_loaded_model(stack, tokenizer, model, args, prompt)
+
+
+def generate_text_with_loaded_model(
+    stack: dict[str, Any],
+    tokenizer: Any,
+    model: Any,
+    args: argparse.Namespace,
+    prompt: str,
+) -> str:
     torch = stack["torch"]
     inputs = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=args.max_length)
     if torch.cuda.is_available():
@@ -323,15 +342,25 @@ def generate_for_judge(args: argparse.Namespace) -> dict[str, Any]:
     if args.smoke_test:
         examples = examples[: min(len(examples), 2)]
 
-    base_records = []
-    lora_records = []
+    base_stack = base_tokenizer = base_model = None
+    lora_stack = lora_tokenizer = lora_model = None
+    if not args.dry_run:
+        base_stack, base_tokenizer, base_model = load_generation_model(args, use_lora=False)
+        lora_stack, lora_tokenizer, lora_model = load_generation_model(args, use_lora=True)
+
+    args.base_results_output.parent.mkdir(parents=True, exist_ok=True)
+    args.lora_results_output.parent.mkdir(parents=True, exist_ok=True)
+    args.base_results_output.write_text("", encoding="utf-8")
+    args.lora_results_output.write_text("", encoding="utf-8")
+
+    examples_written = 0
     for example in examples:
         prompt = example["prompt"]
         started_at = time.perf_counter()
         base_response = (
             dry_run_generation_response(example, "base")
             if args.dry_run
-            else generate_text(args, prompt, use_lora=False)
+            else generate_text_with_loaded_model(base_stack, base_tokenizer, base_model, args, prompt)
         )
         base_latency_ms = int((time.perf_counter() - started_at) * 1000)
 
@@ -339,65 +368,65 @@ def generate_for_judge(args: argparse.Namespace) -> dict[str, Any]:
         lora_response = (
             dry_run_generation_response(example, "lora")
             if args.dry_run
-            else generate_text(args, prompt, use_lora=True)
+            else generate_text_with_loaded_model(lora_stack, lora_tokenizer, lora_model, args, prompt)
         )
         lora_latency_ms = int((time.perf_counter() - started_at) * 1000)
 
         common_metadata = {
             "source_document_id": example.get("source_document_id"),
+            "scenario_id": example.get("scenario_id") or example.get("eval_id"),
             "expected_failure_mode": example.get("expected_failure_mode"),
             "expected_severity": example.get("expected_severity"),
             "dry_run": args.dry_run,
         }
-        base_records.append(
-            {
-                "timestamp": utc_timestamp(),
-                "eval_id": example["eval_id"],
-                "candidate_name": "base",
-                "provider": "huggingface-transformers",
-                "endpoint": None,
-                "model": args.model_name,
-                "prompt": prompt,
-                "response_text": base_response,
-                "metadata": {
-                    **common_metadata,
-                    "latency_ms": base_latency_ms,
-                    "success": True,
-                    "error": None,
-                },
-            }
-        )
-        lora_records.append(
-            {
-                "timestamp": utc_timestamp(),
-                "eval_id": example["eval_id"],
-                "candidate_name": "lora",
-                "provider": "huggingface-transformers",
-                "endpoint": None,
-                "model": f"{args.model_name}+{args.adapter_dir}",
-                "prompt": prompt,
-                "response_text": lora_response,
-                "metadata": {
-                    **common_metadata,
-                    "latency_ms": lora_latency_ms,
-                    "success": True,
-                    "error": None,
-                },
-            }
-        )
+        base_record = {
+            "timestamp": utc_timestamp(),
+            "eval_id": example["eval_id"],
+            "scenario_id": example.get("scenario_id") or example.get("eval_id"),
+            "candidate_name": "base",
+            "provider": "huggingface-transformers",
+            "endpoint": None,
+            "model": args.model_name,
+            "prompt": prompt,
+            "response_text": base_response,
+            "metadata": {
+                **common_metadata,
+                "latency_ms": base_latency_ms,
+                "success": True,
+                "error": None,
+            },
+        }
+        lora_record = {
+            "timestamp": utc_timestamp(),
+            "eval_id": example["eval_id"],
+            "scenario_id": example.get("scenario_id") or example.get("eval_id"),
+            "candidate_name": "lora",
+            "provider": "huggingface-transformers",
+            "endpoint": None,
+            "model": f"{args.model_name}+{args.adapter_dir}",
+            "prompt": prompt,
+            "response_text": lora_response,
+            "metadata": {
+                **common_metadata,
+                "latency_ms": lora_latency_ms,
+                "success": True,
+                "error": None,
+            },
+        }
+        append_jsonl(args.base_results_output, base_record)
+        append_jsonl(args.lora_results_output, lora_record)
+        examples_written += 1
 
-    write_jsonl(args.base_results_output, base_records)
-    write_jsonl(args.lora_results_output, lora_records)
     return {
         "base_results": str(args.base_results_output),
         "lora_results": str(args.lora_results_output),
-        "examples": len(examples),
+        "examples": examples_written,
         "dry_run": args.dry_run,
     }
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Train and evaluate Gemma LoRA on AMD Cloud.")
+    parser = argparse.ArgumentParser(description="Train and evaluate Qwen LoRA on AMD Cloud.")
     parser.add_argument("--mode", choices=["train", "generate"], default="train")
     parser.add_argument("--model-name", default=DEFAULT_MODEL_NAME)
     parser.add_argument("--train-file", type=Path, default=DEFAULT_TRAIN_FILE)
@@ -414,9 +443,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--bf16", action="store_true")
     parser.add_argument("--gradient-checkpointing", action="store_true", default=True)
     parser.add_argument("--no-gradient-checkpointing", dest="gradient_checkpointing", action="store_false")
-    parser.add_argument("--eval-subset-size", type=int, default=64)
+    parser.add_argument("--eval-subset-size", type=int, default=None)
     parser.add_argument("--max-length", type=int, default=1024)
-    parser.add_argument("--max-new-tokens", type=int, default=256)
+    parser.add_argument("--max-new-tokens", type=int, default=DEFAULT_MAX_NEW_TOKENS)
     parser.add_argument("--logging-steps", type=int, default=5)
     parser.add_argument("--eval-steps", type=int, default=25)
     parser.add_argument("--save-steps", type=int, default=50)
@@ -433,8 +462,18 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def validate_args(args: argparse.Namespace) -> None:
+    if args.eval_subset_size is None:
+        args.eval_subset_size = (
+            DEFAULT_GENERATION_SUBSET_SIZE
+            if args.mode == "generate"
+            else DEFAULT_TRAIN_EVAL_SUBSET_SIZE
+        )
     if args.max_steps is not None and args.max_steps < 0:
         raise SystemExit("--max-steps must be >= 0")
+    if args.eval_subset_size is not None and args.eval_subset_size < 1:
+        raise SystemExit("--eval-subset-size must be >= 1")
+    if args.max_new_tokens < 1:
+        raise SystemExit("--max-new-tokens must be >= 1")
     if args.num_epochs <= 0:
         raise SystemExit("--num-epochs must be > 0")
     if args.batch_size < 1:

@@ -1,6 +1,6 @@
-# AMD Cloud Gemma LoRA Experiment
+# AMD Cloud Qwen LoRA Experiment
 
-This workflow fine-tunes a Gemma-compatible Hugging Face model with LoRA on the
+This workflow fine-tunes a Qwen-compatible Hugging Face model with LoRA on the
 industrial incident instruction dataset, then emits candidate outputs for the
 existing LLM-as-Judge pipeline.
 
@@ -43,21 +43,21 @@ scripts/amd/run_gemma_lora_experiment.sh
 The default model is:
 
 ```text
-google/gemma-3-4b-it
+Qwen/Qwen3-4B-Instruct-2507
 ```
 
-This is a small Gemma 3 family instruction checkpoint suitable for a practical
-hackathon LoRA run. To use a specific Gemma 3B-compatible checkpoint available
+This is a small Qwen instruction checkpoint suitable for a practical
+hackathon LoRA run. To use a specific Qwen-compatible checkpoint available
 in your Hugging Face account or AMD image, pass:
 
 ```bash
---model-name <your-gemma-3b-compatible-model>
+--model-name <your-qwen-compatible-model>
 ```
 
 or set:
 
 ```bash
-export MODEL_NAME=<your-gemma-3b-compatible-model>
+export MODEL_NAME=<your-qwen-compatible-model>
 ```
 
 ## AMD Cloud Setup
@@ -96,7 +96,7 @@ Minimal MI300X-oriented run:
 ```bash
 PYTHONPATH=src python scripts/amd/train_gemma_lora.py \
   --mode train \
-  --model-name google/gemma-3-4b-it \
+  --model-name Qwen/Qwen3-4B-Instruct-2507 \
   --train-file data/lora/train.jsonl \
   --eval-file data/lora/eval.jsonl \
   --output-dir data/amd/lora \
@@ -130,7 +130,7 @@ or `--force-cpu` is used.
 ## Expected Training Outputs
 
 ```text
-data/amd/lora/gemma3b_adapter/
+data/amd/lora/qwen4b_adapter/
 data/amd/lora/training_metrics.json
 data/amd/lora/training_log.txt
 ```
@@ -151,8 +151,8 @@ Then generate both base and LoRA outputs from the Hugging Face model stack:
 ```bash
 PYTHONPATH=src python scripts/amd/train_gemma_lora.py \
   --mode generate \
-  --model-name google/gemma-3-4b-it \
-  --adapter-dir data/amd/lora/gemma3b_adapter \
+  --model-name Qwen/Qwen3-4B-Instruct-2507 \
+  --adapter-dir data/amd/lora/qwen4b_adapter \
   --judge-dataset data/evals/eval_dataset.jsonl \
   --base-results-output data/evals/base_results.jsonl \
   --lora-results-output data/evals/lora_results.jsonl \
@@ -196,7 +196,7 @@ data/evals/llm_judge_report.md
 
 ```bash
 PYTHONPATH=src PYTHON_BIN=.venv/bin/python \
-  MODEL_NAME=google/gemma-3-4b-it \
+  MODEL_NAME=Qwen/Qwen3-4B-Instruct-2507 \
   MAX_STEPS=100 \
   NUM_EPOCHS=1 \
   BATCH_SIZE=1 \

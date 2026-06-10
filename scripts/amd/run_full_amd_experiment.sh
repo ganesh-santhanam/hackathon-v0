@@ -6,7 +6,7 @@ if [[ ! -x "${PYTHON_BIN}" ]]; then
   PYTHON_BIN="${PYTHON_BIN_FALLBACK:-python3}"
 fi
 
-BASE_MODEL="${BASE_MODEL:-google/gemma-3-4b-it}"
+BASE_MODEL="${BASE_MODEL:-Qwen/Qwen3-4B-Instruct-2507}"
 JUDGE_MODEL="${JUDGE_MODEL:-gpt-oss:20b}"
 MAX_STEPS="${MAX_STEPS:-100}"
 LIMIT="${LIMIT:-}"
@@ -17,7 +17,7 @@ SOURCE_FAILURE_ROWS="${SOURCE_FAILURE_ROWS:-100}"
 TRAIN_FILE="${TRAIN_FILE:-data/lora/train.jsonl}"
 EVAL_FILE="${EVAL_FILE:-data/lora/eval.jsonl}"
 AMD_OUTPUT_DIR="${AMD_OUTPUT_DIR:-data/amd/lora}"
-ADAPTER_DIR="${ADAPTER_DIR:-data/amd/lora/gemma3b_adapter}"
+ADAPTER_DIR="${ADAPTER_DIR:-data/amd/lora/qwen4b_adapter}"
 EVAL_DATASET="${EVAL_DATASET:-data/evals/eval_dataset.jsonl}"
 BASE_RESULTS="${BASE_RESULTS:-data/evals/base_results.jsonl}"
 LORA_RESULTS="${LORA_RESULTS:-data/evals/lora_results.jsonl}"
@@ -75,7 +75,7 @@ if [[ "${DRY_RUN}" == "1" || "${DRY_RUN}" == "true" || "${DRY_RUN}" == "TRUE" ]]
 fi
 
 section "1. Environment Check"
-[[ -f "AGENTS.md" ]] || fail "Run this script from the repository root."
+[[ -f "README.md" && -f "scripts/amd/run_full_amd_experiment.sh" ]] || fail "Run this script from the repository root."
 [[ -d "src/industrial_ai" ]] || fail "Cannot find src/industrial_ai. Run from the repository root."
 command -v "${PYTHON_BIN}" >/dev/null 2>&1 || fail "Python not found: ${PYTHON_BIN}. Set PYTHON_BIN=/path/to/python."
 run "${PYTHON_BIN}" --version
@@ -123,7 +123,7 @@ run "${PYTHON_BIN}" scripts/prepare_lora_dataset.py \
 require_file "${TRAIN_FILE}" "LoRA train split was not created."
 require_file "${EVAL_FILE}" "LoRA eval split was not created."
 
-section "4. Gemma Base/LoRA Training"
+section "4. Qwen Base/LoRA Training"
 run "${PYTHON_BIN}" scripts/amd/train_gemma_lora.py \
   --mode train \
   --model-name "${BASE_MODEL}" \

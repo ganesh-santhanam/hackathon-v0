@@ -1039,7 +1039,6 @@ Full suite:
 
 - `72 passed`
 - `ruff check src tests` -> `All checks passed`
-
 ## 2026-06-02 - Vision Evidence Workflow Integration
 
 ### Goal
@@ -1319,3 +1318,107 @@ Full suite:
 
 - `72 passed`
 - `ruff check src tests` -> `All checks passed`
+
+## 2026-06-10 - AMD MI300X LoRA + LLM-as-Judge Evaluation
+
+### Goal
+
+Run the first real AMD MI300X LoRA fine-tuning and LLM-as-Judge evaluation for
+the factory multimodal agent fine-tuning track.
+
+### Environment
+
+- AMD MI300X-class `gfx942` GPU
+- ROCm 7.0 / HIP 7.0
+- BF16 used for LoRA training and generation
+
+### Candidate Model
+
+- Base model: `Qwen/Qwen3-4B-Instruct-2507`
+
+Gemma was initially considered, but `google/gemma-3-4b-it` is gated and blocked
+the smoke test without Hugging Face authentication. The AMD workflow defaults
+were switched to the non-gated Qwen instruct model.
+
+### LoRA Training
+
+Training completed successfully on the AMD GPU.
+
+| Metric | Value |
+|---|---:|
+| train_loss | `1.5399` |
+| eval_loss | `1.1387` |
+| elapsed_seconds | `63.39` |
+
+Adapter path:
+
+```text
+data/amd/lora/qwen4b_adapter/
+```
+
+### Candidate Generation
+
+Generated base and LoRA responses for the evaluation dataset.
+
+| Metric | Value |
+|---|---:|
+| eval examples | `10` |
+| max_new_tokens | `128` |
+| base total latency | `66.902s` |
+| base mean latency | `6.690s` |
+| LoRA total latency | `77.759s` |
+| LoRA mean latency | `7.776s` |
+
+Generation now uses a hackathon-friendly default subset size and writes base
+and LoRA outputs incrementally after each aligned example so partial progress is
+preserved.
+
+### Judge
+
+- Judge model: `Qwen/Qwen3-14B`
+- Endpoint: OpenAI-compatible vLLM at `localhost:8000`
+- Judge runtime: `22.538s`
+- Records: `20`
+- Successes: `20/20`
+
+`openai/gpt-oss-20b` was accessible, but vLLM failed to start it on this ROCm
+image because of MXFP4 / `triton_kernels` compatibility:
+
+```text
+ModuleNotFoundError: No module named 'triton_kernels.tensor'
+```
+
+Qwen 14B was used as the strongest available non-gated fallback judge.
+
+### LLM-as-Judge Results
+
+Hallucination score is lower-is-better. All other metrics are higher-is-better.
+
+| Metric | Base | LoRA | Improvement |
+|---|---:|---:|---:|
+| Hallucination score | `1.2` | `1.0` | `16.67%` lower is better |
+| RCA quality | `3.0` | `4.1` | `36.67%` |
+| Actionability | `3.8` | `4.0` | `5.26%` |
+| Severity reasoning | `3.0` | `4.1` | `36.67%` |
+
+### Key Interpretation
+
+- LoRA improved all four judged dimensions.
+- Largest gains were RCA quality and severity reasoning.
+- This provides the fine-tuning track evidence for the hackathon.
+
+### Generated Artifact Paths
+
+```text
+data/amd/lora/training_metrics.json
+data/amd/lora/training_log.txt
+data/evals/base_results.jsonl
+data/evals/lora_results.jsonl
+data/evals/judge_scores.jsonl
+data/evals/summary.csv
+data/evals/summary.json
+data/evals/llm_judge_report.md
+```
+
+These artifacts are generated and should not be committed unless intentionally
+selected later for final submission.

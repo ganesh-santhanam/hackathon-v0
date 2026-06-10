@@ -5,7 +5,7 @@ This runbook is the shortest path for running the full AMD Cloud experiment:
 1. Environment check
 2. Incident corpus generation
 3. LoRA train/eval dataset preparation
-4. Gemma base/LoRA training
+4. Qwen base/LoRA training
 5. Base and LoRA candidate generation
 6. GPT-OSS LLM-as-Judge scoring
 7. Summary and slide-ready report generation
@@ -25,7 +25,7 @@ Required knobs:
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `BASE_MODEL` | `google/gemma-3-4b-it` | Hugging Face Gemma-compatible base checkpoint |
+| `BASE_MODEL` | `Qwen/Qwen3-4B-Instruct-2507` | Hugging Face Qwen-compatible base checkpoint |
 | `JUDGE_MODEL` | `gpt-oss:20b` | Judge model name served by the judge endpoint |
 | `MAX_STEPS` | `100` | LoRA training step cap |
 | `LIMIT` | unset | Optional small example limit for dataset and judge dataset generation |
@@ -57,7 +57,7 @@ python -m pip install -r requirements.txt
 bash scripts/amd/setup_amd_lora.sh
 ```
 
-If the Gemma checkpoint is gated:
+If your selected checkpoint is gated:
 
 ```bash
 huggingface-cli login
@@ -75,7 +75,7 @@ http://localhost:8000/v1/chat/completions
 ```bash
 PYTHONPATH=src \
 PYTHON_BIN=.venv/bin/python \
-BASE_MODEL=google/gemma-3-4b-it \
+BASE_MODEL=Qwen/Qwen3-4B-Instruct-2507 \
 JUDGE_MODEL=gpt-oss:20b \
 MAX_STEPS=100 \
 BF16=1 \
@@ -122,7 +122,7 @@ Training:
 ```text
 data/amd/lora/training_metrics.json
 data/amd/lora/training_log.txt
-data/amd/lora/gemma3b_adapter/
+data/amd/lora/qwen4b_adapter/
 ```
 
 Candidate outputs:
@@ -221,7 +221,7 @@ ERROR: Missing ai4i_dataset/ai4i2020.csv.
 Fix: place the AI4I CSV at `ai4i_dataset/ai4i2020.csv`, or provide a generated
 `data/incidents/ai4i_incident_corpus.jsonl`.
 
-Gemma model access denied:
+Model access denied:
 
 ```text
 401 Client Error

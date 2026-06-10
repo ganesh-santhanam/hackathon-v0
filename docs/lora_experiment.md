@@ -6,8 +6,8 @@ This project can use LoRA later to adapt a small local LLM to industrial inciden
 
 Good initial candidates are small instruction-tuned models that can run in local or AMD Cloud workflows:
 
-- Gemma small instruction model
-- Qwen small instruction model
+- Qwen3 4B instruction model
+- Qwen2.5 3B or 1.5B instruction model
 
 The exact model should be chosen during the future training phase based on memory limits, license constraints, and AMD MI300 availability.
 
@@ -76,7 +76,7 @@ Generation is deterministic by default:
 On AMD Cloud with MI300, the future workflow would be:
 
 1. Generate `data/lora/train.jsonl` and `data/lora/eval.jsonl`.
-2. Select a Gemma or Qwen small instruction model.
+2. Select a Qwen or other small instruction model.
 3. Train LoRA adapters with a ROCm-compatible training stack.
 4. Save adapter artifacts under `models/` or a separate ignored adapter directory.
 5. Compare base model vs LoRA on held-out incident prompts.

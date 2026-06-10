@@ -673,7 +673,7 @@ def generate_report(
         "## Candidate Models\n\n"
         f"{markdown_table(['Candidate', 'Model', 'Examples'], candidate_rows)}\n\n"
         "## Mean Scores\n\n"
-        f"{markdown_table(['Metric', 'Gemma Base Mean', 'Gemma LoRA Mean', 'LoRA Improvement %'], metric_rows)}\n\n"
+        f"{markdown_table(['Metric', 'Base Mean', 'LoRA Mean', 'LoRA Improvement %'], metric_rows)}\n\n"
         "## Key Findings\n\n"
         "- Use the mean-score table directly in PowerPoint to compare base and LoRA behavior.\n"
         "- Use hallucination score to show evidence grounding; lower LoRA values indicate better grounding.\n"

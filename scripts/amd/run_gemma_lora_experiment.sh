@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PYTHON_BIN="${PYTHON_BIN:-python3}"
-MODEL_NAME="${MODEL_NAME:-google/gemma-3-4b-it}"
+MODEL_NAME="${MODEL_NAME:-Qwen/Qwen3-4B-Instruct-2507}"
 MAX_STEPS="${MAX_STEPS:-100}"
 NUM_EPOCHS="${NUM_EPOCHS:-1}"
 LEARNING_RATE="${LEARNING_RATE:-2e-4}"
@@ -12,7 +12,7 @@ EVAL_SUBSET_SIZE="${EVAL_SUBSET_SIZE:-64}"
 TRAIN_FILE="${TRAIN_FILE:-data/lora/train.jsonl}"
 EVAL_FILE="${EVAL_FILE:-data/lora/eval.jsonl}"
 OUTPUT_DIR="${OUTPUT_DIR:-data/amd/lora}"
-ADAPTER_DIR="${ADAPTER_DIR:-data/amd/lora/gemma3b_adapter}"
+ADAPTER_DIR="${ADAPTER_DIR:-data/amd/lora/qwen4b_adapter}"
 JUDGE_DATASET="${JUDGE_DATASET:-data/evals/eval_dataset.jsonl}"
 BASE_RESULTS="${BASE_RESULTS:-data/evals/base_results.jsonl}"
 LORA_RESULTS="${LORA_RESULTS:-data/evals/lora_results.jsonl}"
@@ -37,7 +37,7 @@ if [[ "${DRY_RUN}" == "1" ]]; then
   COMMON_ARGS+=(--dry-run)
 fi
 
-echo "Step 1: train Gemma LoRA adapter"
+echo "Step 1: train Qwen LoRA adapter"
 "${PYTHON_BIN}" scripts/amd/train_gemma_lora.py \
   --mode train \
   "${COMMON_ARGS[@]}"
