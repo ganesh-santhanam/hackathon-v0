@@ -1557,3 +1557,37 @@ Judge records: `20`, successes: `20/20`.
 | average power W | `330.6336` |
 | peak temperature C | `73.0` |
 | average temperature C | `46.3793` |
+
+### ROCm Benchmarks
+
+`scripts/amd/rocm_fused_rerank_benchmark.py --modes fp32,fp16,bf16,fp8 --chart`
+completed successfully.
+
+| Metric | Value |
+|---|---:|
+| rows | `72` |
+| successful runs | `54` |
+| skipped runs | `18` |
+| best latency | `0.3306500148 ms` |
+| best mode | `fp32` |
+| best workload | `batch=8`, `candidates=10000`, `dim=384`, `top_k=10` |
+
+FP8 rows in the fused benchmark were skipped because native FP8 matmul is not
+exposed cleanly by this PyTorch build for that script path.
+
+`scripts/amd/rocm_kernel_comparison_benchmark.py` completed successfully.
+
+| Metric | Value |
+|---|---:|
+| workload | `batch=32`, `candidates=1000000`, `dim=768`, `top_k=10` |
+| best implementation | `rocblas_plus_triton_score` |
+| best precision | `bf16` |
+| best latency | `1.0388850351 ms` |
+| throughput candidates/s | `30802253299.70026` |
+| speedup vs PyTorch FP32 eager | `6.2041918188x` |
+| top-k overlap vs FP32 | `0.996875` |
+
+Kernel comparison also measured a real FP8 path:
+`torch_scaled_mm_fp8` at `2.557 ms`, `2.521x` speedup, and `0.956` top-k
+overlap. AITER and Composable Kernel full-rerank paths remained unsupported for
+this workload on the current image.

@@ -1,6 +1,6 @@
 # Unified Evaluation Report
 
-Generated: 2026-06-12T15:05:33.667784+00:00
+Generated: 2026-06-12T15:08:05.495383+00:00
 
 ## Hackathon Summary
 
@@ -9,8 +9,8 @@ Generated: 2026-06-12T15:05:33.667784+00:00
 | LoRA RCA quality | 4.2 |
 | LoRA severity reasoning | 4.2 |
 | Hallucination score | 1.0 |
-| Best AMD rerank speedup | 6.05x |
-| Report completeness | 72.6% |
+| Best AMD rerank speedup | 6.20x |
+| Report completeness | 70.5% |
 
 ## Executive Summary
 
@@ -32,13 +32,13 @@ This package aggregates evaluation, observability, benchmarking, and reporting a
 
 | Metric | Value |
 | --- | --- |
-| accuracy | 0.934 |
-| precision | 0.3241758241758242 |
-| recall | 0.8676470588235294 |
-| f1 | 0.47200000000000003 |
-| roc_auc | 0.9710829984167579 |
-| pr_auc | 0.7041717789624794 |
-| confusion_matrix | {"fn": 9, "fp": 123, "tn": 1809, "tp": 59} |
+| accuracy | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| precision | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| recall | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| f1 | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| roc_auc | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| pr_auc | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| confusion_matrix | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
 | shap_global_importance | NOT AVAILABLE - SHAP was not run; no SHAP artifact was found. |
 | shap_local_example | NOT AVAILABLE - SHAP was not run; no SHAP artifact was found. |
 
@@ -109,12 +109,12 @@ This package aggregates evaluation, observability, benchmarking, and reporting a
 | --- | --- |
 | base_model | Qwen/Qwen3-4B-Instruct-2507 |
 | lora_model | Qwen/Qwen3-4B-Instruct-2507+data/amd/lora/qwen4b_adapter |
-| adapter_size_mb | NOT AVAILABLE - Adapter directory was not found. |
-| train_loss | NOT AVAILABLE - No LoRA training metrics found. |
-| eval_loss | NOT AVAILABLE - No LoRA eval metrics found. |
-| train_runtime_seconds | NOT AVAILABLE - No LoRA train runtime found. |
+| adapter_size_mb | 141.22 |
+| train_loss | 0.18597039721906186 |
+| eval_loss | 0.028993254527449608 |
+| train_runtime_seconds | 288.4736 |
 | peak_vram_gb | NOT AVAILABLE - LoRA training did not persist peak VRAM in training_metrics.json. |
-| gpu_hours | NOT AVAILABLE - No LoRA train runtime found. |
+| gpu_hours | 0.08013155555555555 |
 | judge_model | Qwen/Qwen3-14B |
 | examples | 10 |
 | successes | 10 |
@@ -161,6 +161,13 @@ Benchmark implementations and precision coverage are included in `evaluation_sum
 | system_hardware_metrics | system_metrics.timing.training_runtime_seconds | No training command was wrapped by capture_system_metrics.py. |
 | system_hardware_metrics | system_metrics.timing.inference_runtime_seconds | No inference command was wrapped by capture_system_metrics.py. |
 | system_hardware_metrics | system_metrics.timing.benchmark_runtime_seconds | No benchmark command was wrapped by capture_system_metrics.py. |
+| telemetry_model | accuracy | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| telemetry_model | precision | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| telemetry_model | recall | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| telemetry_model | f1 | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| telemetry_model | roc_auc | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| telemetry_model | pr_auc | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| telemetry_model | confusion_matrix | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
 | telemetry_model | shap_global_importance | SHAP was not run; no SHAP artifact was found. |
 | telemetry_model | shap_local_example | SHAP was not run; no SHAP artifact was found. |
 | vision | accuracy | No persisted aggregate vision metrics artifact was found; example heatmaps/overlays were copied when available. |
@@ -188,9 +195,4 @@ Benchmark implementations and precision coverage are included in `evaluation_sum
 | agent_system | failure_breakdown | No persisted agent trace artifact was found. |
 | policy_severity | override_rate | No override log artifact was found. |
 | policy_severity | escalation_rate | No escalation log artifact was found. |
-| lora | adapter_size_mb | Adapter directory was not found. |
-| lora | train_loss | No LoRA training metrics found. |
-| lora | eval_loss | No LoRA eval metrics found. |
-| lora | train_runtime_seconds | No LoRA train runtime found. |
 | lora | peak_vram_gb | LoRA training did not persist peak VRAM in training_metrics.json. |
-| lora | gpu_hours | No LoRA train runtime found. |

@@ -1,6 +1,6 @@
 # ROCm Kernel Comparison Report
 
-- Generated: 2026-06-12T14:26:44.515157+00:00
+- Generated: 2026-06-12T15:05:45.510730+00:00
 - Torch: 2.8.0+gitb2fb688
 - HIP: 7.0.51831-a3e329ad8
 - Device: 
@@ -10,22 +10,22 @@
 
 | implementation | precision | supported | latency_ms | candidates/s | speedup | peak_vram_gb | top_k_overlap | max_error | mean_error | complexity |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| pytorch_eager | fp32 | yes | 6.399 | 5000653228.837 | 1.000 | 8.091 | 1.000 | 0.000 | 0.000 | low |
-| pytorch_eager | fp16 | yes | 6.181 | 5177242897.404 | 1.035 | 6.601 | 1.000 | 0.000 | 0.000 | low |
-| pytorch_eager | bf16 | yes | 6.347 | 5042105504.935 | 1.008 | 6.601 | 0.997 | 0.001 | 0.000 | low |
-| rocblas_precomputed_index | fp32 | yes | 3.361 | 9520366891.023 | 1.904 | 7.637 | 1.000 | 0.000 | 0.000 | medium |
-| rocblas_precomputed_index | fp16 | yes | 2.904 | 11018657639.807 | 2.203 | 9.030 | 1.000 | 0.000 | 0.000 | medium |
-| rocblas_precomputed_index | bf16 | yes | 2.893 | 11062084589.171 | 2.212 | 9.030 | 0.997 | 0.001 | 0.000 | medium |
-| rocblas_plus_triton_score | fp32 | yes | 1.562 | 20480262149.352 | 4.096 | 6.445 | 1.000 | 0.000 | 0.000 | high |
-| rocblas_plus_triton_score | fp16 | yes | 1.083 | 29556722871.678 | 5.911 | 7.897 | 1.000 | 0.000 | 0.000 | high |
-| rocblas_plus_triton_score | bf16 | yes | 1.057 | 30266029051.888 | 6.052 | 7.897 | 0.997 | 0.001 | 0.000 | high |
-| torch_scaled_mm_fp8 | fp8 | yes | 2.584 | 12383527122.983 | 2.476 | 9.805 | 0.956 | 0.008 | 0.001 | high |
-| torch_compile_inductor | fp32 | yes | 5.354 | 5976302847.018 | 1.195 | 13.086 | 1.000 | 0.000 | 0.000 | medium |
-| torch_compile_inductor | fp16 | yes | 4.228 | 7568289636.641 | 1.513 | 11.655 | 1.000 | 0.000 | 0.000 | medium |
-| torch_compile_inductor | bf16 | yes | 4.298 | 7445903814.107 | 1.489 | 11.655 | 1.000 | 0.001 | 0.000 | medium |
-| rocm_graph_capture | fp32 | yes | 6.506 | 4918166281.233 | 0.984 | 3.635 | 1.000 | 0.000 | 0.000 | medium |
-| rocm_graph_capture | fp16 | yes | 6.158 | 5196801219.412 | 1.039 | 3.635 | 1.000 | 0.000 | 0.000 | medium |
-| rocm_graph_capture | bf16 | yes | 6.450 | 4961464954.148 | 0.992 | 3.635 | 0.997 | 0.001 | 0.000 | medium |
+| pytorch_eager | fp32 | yes | 6.445 | 4964748705.303 | 1.000 | 8.091 | 1.000 | 0.000 | 0.000 | low |
+| pytorch_eager | fp16 | yes | 6.100 | 5246188035.915 | 1.057 | 6.601 | 1.000 | 0.000 | 0.000 | low |
+| pytorch_eager | bf16 | yes | 6.405 | 4995749717.322 | 1.006 | 6.601 | 0.997 | 0.001 | 0.000 | low |
+| rocblas_precomputed_index | fp32 | yes | 3.393 | 9431951908.345 | 1.900 | 7.637 | 1.000 | 0.000 | 0.000 | medium |
+| rocblas_precomputed_index | fp16 | yes | 2.882 | 11102298758.155 | 2.236 | 9.030 | 1.000 | 0.000 | 0.000 | medium |
+| rocblas_precomputed_index | bf16 | yes | 2.874 | 11135028354.435 | 2.243 | 9.030 | 0.997 | 0.001 | 0.000 | medium |
+| rocblas_plus_triton_score | fp32 | yes | 1.566 | 20427992057.487 | 4.115 | 6.445 | 1.000 | 0.000 | 0.000 | high |
+| rocblas_plus_triton_score | fp16 | yes | 1.053 | 30399265110.749 | 6.123 | 7.897 | 1.000 | 0.000 | 0.000 | high |
+| rocblas_plus_triton_score | bf16 | yes | 1.039 | 30802253299.700 | 6.204 | 7.897 | 0.997 | 0.001 | 0.000 | high |
+| torch_scaled_mm_fp8 | fp8 | yes | 2.557 | 12513892353.848 | 2.521 | 9.805 | 0.956 | 0.008 | 0.001 | high |
+| torch_compile_inductor | fp32 | yes | 5.314 | 6021988881.998 | 1.213 | 13.086 | 1.000 | 0.000 | 0.000 | medium |
+| torch_compile_inductor | fp16 | yes | 4.214 | 7593812657.105 | 1.530 | 11.655 | 1.000 | 0.000 | 0.000 | medium |
+| torch_compile_inductor | bf16 | yes | 4.265 | 7502206135.491 | 1.511 | 11.655 | 1.000 | 0.001 | 0.000 | medium |
+| rocm_graph_capture | fp32 | yes | 6.561 | 4877524580.361 | 0.982 | 3.635 | 1.000 | 0.000 | 0.000 | medium |
+| rocm_graph_capture | fp16 | yes | 6.344 | 5044165631.416 | 1.016 | 3.635 | 1.000 | 0.000 | 0.000 | medium |
+| rocm_graph_capture | bf16 | yes | 6.333 | 5052790638.825 | 1.018 | 3.635 | 0.997 | 0.001 | 0.000 | medium |
 | aiter_full_rerank | mixed | no |  |  |  |  |  |  |  | high |
 | composable_kernel_full_rerank | mixed | no |  |  |  |  |  |  |  | very_high |
 
@@ -50,4 +50,4 @@
 
 ## Recommendation
 
-Use `rocblas_plus_triton_score` with `bf16` for the hackathon slide: 1.057 ms, 30266029052 candidates/s, 6.052x vs the PyTorch FP32 eager baseline, top-k overlap 0.997.
+Use `rocblas_plus_triton_score` with `bf16` for the hackathon slide: 1.039 ms, 30802253300 candidates/s, 6.204x vs the PyTorch FP32 eager baseline, top-k overlap 0.997.
