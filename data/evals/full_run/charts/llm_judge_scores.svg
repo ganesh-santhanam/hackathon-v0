@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="508" viewBox="0 0 920 508">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="24" y="34" font-family="Arial" font-size="22" font-weight="700" fill="#111827">LLM Judge Mean Scores</text>
+<text x="24" y="93" font-family="Arial" font-size="14" fill="#374151">base actionability</text>
+<rect x="260" y="70" width="545" height="34" rx="3" fill="#2563eb"/>
+<text x="815" y="93" font-family="Arial" font-size="14" fill="#111827">4.4</text>
+<text x="24" y="145" font-family="Arial" font-size="14" fill="#374151">base hallucination_score</text>
+<rect x="260" y="122" width="123" height="34" rx="3" fill="#059669"/>
+<text x="393" y="145" font-family="Arial" font-size="14" fill="#111827">1</text>
+<text x="24" y="197" font-family="Arial" font-size="14" fill="#374151">base rca_quality</text>
+<rect x="260" y="174" width="458" height="34" rx="3" fill="#dc2626"/>
+<text x="728" y="197" font-family="Arial" font-size="14" fill="#111827">3.7</text>
+<text x="24" y="249" font-family="Arial" font-size="14" fill="#374151">base severity_reasoning</text>
+<rect x="260" y="226" width="470" height="34" rx="3" fill="#7c3aed"/>
+<text x="740" y="249" font-family="Arial" font-size="14" fill="#111827">3.8</text>
+<text x="24" y="301" font-family="Arial" font-size="14" fill="#374151">lora actionability</text>
+<rect x="260" y="278" width="545" height="34" rx="3" fill="#ea580c"/>
+<text x="815" y="301" font-family="Arial" font-size="14" fill="#111827">4.4</text>
+<text x="24" y="353" font-family="Arial" font-size="14" fill="#374151">lora hallucination_score</text>
+<rect x="260" y="330" width="123" height="34" rx="3" fill="#0891b2"/>
+<text x="393" y="353" font-family="Arial" font-size="14" fill="#111827">1</text>
+<text x="24" y="405" font-family="Arial" font-size="14" fill="#374151">lora rca_quality</text>
+<rect x="260" y="382" width="570" height="34" rx="3" fill="#2563eb"/>
+<text x="840" y="405" font-family="Arial" font-size="14" fill="#111827">4.6</text>
+<text x="24" y="457" font-family="Arial" font-size="14" fill="#374151">lora severity_reasoning</text>
+<rect x="260" y="434" width="570" height="34" rx="3" fill="#059669"/>
+<text x="840" y="457" font-family="Arial" font-size="14" fill="#111827">4.6</text>
+</svg>

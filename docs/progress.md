@@ -1422,3 +1422,84 @@ data/evals/llm_judge_report.md
 
 These artifacts are generated and should not be committed unless intentionally
 selected later for final submission.
+
+## 2026-06-12 - AMD Cloud Recovery Rerun
+
+### Goal
+
+Recover generated AMD Cloud artifacts after starting from a fresh notebook and
+make model identities explicit for reviewer auditability.
+
+### Exact Evaluation Identity
+
+| Field | Value |
+|---|---|
+| Base Model | `Qwen/Qwen3-4B-Instruct-2507` |
+| LoRA Model | `Qwen/Qwen3-4B-Instruct-2507` with adapter `data/amd/lora/qwen4b_adapter` |
+| Judge Model | `Qwen/Qwen3-14B` |
+| Judge Serving | vLLM OpenAI-compatible endpoint at `http://localhost:8000/v1/chat/completions` |
+| Hardware | AMD MI300X-class `gfx942` GPU |
+| ROCm / HIP | ROCm 7.0 / HIP 7.0 |
+| Precision | BF16 for LoRA training, candidate generation, and vLLM judge serving |
+
+The base model is the model that was fine-tuned. The LoRA model is the same
+base checkpoint loaded with the generated adapter at
+`data/amd/lora/qwen4b_adapter`. The judge model is separate and was used only
+to score candidate responses.
+
+### LoRA Training
+
+Training completed successfully on the AMD GPU.
+
+| Metric | Value |
+|---|---:|
+| train examples | `40` |
+| eval examples | `10` |
+| train_loss | `0.1870` |
+| eval_loss | `0.02746` |
+| elapsed_seconds | `290.289` |
+
+### LLM-as-Judge
+
+The Qwen 14B judge endpoint was started with vLLM and reached a healthy
+`/v1/models` response before scoring.
+
+| Metric | Value |
+|---|---:|
+| eval examples | `10` |
+| judge records | `20` |
+| judge successes | `20/20` |
+| full experiment runtime | `502s` |
+
+Hallucination score is lower-is-better. All other metrics are higher-is-better.
+
+| Metric | Base | LoRA | Improvement |
+|---|---:|---:|---:|
+| Hallucination score | `1.0` | `1.0` | `0.0%` |
+| RCA quality | `3.7` | `4.6` | `24.32%` |
+| Actionability | `4.4` | `4.4` | `0.0%` |
+| Severity reasoning | `3.8` | `4.6` | `21.05%` |
+
+### Generated Artifact Paths
+
+```text
+data/amd/lora/training_metrics.json
+data/amd/lora/training_log.txt
+data/evals/eval_dataset.jsonl
+data/evals/base_results.jsonl
+data/evals/lora_results.jsonl
+data/evals/judge_scores.jsonl
+data/evals/summary.csv
+data/evals/summary.json
+data/evals/llm_judge_report.md
+```
+
+Timestamped export created:
+
+```text
+exports/amd_recovery_20260612T133257Z.zip
+```
+
+The export includes `data/evals/`, `data/amd/lora/training_metrics.json`,
+`data/amd/lora/training_log.txt`, and `docs/progress.md`. It excludes Hugging
+Face cache, model weights, trainer checkpoints, and safetensors files.

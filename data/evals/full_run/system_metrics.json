@@ -1,0 +1,50 @@
+{
+  "captured_at": "2026-06-12T14:43:20.735161+00:00",
+  "runtime": {
+    "python_version": "3.12.11",
+    "torch_version": "2.8.0+gitb2fb688",
+    "rocm_version": "7.0.51831-a3e329ad8",
+    "cuda_version": "NOT AVAILABLE",
+    "transformers_version": "4.57.0",
+    "peft_version": "0.17.1",
+    "vllm_version": "0.11.0rc2.dev424+g045b396d0"
+  },
+  "gpu_metrics": {
+    "peak_vram_gb": 174.0869,
+    "average_vram_gb": 174.0869,
+    "peak_gpu_utilization": 0.0,
+    "average_gpu_utilization": 0.0,
+    "peak_power_draw": 144.0,
+    "average_power_draw": 144.0,
+    "peak_temperature": 38.0,
+    "average_temperature": 38.0,
+    "sample_count": 1
+  },
+  "timing": {
+    "wall_clock_runtime_seconds": 3.8316,
+    "training_runtime_seconds": {
+      "value": "NOT AVAILABLE",
+      "reason": "No training command was supplied to run_full_evaluation.py."
+    },
+    "inference_runtime_seconds": {
+      "value": "NOT AVAILABLE",
+      "reason": "No inference command was supplied to run_full_evaluation.py."
+    },
+    "benchmark_runtime_seconds": {
+      "value": "NOT AVAILABLE",
+      "reason": "No benchmark command was supplied to run_full_evaluation.py."
+    },
+    "training_return_code": null,
+    "inference_return_code": null,
+    "benchmark_return_code": null
+  },
+  "raw_gpu_samples": [
+    {
+      "timestamp": "2026-06-12T14:43:20.507729+00:00",
+      "vram_gb": 174.0868682861328,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 144.0,
+      "temperature_c": 38.0
+    }
+  ]
+}

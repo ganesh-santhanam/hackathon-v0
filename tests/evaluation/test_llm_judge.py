@@ -206,7 +206,11 @@ def test_generate_report_writes_slide_ready_markdown(tmp_path):
     assert result["report_path"] == str(report_path)
     report = report_path.read_text(encoding="utf-8")
     assert "# AMD Hackathon LLM-as-Judge Evaluation" in report
-    assert "| Metric | Gemma Base Mean | Gemma LoRA Mean | LoRA Improvement % |" in report
+    assert "| Field | Value |" in report
+    assert "| Base Model | gemma3:4b |" in report
+    assert "| LoRA Model | gemma3-lora:latest |" in report
+    assert "| Judge Model | gpt-oss:20b |" in report
+    assert "| Metric | Base Mean | LoRA Mean | LoRA Improvement % |" in report
 
 
 def test_parse_json_object_handles_markdown_fence():

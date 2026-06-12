@@ -1,0 +1,19 @@
+{
+  "captured_at": "2026-06-12T14:43:20.503520+00:00",
+  "hostname": "jupyter-hack-team-812-260612130256-37f297c3",
+  "os": "Linux-6.8.0-110-generic-x86_64-with-glibc2.35",
+  "cpu_model": "INTEL(R) XEON(R) PLATINUM 8570",
+  "ram_total_gb": 2015.37,
+  "gpu_name": "card0",
+  "gpu_count": 1,
+  "gpu_memory": [
+    191.98
+  ],
+  "gpus": [
+    {
+      "index": "card0",
+      "name": "card0",
+      "memory_total_gb": 191.98
+    }
+  ]
+}

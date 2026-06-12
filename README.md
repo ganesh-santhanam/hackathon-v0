@@ -87,6 +87,41 @@ The current implementation includes:
 The remaining work is to replace the deterministic stand-ins with the
 fuller agentic workflow described in the hackathon brief.
 
+## AMD LoRA Evaluation Results
+
+Latest AMD Cloud recovery run:
+
+| Field | Value |
+| --- | --- |
+| Base Model | `Qwen/Qwen3-4B-Instruct-2507` |
+| LoRA Model | `Qwen/Qwen3-4B-Instruct-2507` with adapter `data/amd/lora/qwen4b_adapter` |
+| Judge Model | `Qwen/Qwen3-14B` served through vLLM's OpenAI-compatible API |
+| Hardware | AMD MI300X-class `gfx942` GPU on ROCm 7.0 / HIP 7.0 |
+| Precision | BF16 for LoRA training, candidate generation, and vLLM judge serving |
+
+Training used 40 generated LoRA examples and 10 eval examples with
+`LIMIT=10`.
+
+| Training Metric | Value |
+| --- | ---: |
+| train_loss | `0.1870` |
+| eval_loss | `0.02746` |
+| elapsed_seconds | `290.289` |
+
+LLM-as-Judge evaluated 10 incidents, producing 20 scored candidate responses
+with `20/20` successful judge records.
+
+| Judge Metric | Base | LoRA | Improvement |
+| --- | ---: | ---: | ---: |
+| hallucination_score | `1.0` | `1.0` | `0.0%` |
+| rca_quality | `3.7` | `4.6` | `24.32%` |
+| actionability | `4.4` | `4.4` | `0.0%` |
+| severity_reasoning | `3.8` | `4.6` | `21.05%` |
+
+Generated evaluation artifacts are written under `data/evals/`; LoRA training
+metrics are written under `data/amd/lora/`. These generated artifacts are not
+committed by default.
+
 ## Streamlit Demo UI
 
 Run the one-page demo app:

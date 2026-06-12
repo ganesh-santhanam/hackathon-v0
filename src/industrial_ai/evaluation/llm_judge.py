@@ -28,6 +28,8 @@ DEFAULT_OPENAI_COMPATIBLE_ENDPOINT = "http://localhost:8000/v1/chat/completions"
 DEFAULT_BASE_MODEL = "gemma3:4b"
 DEFAULT_LORA_MODEL = "gemma3-lora:latest"
 DEFAULT_JUDGE_MODEL = "gpt-oss:20b"
+DEFAULT_EVAL_HARDWARE = "AMD MI300X-class gfx942 GPU via ROCm 7.0 / HIP 7.0"
+DEFAULT_EVAL_PRECISION = "BF16 for LoRA training, candidate generation, and vLLM judge serving"
 DEFAULT_TIMEOUT_SECONDS = 180.0
 
 SCORE_FIELDS = (
@@ -575,6 +577,10 @@ def summarize_scores(
     summary = {
         "generated_at": utc_timestamp(),
         "examples_evaluated": len({record["eval_id"] for record in records}),
+        "environment": {
+            "hardware": os.environ.get("LLM_JUDGE_HARDWARE", DEFAULT_EVAL_HARDWARE),
+            "precision": os.environ.get("LLM_JUDGE_PRECISION", DEFAULT_EVAL_PRECISION),
+        },
         "judge": {
             "models": judge_models,
             "provider": records[0].get("judge_provider") if records else None,
@@ -663,13 +669,33 @@ def generate_report(
         for candidate, details in summary.get("candidates", {}).items()
     ]
     judge = summary.get("judge", {})
+    candidates = summary.get("candidates", {})
+    environment = summary.get("environment", {})
+    base_model = candidates.get("base", {}).get("model")
+    lora_model = candidates.get("lora", {}).get("model")
+    judge_model = ", ".join(judge.get("models", []))
+    metadata_rows = [
+        ["Base Model", base_model],
+        ["LoRA Model", lora_model],
+        ["Judge Model", judge_model],
+        ["Hardware", environment.get("hardware", DEFAULT_EVAL_HARDWARE)],
+        ["Precision", environment.get("precision", DEFAULT_EVAL_PRECISION)],
+        ["Judge Endpoint", judge.get("endpoint")],
+        ["Judge Provider", judge.get("provider")],
+    ]
     report = (
         "# AMD Hackathon LLM-as-Judge Evaluation\n\n"
         "## Executive Summary\n\n"
         f"- Examples evaluated: {summary.get('examples_evaluated')}\n"
-        f"- Judge model: {', '.join(judge.get('models', []))}\n"
+        f"- Base model: {base_model}\n"
+        f"- LoRA model: {lora_model}\n"
+        f"- Judge model: {judge_model}\n"
         f"- Judge provider: {judge.get('provider')}\n"
+        f"- Hardware: {environment.get('hardware', DEFAULT_EVAL_HARDWARE)}\n"
+        f"- Precision: {environment.get('precision', DEFAULT_EVAL_PRECISION)}\n"
         "- Hallucination score is lower-is-better; all other metrics are higher-is-better.\n\n"
+        "## Evaluation Metadata\n\n"
+        f"{markdown_table(['Field', 'Value'], metadata_rows)}\n\n"
         "## Candidate Models\n\n"
         f"{markdown_table(['Candidate', 'Model', 'Examples'], candidate_rows)}\n\n"
         "## Mean Scores\n\n"

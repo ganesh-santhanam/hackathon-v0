@@ -12,11 +12,17 @@ __pycache__/
 data/processed/
 data/raw/
 data/approvals/
+data/amd/lora/
 data/lora/*.jsonl
 data/plant/events.jsonl
 data/qdrant/
 data/vision_outputs/
 models/
+
+*.safetensors
+*.pt
+*.pth
+*.bin
 
 *.db
 *.sqlite
