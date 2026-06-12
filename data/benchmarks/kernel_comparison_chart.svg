@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="460" viewBox="0 0 1100 460">
+<rect width="100%" height="100%" fill="white"/>
+<text x="36" y="32" font-family="Arial" font-size="22" font-weight="700">ROCm rerank implementation speedup</text>
+<line x1="80" y1="55" x2="80" y2="305" stroke="#333"/>
+<line x1="80" y1="305" x2="1065" y2="305" stroke="#333"/>
+<rect x="91.0" y="263.7" width="39.2" height="41.3" fill="#4C78A8"/>
+<text x="110.6" y="257.7" font-family="Arial" font-size="10" text-anchor="middle">1.00x</text>
+<text x="110.6" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 110.6 321)">pytorch_eager fp32</text>
+<rect x="152.3" y="262.2" width="39.2" height="42.8" fill="#59A14F"/>
+<text x="171.9" y="256.2" font-family="Arial" font-size="10" text-anchor="middle">1.04x</text>
+<text x="171.9" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 171.9 321)">pytorch_eager fp16</text>
+<rect x="213.5" y="263.4" width="39.2" height="41.6" fill="#B07AA1"/>
+<text x="233.1" y="257.4" font-family="Arial" font-size="10" text-anchor="middle">1.01x</text>
+<text x="233.1" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 233.1 321)">pytorch_eager bf16</text>
+<rect x="274.8" y="226.4" width="39.2" height="78.6" fill="#4C78A8"/>
+<text x="294.4" y="220.4" font-family="Arial" font-size="10" text-anchor="middle">1.90x</text>
+<text x="294.4" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 294.4 321)">rocblas_precomputed_index fp32</text>
+<rect x="336.0" y="214.0" width="39.2" height="91.0" fill="#59A14F"/>
+<text x="355.6" y="208.0" font-family="Arial" font-size="10" text-anchor="middle">2.20x</text>
+<text x="355.6" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 355.6 321)">rocblas_precomputed_index fp16</text>
+<rect x="397.3" y="213.6" width="39.2" height="91.4" fill="#B07AA1"/>
+<text x="416.9" y="207.6" font-family="Arial" font-size="10" text-anchor="middle">2.21x</text>
+<text x="416.9" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 416.9 321)">rocblas_precomputed_index bf16</text>
+<rect x="458.5" y="135.8" width="39.2" height="169.2" fill="#4C78A8"/>
+<text x="478.1" y="129.8" font-family="Arial" font-size="10" text-anchor="middle">4.10x</text>
+<text x="478.1" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 478.1 321)">rocblas_plus_triton_score fp32</text>
+<rect x="519.8" y="60.9" width="39.2" height="244.1" fill="#59A14F"/>
+<text x="539.4" y="54.9" font-family="Arial" font-size="10" text-anchor="middle">5.91x</text>
+<text x="539.4" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 539.4 321)">rocblas_plus_triton_score fp16</text>
+<rect x="581.0" y="55.0" width="39.2" height="250.0" fill="#B07AA1"/>
+<text x="600.6" y="49.0" font-family="Arial" font-size="10" text-anchor="middle">6.05x</text>
+<text x="600.6" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 600.6 321)">rocblas_plus_triton_score bf16</text>
+<rect x="642.3" y="202.7" width="39.2" height="102.3" fill="#F28E2B"/>
+<text x="661.9" y="196.7" font-family="Arial" font-size="10" text-anchor="middle">2.48x</text>
+<text x="661.9" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 661.9 321)">torch_scaled_mm_fp8 fp8</text>
+<rect x="703.5" y="255.6" width="39.2" height="49.4" fill="#4C78A8"/>
+<text x="723.1" y="249.6" font-family="Arial" font-size="10" text-anchor="middle">1.20x</text>
+<text x="723.1" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 723.1 321)">torch_compile_inductor fp32</text>
+<rect x="764.8" y="242.5" width="39.2" height="62.5" fill="#59A14F"/>
+<text x="784.4" y="236.5" font-family="Arial" font-size="10" text-anchor="middle">1.51x</text>
+<text x="784.4" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 784.4 321)">torch_compile_inductor fp16</text>
+<rect x="826.0" y="243.5" width="39.2" height="61.5" fill="#B07AA1"/>
+<text x="845.6" y="237.5" font-family="Arial" font-size="10" text-anchor="middle">1.49x</text>
+<text x="845.6" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 845.6 321)">torch_compile_inductor bf16</text>
+<rect x="887.3" y="264.4" width="39.2" height="40.6" fill="#4C78A8"/>
+<text x="906.9" y="258.4" font-family="Arial" font-size="10" text-anchor="middle">0.98x</text>
+<text x="906.9" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 906.9 321)">rocm_graph_capture fp32</text>
+<rect x="948.5" y="262.1" width="39.2" height="42.9" fill="#59A14F"/>
+<text x="968.1" y="256.1" font-family="Arial" font-size="10" text-anchor="middle">1.04x</text>
+<text x="968.1" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 968.1 321)">rocm_graph_capture fp16</text>
+<rect x="1009.8" y="264.0" width="39.2" height="41.0" fill="#B07AA1"/>
+<text x="1029.4" y="258.0" font-family="Arial" font-size="10" text-anchor="middle">0.99x</text>
+<text x="1029.4" y="321" font-family="Arial" font-size="9" text-anchor="end" transform="rotate(-48 1029.4 321)">rocm_graph_capture bf16</text>
+</svg>

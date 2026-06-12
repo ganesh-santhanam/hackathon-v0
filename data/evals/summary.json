@@ -1,0 +1,115 @@
+{
+  "candidates": {
+    "base": {
+      "examples_evaluated": 10,
+      "metrics": {
+        "actionability": {
+          "distribution": {
+            "1": 1,
+            "2": 0,
+            "3": 0,
+            "4": 2,
+            "5": 7
+          },
+          "mean": 4.4
+        },
+        "hallucination_score": {
+          "distribution": {
+            "1": 10,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+          },
+          "mean": 1.0
+        },
+        "rca_quality": {
+          "distribution": {
+            "1": 1,
+            "2": 0,
+            "3": 3,
+            "4": 3,
+            "5": 3
+          },
+          "mean": 3.7
+        },
+        "severity_reasoning": {
+          "distribution": {
+            "1": 1,
+            "2": 0,
+            "3": 3,
+            "4": 2,
+            "5": 4
+          },
+          "mean": 3.8
+        }
+      },
+      "model": "Qwen/Qwen3-4B-Instruct-2507"
+    },
+    "lora": {
+      "examples_evaluated": 10,
+      "metrics": {
+        "actionability": {
+          "distribution": {
+            "1": 1,
+            "2": 0,
+            "3": 0,
+            "4": 2,
+            "5": 7
+          },
+          "mean": 4.4
+        },
+        "hallucination_score": {
+          "distribution": {
+            "1": 10,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+          },
+          "mean": 1.0
+        },
+        "rca_quality": {
+          "distribution": {
+            "1": 1,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 9
+          },
+          "mean": 4.6
+        },
+        "severity_reasoning": {
+          "distribution": {
+            "1": 1,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 9
+          },
+          "mean": 4.6
+        }
+      },
+      "model": "Qwen/Qwen3-4B-Instruct-2507+data/amd/lora/qwen4b_adapter"
+    }
+  },
+  "environment": {
+    "hardware": "AMD MI300X-class gfx942 GPU via ROCm 7.0 / HIP 7.0",
+    "precision": "BF16 for LoRA training, candidate generation, and vLLM judge serving"
+  },
+  "examples_evaluated": 10,
+  "generated_at": "2026-06-12T13:44:31.845840+00:00",
+  "improvement_percentage": {
+    "actionability": 0.0,
+    "hallucination_score": 0.0,
+    "rca_quality": 24.32,
+    "severity_reasoning": 21.05
+  },
+  "judge": {
+    "endpoint": "http://localhost:8000/v1/chat/completions",
+    "models": [
+      "Qwen/Qwen3-14B"
+    ],
+    "provider": "openai-compatible"
+  }
+}
