@@ -1,0 +1,5 @@
+[2026-06-12T14:53:13.923400+00:00] Loading tokenizer: Qwen/Qwen3-4B-Instruct-2507
+[2026-06-12T14:53:14.424710+00:00] Loading base model: Qwen/Qwen3-4B-Instruct-2507
+[2026-06-12T14:53:19.226854+00:00] Starting LoRA training.
+[2026-06-12T14:58:08.562994+00:00] Saving LoRA adapter to data/amd/lora/qwen4b_adapter
+[2026-06-12T14:58:08.993058+00:00] Training complete.

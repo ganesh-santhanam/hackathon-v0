@@ -1,0 +1,29 @@
+{
+  "adapter_dir": "data/amd/lora/qwen4b_adapter",
+  "bf16_requested": true,
+  "bf16_used": true,
+  "elapsed_seconds": 289.336,
+  "eval_examples": 10,
+  "eval_file": "data/lora/eval.jsonl",
+  "eval_metrics": {
+    "epoch": 20.0,
+    "eval_loss": 0.028993254527449608,
+    "eval_runtime": 0.6957,
+    "eval_samples_per_second": 14.374,
+    "eval_steps_per_second": 14.374
+  },
+  "gradient_checkpointing": true,
+  "mode": "train",
+  "model_name": "Qwen/Qwen3-4B-Instruct-2507",
+  "timestamp": "2026-06-12T14:58:08.990438+00:00",
+  "train_examples": 40,
+  "train_file": "data/lora/train.jsonl",
+  "train_metrics": {
+    "epoch": 20.0,
+    "total_flos": 5639288380723200.0,
+    "train_loss": 0.18597039721906186,
+    "train_runtime": 288.4736,
+    "train_samples_per_second": 2.773,
+    "train_steps_per_second": 0.347
+  }
+}
