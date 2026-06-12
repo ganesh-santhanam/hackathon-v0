@@ -1503,3 +1503,57 @@ exports/amd_recovery_20260612T133257Z.zip
 The export includes `data/evals/`, `data/amd/lora/training_metrics.json`,
 `data/amd/lora/training_log.txt`, and `docs/progress.md`. It excludes Hugging
 Face cache, model weights, trainer checkpoints, and safetensors files.
+
+## 2026-06-12 - AMD Full Experiment Rerun Checkpoint
+
+Feature freeze was preserved: no application or Streamlit logic was changed.
+
+### Environment
+
+| Field | Value |
+|---|---|
+| Base Model | `Qwen/Qwen3-4B-Instruct-2507` |
+| LoRA Adapter | `data/amd/lora/qwen4b_adapter/` |
+| Judge Model | `Qwen/Qwen3-14B` |
+| Judge Serving | vLLM OpenAI-compatible endpoint at `http://localhost:8000/v1/chat/completions` |
+| GPU | AMD `gfx942`, 191.984 GiB VRAM reported by PyTorch |
+| ROCm / HIP | `7.0.51831-a3e329ad8` |
+| Torch | `2.8.0+gitb2fb688` |
+| Precision | BF16 |
+| LIMIT | `10` |
+
+### LoRA Training
+
+| Metric | Value |
+|---|---:|
+| train examples | `40` |
+| eval examples | `10` |
+| train runtime seconds | `288.4736` |
+| elapsed seconds | `289.336` |
+| train loss | `0.1859703972` |
+| eval loss | `0.0289932545` |
+
+### LLM-as-Judge
+
+| Metric | Base | LoRA | Improvement |
+|---|---:|---:|---:|
+| hallucination_score | `1.0` | `1.0` | `0.0%` |
+| rca_quality | `3.7` | `4.2` | `13.51%` |
+| actionability | `4.4` | `4.1` | `-6.82%` |
+| severity_reasoning | `3.8` | `4.2` | `10.53%` |
+
+Judge records: `20`, successes: `20/20`.
+
+### Hardware Telemetry During LoRA + Candidate/Judge Run
+
+| Metric | Value |
+|---|---:|
+| wall clock seconds | `493.9645` |
+| peak VRAM GiB | `191.3731` |
+| average VRAM GiB | `187.8833` |
+| peak GPU utilization | `100.0%` |
+| average GPU utilization | `75.8534%` |
+| peak power W | `749.0` |
+| average power W | `330.6336` |
+| peak temperature C | `73.0` |
+| average temperature C | `46.3793` |

@@ -35,9 +35,9 @@
 | Metric | Base Mean | LoRA Mean | LoRA Improvement % |
 | --- | --- | --- | --- |
 | hallucination_score | 1.0 | 1.0 | 0.0 |
-| rca_quality | 3.7 | 4.6 | 24.32 |
-| actionability | 4.4 | 4.4 | 0.0 |
-| severity_reasoning | 3.8 | 4.6 | 21.05 |
+| rca_quality | 3.7 | 4.2 | 13.51 |
+| actionability | 4.4 | 4.1 | -6.82 |
+| severity_reasoning | 3.8 | 4.2 | 10.53 |
 
 ## Key Findings
 

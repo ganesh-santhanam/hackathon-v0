@@ -51,13 +51,13 @@
       "metrics": {
         "actionability": {
           "distribution": {
-            "1": 1,
+            "1": 2,
             "2": 0,
             "3": 0,
-            "4": 2,
+            "4": 1,
             "5": 7
           },
-          "mean": 4.4
+          "mean": 4.1
         },
         "hallucination_score": {
           "distribution": {
@@ -71,23 +71,23 @@
         },
         "rca_quality": {
           "distribution": {
-            "1": 1,
+            "1": 2,
             "2": 0,
             "3": 0,
             "4": 0,
-            "5": 9
+            "5": 8
           },
-          "mean": 4.6
+          "mean": 4.2
         },
         "severity_reasoning": {
           "distribution": {
-            "1": 1,
+            "1": 2,
             "2": 0,
             "3": 0,
             "4": 0,
-            "5": 9
+            "5": 8
           },
-          "mean": 4.6
+          "mean": 4.2
         }
       },
       "model": "Qwen/Qwen3-4B-Instruct-2507+data/amd/lora/qwen4b_adapter"
@@ -98,12 +98,12 @@
     "precision": "BF16 for LoRA training, candidate generation, and vLLM judge serving"
   },
   "examples_evaluated": 10,
-  "generated_at": "2026-06-12T13:44:31.845840+00:00",
+  "generated_at": "2026-06-12T15:01:20.003227+00:00",
   "improvement_percentage": {
-    "actionability": 0.0,
+    "actionability": -6.82,
     "hallucination_score": 0.0,
-    "rca_quality": 24.32,
-    "severity_reasoning": 21.05
+    "rca_quality": 13.51,
+    "severity_reasoning": 10.53
   },
   "judge": {
     "endpoint": "http://localhost:8000/v1/chat/completions",

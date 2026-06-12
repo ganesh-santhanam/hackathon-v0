@@ -1,9 +1,9 @@
 candidate,model,metric,mean,score_1_count,score_2_count,score_3_count,score_4_count,score_5_count,lora_improvement_pct
 base,Qwen/Qwen3-4B-Instruct-2507,hallucination_score,1.0,10,0,0,0,0,0.0
-base,Qwen/Qwen3-4B-Instruct-2507,rca_quality,3.7,1,0,3,3,3,24.32
-base,Qwen/Qwen3-4B-Instruct-2507,actionability,4.4,1,0,0,2,7,0.0
-base,Qwen/Qwen3-4B-Instruct-2507,severity_reasoning,3.8,1,0,3,2,4,21.05
+base,Qwen/Qwen3-4B-Instruct-2507,rca_quality,3.7,1,0,3,3,3,13.51
+base,Qwen/Qwen3-4B-Instruct-2507,actionability,4.4,1,0,0,2,7,-6.82
+base,Qwen/Qwen3-4B-Instruct-2507,severity_reasoning,3.8,1,0,3,2,4,10.53
 lora,Qwen/Qwen3-4B-Instruct-2507+data/amd/lora/qwen4b_adapter,hallucination_score,1.0,10,0,0,0,0,0.0
-lora,Qwen/Qwen3-4B-Instruct-2507+data/amd/lora/qwen4b_adapter,rca_quality,4.6,1,0,0,0,9,24.32
-lora,Qwen/Qwen3-4B-Instruct-2507+data/amd/lora/qwen4b_adapter,actionability,4.4,1,0,0,2,7,0.0
-lora,Qwen/Qwen3-4B-Instruct-2507+data/amd/lora/qwen4b_adapter,severity_reasoning,4.6,1,0,0,0,9,21.05
+lora,Qwen/Qwen3-4B-Instruct-2507+data/amd/lora/qwen4b_adapter,rca_quality,4.2,2,0,0,0,8,13.51
+lora,Qwen/Qwen3-4B-Instruct-2507+data/amd/lora/qwen4b_adapter,actionability,4.1,2,0,0,1,7,-6.82
+lora,Qwen/Qwen3-4B-Instruct-2507+data/amd/lora/qwen4b_adapter,severity_reasoning,4.2,2,0,0,0,8,10.53

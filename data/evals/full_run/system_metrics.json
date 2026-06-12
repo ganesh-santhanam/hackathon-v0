@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-06-12T14:43:20.735161+00:00",
+  "captured_at": "2026-06-12T15:01:22.126179+00:00",
   "runtime": {
     "python_version": "3.12.11",
     "torch_version": "2.8.0+gitb2fb688",
@@ -10,41 +10,1655 @@
     "vllm_version": "0.11.0rc2.dev424+g045b396d0"
   },
   "gpu_metrics": {
-    "peak_vram_gb": 174.0869,
-    "average_vram_gb": 174.0869,
-    "peak_gpu_utilization": 0.0,
-    "average_gpu_utilization": 0.0,
-    "peak_power_draw": 144.0,
-    "average_power_draw": 144.0,
-    "peak_temperature": 38.0,
-    "average_temperature": 38.0,
-    "sample_count": 1
+    "peak_vram_gb": 191.3731,
+    "average_vram_gb": 187.8833,
+    "peak_gpu_utilization": 100.0,
+    "average_gpu_utilization": 75.8534,
+    "peak_power_draw": 749.0,
+    "average_power_draw": 330.6336,
+    "peak_temperature": 73.0,
+    "average_temperature": 46.3793,
+    "sample_count": 232
   },
   "timing": {
-    "wall_clock_runtime_seconds": 3.8316,
+    "wall_clock_runtime_seconds": 493.9645,
     "training_runtime_seconds": {
       "value": "NOT AVAILABLE",
-      "reason": "No training command was supplied to run_full_evaluation.py."
+      "reason": "No training command was wrapped by capture_system_metrics.py."
     },
     "inference_runtime_seconds": {
       "value": "NOT AVAILABLE",
-      "reason": "No inference command was supplied to run_full_evaluation.py."
+      "reason": "No inference command was wrapped by capture_system_metrics.py."
     },
     "benchmark_runtime_seconds": {
       "value": "NOT AVAILABLE",
-      "reason": "No benchmark command was supplied to run_full_evaluation.py."
-    },
-    "training_return_code": null,
-    "inference_return_code": null,
-    "benchmark_return_code": null
+      "reason": "No benchmark command was wrapped by capture_system_metrics.py."
+    }
   },
   "raw_gpu_samples": [
     {
-      "timestamp": "2026-06-12T14:43:20.507729+00:00",
+      "timestamp": "2026-06-12T14:53:08.298887+00:00",
       "vram_gb": 174.0868682861328,
       "gpu_utilization_percent": 0.0,
       "power_draw_w": 144.0,
       "temperature_c": 38.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:10.426606+00:00",
+      "vram_gb": 174.0868682861328,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 144.0,
+      "temperature_c": 38.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:12.689209+00:00",
+      "vram_gb": 174.08691024780273,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 144.0,
+      "temperature_c": 38.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:14.816173+00:00",
+      "vram_gb": 182.23987197875977,
+      "gpu_utilization_percent": 1.0,
+      "power_draw_w": 153.0,
+      "temperature_c": 38.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:16.946018+00:00",
+      "vram_gb": 182.24722290039062,
+      "gpu_utilization_percent": 1.0,
+      "power_draw_w": 222.0,
+      "temperature_c": 39.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:19.078806+00:00",
+      "vram_gb": 182.37350463867188,
+      "gpu_utilization_percent": 2.0,
+      "power_draw_w": 191.0,
+      "temperature_c": 39.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:21.207464+00:00",
+      "vram_gb": 182.60400009155273,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 145.0,
+      "temperature_c": 38.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:23.336600+00:00",
+      "vram_gb": 182.60400009155273,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 144.0,
+      "temperature_c": 38.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:25.461532+00:00",
+      "vram_gb": 182.65282821655273,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 145.0,
+      "temperature_c": 38.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:27.589596+00:00",
+      "vram_gb": 182.65282821655273,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 145.0,
+      "temperature_c": 38.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:29.718402+00:00",
+      "vram_gb": 182.94001007080078,
+      "gpu_utilization_percent": 1.0,
+      "power_draw_w": 167.0,
+      "temperature_c": 38.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:31.847574+00:00",
+      "vram_gb": 182.97157669067383,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 180.0,
+      "temperature_c": 39.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:33.980261+00:00",
+      "vram_gb": 182.97157669067383,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 180.0,
+      "temperature_c": 39.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:36.112073+00:00",
+      "vram_gb": 182.97157669067383,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 181.0,
+      "temperature_c": 38.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:38.238813+00:00",
+      "vram_gb": 182.97157669067383,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 180.0,
+      "temperature_c": 38.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:40.363731+00:00",
+      "vram_gb": 182.97157669067383,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 180.0,
+      "temperature_c": 38.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:42.492901+00:00",
+      "vram_gb": 182.94618606567383,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 181.0,
+      "temperature_c": 39.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:44.617640+00:00",
+      "vram_gb": 182.94618606567383,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 181.0,
+      "temperature_c": 39.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:46.746831+00:00",
+      "vram_gb": 183.8247413635254,
+      "gpu_utilization_percent": 52.0,
+      "power_draw_w": 287.0,
+      "temperature_c": 40.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:48.873127+00:00",
+      "vram_gb": 184.03033065795898,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 180.0,
+      "temperature_c": 39.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:51.002691+00:00",
+      "vram_gb": 184.2845344543457,
+      "gpu_utilization_percent": 2.0,
+      "power_draw_w": 189.0,
+      "temperature_c": 39.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:53.131017+00:00",
+      "vram_gb": 184.30987548828125,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 181.0,
+      "temperature_c": 39.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:55.259234+00:00",
+      "vram_gb": 184.30987548828125,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 181.0,
+      "temperature_c": 39.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:57.384594+00:00",
+      "vram_gb": 184.28448486328125,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 181.0,
+      "temperature_c": 39.0
+    },
+    {
+      "timestamp": "2026-06-12T14:53:59.509948+00:00",
+      "vram_gb": 184.28448486328125,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 181.0,
+      "temperature_c": 39.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:01.634933+00:00",
+      "vram_gb": 185.31476974487305,
+      "gpu_utilization_percent": 99.0,
+      "power_draw_w": 368.0,
+      "temperature_c": 41.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:03.768856+00:00",
+      "vram_gb": 186.8027687072754,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 371.0,
+      "temperature_c": 42.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:05.896906+00:00",
+      "vram_gb": 187.4355812072754,
+      "gpu_utilization_percent": 93.0,
+      "power_draw_w": 371.0,
+      "temperature_c": 42.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:08.025659+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 387.0,
+      "temperature_c": 43.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:10.150109+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 377.0,
+      "temperature_c": 43.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:12.275556+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 384.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:14.404647+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 403.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:16.532437+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 388.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:18.656204+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 377.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:20.782070+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 378.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:22.911193+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 91.0,
+      "power_draw_w": 385.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:25.034972+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 95.0,
+      "power_draw_w": 397.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:27.157332+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 397.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:29.287512+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 388.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:31.416101+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 408.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:33.548635+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 394.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:35.676217+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 386.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:37.808427+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 95.0,
+      "power_draw_w": 383.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:39.939852+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 90.0,
+      "power_draw_w": 383.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:42.067093+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 384.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:44.196307+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 389.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:46.320976+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 391.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:48.444758+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 371.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:50.583092+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 388.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:52.709737+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 397.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:54.836841+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 387.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:56.960875+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 92.0,
+      "power_draw_w": 381.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:54:59.090074+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 390.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:01.221918+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 402.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:03.349693+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 95.0,
+      "power_draw_w": 391.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:05.475846+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 382.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:07.602173+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 95.0,
+      "power_draw_w": 400.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:09.726704+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 93.0,
+      "power_draw_w": 384.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:11.859996+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 406.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:13.986990+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 373.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:16.113310+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 373.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:18.248881+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 380.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:20.374559+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 374.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:22.497545+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 372.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:24.622519+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 99.0,
+      "power_draw_w": 374.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:26.747329+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 373.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:28.879220+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 374.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:31.007765+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 89.0,
+      "power_draw_w": 357.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:33.133139+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 90.0,
+      "power_draw_w": 361.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:35.260409+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 91.0,
+      "power_draw_w": 364.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:37.387431+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 93.0,
+      "power_draw_w": 380.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:39.513128+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 93.0,
+      "power_draw_w": 387.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:41.637438+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 378.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:43.762977+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 95.0,
+      "power_draw_w": 398.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:45.888698+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 91.0,
+      "power_draw_w": 387.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:48.011707+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 399.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:50.136513+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 385.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:52.261894+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 382.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:54.388902+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 390.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:56.518023+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 385.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:55:58.645761+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 382.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:00.770941+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 388.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:02.899171+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 415.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:05.025425+00:00",
+      "vram_gb": 188.73637008666992,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 373.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:07.154155+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 99.0,
+      "power_draw_w": 379.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:09.279801+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 371.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:11.406698+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 99.0,
+      "power_draw_w": 375.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:13.534942+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 99.0,
+      "power_draw_w": 381.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:15.660523+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 92.0,
+      "power_draw_w": 374.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:17.791532+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 89.0,
+      "power_draw_w": 379.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:19.918464+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 89.0,
+      "power_draw_w": 362.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:22.044155+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 90.0,
+      "power_draw_w": 365.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:24.170330+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 90.0,
+      "power_draw_w": 371.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:26.295451+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 90.0,
+      "power_draw_w": 366.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:28.419299+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 79.0,
+      "power_draw_w": 340.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:30.543778+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 93.0,
+      "power_draw_w": 387.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:32.674003+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 93.0,
+      "power_draw_w": 381.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:34.798677+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 93.0,
+      "power_draw_w": 388.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:36.922481+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 371.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:39.060024+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 389.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:41.184815+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 387.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:43.312522+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 394.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:45.442094+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 88.0,
+      "power_draw_w": 372.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:47.570619+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 95.0,
+      "power_draw_w": 393.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:49.697134+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 96.0,
+      "power_draw_w": 393.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:51.833107+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 380.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:53.963968+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 380.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:56.092796+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 394.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:56:58.219183+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 382.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:00.347189+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 399.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:02.470006+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 92.0,
+      "power_draw_w": 382.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:04.594731+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 97.0,
+      "power_draw_w": 393.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:06.722978+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 379.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:08.849080+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 385.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:10.981104+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 386.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:13.105797+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 93.0,
+      "power_draw_w": 382.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:15.230860+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 87.0,
+      "power_draw_w": 368.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:17.358573+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 377.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:19.485843+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 93.0,
+      "power_draw_w": 376.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:21.608195+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 93.0,
+      "power_draw_w": 381.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:23.732795+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 93.0,
+      "power_draw_w": 396.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:25.867778+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 91.0,
+      "power_draw_w": 377.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:27.991776+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 93.0,
+      "power_draw_w": 388.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:30.116846+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 379.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:32.251417+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 88.0,
+      "power_draw_w": 373.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:34.376569+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 387.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:36.501596+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 377.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:38.630023+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 94.0,
+      "power_draw_w": 378.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:40.754497+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 93.0,
+      "power_draw_w": 372.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:42.876984+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 92.0,
+      "power_draw_w": 371.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:45.000907+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 92.0,
+      "power_draw_w": 374.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:47.131792+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 92.0,
+      "power_draw_w": 376.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:49.255755+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 78.0,
+      "power_draw_w": 353.0,
+      "temperature_c": 48.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:51.381483+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 92.0,
+      "power_draw_w": 377.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:53.504857+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 92.0,
+      "power_draw_w": 377.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:55.631590+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 91.0,
+      "power_draw_w": 373.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:57.758008+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 91.0,
+      "power_draw_w": 382.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:57:59.883160+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 90.0,
+      "power_draw_w": 369.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:02.008815+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 95.0,
+      "power_draw_w": 378.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:04.133034+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 372.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:06.255898+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 95.0,
+      "power_draw_w": 377.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:08.384362+00:00",
+      "vram_gb": 188.73832321166992,
+      "gpu_utilization_percent": 99.0,
+      "power_draw_w": 437.0,
+      "temperature_c": 49.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:10.508913+00:00",
+      "vram_gb": 187.88502502441406,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 188.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:12.635920+00:00",
+      "vram_gb": 174.0868682861328,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 152.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:14.763968+00:00",
+      "vram_gb": 174.08690643310547,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 151.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:16.894388+00:00",
+      "vram_gb": 182.24084854125977,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 153.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:19.034890+00:00",
+      "vram_gb": 182.2472152709961,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 229.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:21.162058+00:00",
+      "vram_gb": 189.73261642456055,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 184.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:23.291777+00:00",
+      "vram_gb": 189.73907852172852,
+      "gpu_utilization_percent": 1.0,
+      "power_draw_w": 228.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:25.421307+00:00",
+      "vram_gb": 189.98840713500977,
+      "gpu_utilization_percent": 31.0,
+      "power_draw_w": 213.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:27.558724+00:00",
+      "vram_gb": 190.2270965576172,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 150.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:29.687897+00:00",
+      "vram_gb": 190.2270965576172,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 150.0,
+      "temperature_c": 43.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:31.813065+00:00",
+      "vram_gb": 190.27592849731445,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 150.0,
+      "temperature_c": 43.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:33.943203+00:00",
+      "vram_gb": 190.27592849731445,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 150.0,
+      "temperature_c": 43.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:36.070434+00:00",
+      "vram_gb": 190.59467315673828,
+      "gpu_utilization_percent": 1.0,
+      "power_draw_w": 181.0,
+      "temperature_c": 43.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:38.208877+00:00",
+      "vram_gb": 190.59467315673828,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 185.0,
+      "temperature_c": 43.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:40.332793+00:00",
+      "vram_gb": 190.59467315673828,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 185.0,
+      "temperature_c": 43.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:42.466402+00:00",
+      "vram_gb": 190.59467315673828,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 184.0,
+      "temperature_c": 43.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:44.597209+00:00",
+      "vram_gb": 190.59467315673828,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 184.0,
+      "temperature_c": 42.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:46.724204+00:00",
+      "vram_gb": 190.59467315673828,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 184.0,
+      "temperature_c": 42.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:48.860312+00:00",
+      "vram_gb": 190.56928253173828,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 184.0,
+      "temperature_c": 42.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:50.992807+00:00",
+      "vram_gb": 190.56928253173828,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 184.0,
+      "temperature_c": 42.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:53.118511+00:00",
+      "vram_gb": 191.02625274658203,
+      "gpu_utilization_percent": 1.0,
+      "power_draw_w": 188.0,
+      "temperature_c": 42.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:55.243313+00:00",
+      "vram_gb": 191.00086212158203,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 183.0,
+      "temperature_c": 42.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:57.371829+00:00",
+      "vram_gb": 191.33019256591797,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 306.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:58:59.510665+00:00",
+      "vram_gb": 191.33019256591797,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 310.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:01.636664+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 279.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:03.762250+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 278.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:05.892036+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 281.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:08.020301+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 280.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:10.147970+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 315.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:12.272609+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 99.0,
+      "power_draw_w": 396.0,
+      "temperature_c": 47.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:14.400737+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 281.0,
+      "temperature_c": 44.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:16.527620+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 283.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:18.653291+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 283.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:20.780222+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 314.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:22.911694+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 308.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:25.037892+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 281.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:27.173661+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 281.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:29.299206+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 282.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:31.424433+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 283.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:33.557771+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 310.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:35.685449+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 312.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:37.809824+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 281.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:39.953585+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 278.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:42.099712+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 281.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:44.226634+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 99.0,
+      "power_draw_w": 325.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:46.351371+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 313.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:48.474881+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 278.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:50.598290+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 281.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:52.728246+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 278.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:54.856035+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 282.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:56.992432+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 311.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T14:59:59.118503+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 310.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:01.242006+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 281.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:03.375600+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 282.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:05.501562+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 282.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:07.628588+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 283.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:09.752422+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 314.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:11.878880+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 293.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:14.006299+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 276.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:16.135599+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 284.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:18.262893+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 280.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:20.392654+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 309.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:22.530475+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 314.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:24.656492+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 279.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:26.786157+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 280.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:28.911595+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 285.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:31.039789+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 283.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:33.166606+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 312.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:35.292489+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 326.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:37.418303+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 280.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:39.545214+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 281.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:41.679863+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 279.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:43.810153+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 312.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:45.940317+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 311.0,
+      "temperature_c": 46.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:48.066426+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 282.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:50.197973+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 283.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:52.321725+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 278.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:54.446750+00:00",
+      "vram_gb": 191.37307739257812,
+      "gpu_utilization_percent": 100.0,
+      "power_draw_w": 281.0,
+      "temperature_c": 45.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:56.572874+00:00",
+      "vram_gb": 191.08406829833984,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 185.0,
+      "temperature_c": 43.0
+    },
+    {
+      "timestamp": "2026-06-12T15:00:58.698725+00:00",
+      "vram_gb": 174.0868682861328,
+      "gpu_utilization_percent": 0.0,
+      "power_draw_w": 150.0,
+      "temperature_c": 43.0
+    },
+    {
+      "timestamp": "2026-06-12T15:01:00.825793+00:00",
+      "vram_gb": 174.09242248535156,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 743.0,
+      "temperature_c": 66.0
+    },
+    {
+      "timestamp": "2026-06-12T15:01:02.965555+00:00",
+      "vram_gb": 174.09242248535156,
+      "gpu_utilization_percent": 88.0,
+      "power_draw_w": 693.0,
+      "temperature_c": 66.0
+    },
+    {
+      "timestamp": "2026-06-12T15:01:05.093563+00:00",
+      "vram_gb": 174.09242248535156,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 747.0,
+      "temperature_c": 69.0
+    },
+    {
+      "timestamp": "2026-06-12T15:01:07.221471+00:00",
+      "vram_gb": 174.09242248535156,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 744.0,
+      "temperature_c": 70.0
+    },
+    {
+      "timestamp": "2026-06-12T15:01:09.358778+00:00",
+      "vram_gb": 174.09242248535156,
+      "gpu_utilization_percent": 99.0,
+      "power_draw_w": 744.0,
+      "temperature_c": 70.0
+    },
+    {
+      "timestamp": "2026-06-12T15:01:11.486507+00:00",
+      "vram_gb": 174.09242248535156,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 749.0,
+      "temperature_c": 71.0
+    },
+    {
+      "timestamp": "2026-06-12T15:01:13.613302+00:00",
+      "vram_gb": 174.09242248535156,
+      "gpu_utilization_percent": 99.0,
+      "power_draw_w": 749.0,
+      "temperature_c": 72.0
+    },
+    {
+      "timestamp": "2026-06-12T15:01:15.739098+00:00",
+      "vram_gb": 174.09242248535156,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 748.0,
+      "temperature_c": 72.0
+    },
+    {
+      "timestamp": "2026-06-12T15:01:17.868102+00:00",
+      "vram_gb": 174.09242248535156,
+      "gpu_utilization_percent": 98.0,
+      "power_draw_w": 749.0,
+      "temperature_c": 73.0
+    },
+    {
+      "timestamp": "2026-06-12T15:01:19.993969+00:00",
+      "vram_gb": 174.09242248535156,
+      "gpu_utilization_percent": 11.0,
+      "power_draw_w": 271.0,
+      "temperature_c": 55.0
     }
   ]
 }
