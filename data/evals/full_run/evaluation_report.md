@@ -1,16 +1,16 @@
 # Unified Evaluation Report
 
-Generated: 2026-06-12T14:43:24.545166+00:00
+Generated: 2026-06-12T15:05:33.667784+00:00
 
 ## Hackathon Summary
 
 | Metric | Value |
 | --- | --- |
-| LoRA RCA quality | 4.6 |
-| LoRA severity reasoning | 4.6 |
+| LoRA RCA quality | 4.2 |
+| LoRA severity reasoning | 4.2 |
 | Hallucination score | 1.0 |
 | Best AMD rerank speedup | 6.05x |
-| Report completeness | 71.1% |
+| Report completeness | 72.6% |
 
 ## Executive Summary
 
@@ -32,13 +32,13 @@ This package aggregates evaluation, observability, benchmarking, and reporting a
 
 | Metric | Value |
 | --- | --- |
-| accuracy | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
-| precision | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
-| recall | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
-| f1 | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
-| roc_auc | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
-| pr_auc | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
-| confusion_matrix | NOT AVAILABLE - Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| accuracy | 0.934 |
+| precision | 0.3241758241758242 |
+| recall | 0.8676470588235294 |
+| f1 | 0.47200000000000003 |
+| roc_auc | 0.9710829984167579 |
+| pr_auc | 0.7041717789624794 |
+| confusion_matrix | {"fn": 9, "fp": 123, "tn": 1809, "tp": 59} |
 | shap_global_importance | NOT AVAILABLE - SHAP was not run; no SHAP artifact was found. |
 | shap_local_example | NOT AVAILABLE - SHAP was not run; no SHAP artifact was found. |
 
@@ -69,7 +69,7 @@ This package aggregates evaluation, observability, benchmarking, and reporting a
 | --- | --- |
 | hallucination_score | 1.0 |
 | groundedness | 5.0 |
-| relevance | 4.6 |
+| relevance | 4.2 |
 | citation_accuracy | NOT AVAILABLE - The current judge rubric does not score citation accuracy. |
 | first_token_latency_ms | NOT AVAILABLE - Candidate generation traces do not include first-token latency. |
 | full_response_latency_ms | NOT AVAILABLE - Candidate generation traces do not include aggregate response latency. |
@@ -109,12 +109,12 @@ This package aggregates evaluation, observability, benchmarking, and reporting a
 | --- | --- |
 | base_model | Qwen/Qwen3-4B-Instruct-2507 |
 | lora_model | Qwen/Qwen3-4B-Instruct-2507+data/amd/lora/qwen4b_adapter |
-| adapter_size_mb | 141.22 |
-| train_loss | 0.1870122145116329 |
-| eval_loss | 0.02745771035552025 |
-| train_runtime_seconds | 289.3995 |
+| adapter_size_mb | NOT AVAILABLE - Adapter directory was not found. |
+| train_loss | NOT AVAILABLE - No LoRA training metrics found. |
+| eval_loss | NOT AVAILABLE - No LoRA eval metrics found. |
+| train_runtime_seconds | NOT AVAILABLE - No LoRA train runtime found. |
 | peak_vram_gb | NOT AVAILABLE - LoRA training did not persist peak VRAM in training_metrics.json. |
-| gpu_hours | 0.08038875 |
+| gpu_hours | NOT AVAILABLE - No LoRA train runtime found. |
 | judge_model | Qwen/Qwen3-14B |
 | examples | 10 |
 | successes | 10 |
@@ -140,6 +140,7 @@ Benchmark implementations and precision coverage are included in `evaluation_sum
 - `amd_kernel_speedup.svg`
 - `cable-000-patch_distance-bb12792ea7-annotated.png`
 - `cable-000-patch_distance-bb12792ea7-heatmap.png`
+- `evaluation_completeness.svg`
 - `grid-000-patch_distance-b959c41301-annotated.png`
 - `grid-000-patch_distance-b959c41301-heatmap.png`
 - `llm_judge_scores.svg`
@@ -150,22 +151,16 @@ Benchmark implementations and precision coverage are included in `evaluation_sum
 - `retrieval_corpus_profile.svg`
 - `screw-000-patch_distance-36b875c977-annotated.png`
 - `screw-000-patch_distance-36b875c977-heatmap.png`
+- `telemetry_metrics.svg`
 
 ## Metrics Missing
 
 | Section | Metric | Reason |
 | --- | --- | --- |
 | system_hardware_metrics | system_metrics.runtime.cuda_version | CUDA is not available in the captured runtime. |
-| system_hardware_metrics | system_metrics.timing.training_runtime_seconds | No training command was supplied to run_full_evaluation.py. |
-| system_hardware_metrics | system_metrics.timing.inference_runtime_seconds | No inference command was supplied to run_full_evaluation.py. |
-| system_hardware_metrics | system_metrics.timing.benchmark_runtime_seconds | No benchmark command was supplied to run_full_evaluation.py. |
-| telemetry_model | accuracy | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
-| telemetry_model | precision | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
-| telemetry_model | recall | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
-| telemetry_model | f1 | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
-| telemetry_model | roc_auc | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
-| telemetry_model | pr_auc | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
-| telemetry_model | confusion_matrix | Telemetry model metrics file models/telemetry_metrics.json is not present in this checkout. |
+| system_hardware_metrics | system_metrics.timing.training_runtime_seconds | No training command was wrapped by capture_system_metrics.py. |
+| system_hardware_metrics | system_metrics.timing.inference_runtime_seconds | No inference command was wrapped by capture_system_metrics.py. |
+| system_hardware_metrics | system_metrics.timing.benchmark_runtime_seconds | No benchmark command was wrapped by capture_system_metrics.py. |
 | telemetry_model | shap_global_importance | SHAP was not run; no SHAP artifact was found. |
 | telemetry_model | shap_local_example | SHAP was not run; no SHAP artifact was found. |
 | vision | accuracy | No persisted aggregate vision metrics artifact was found; example heatmaps/overlays were copied when available. |
@@ -193,4 +188,9 @@ Benchmark implementations and precision coverage are included in `evaluation_sum
 | agent_system | failure_breakdown | No persisted agent trace artifact was found. |
 | policy_severity | override_rate | No override log artifact was found. |
 | policy_severity | escalation_rate | No escalation log artifact was found. |
+| lora | adapter_size_mb | Adapter directory was not found. |
+| lora | train_loss | No LoRA training metrics found. |
+| lora | eval_loss | No LoRA eval metrics found. |
+| lora | train_runtime_seconds | No LoRA train runtime found. |
 | lora | peak_vram_gb | LoRA training did not persist peak VRAM in training_metrics.json. |
+| lora | gpu_hours | No LoRA train runtime found. |
