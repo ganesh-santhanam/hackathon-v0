@@ -1,6 +1,6 @@
 # Industrial AI Assistant
 
-![Industrial AI architecture hero](docs/assets/architecture_hero.svg)
+![Industrial AI architecture hero](docs/assets/Architecture.png)
 
 **A local-first industrial incident investigation copilot that connects telemetry, vision, similar-incident memory, root-cause analysis, severity policy, and human approval.**
 
@@ -107,12 +107,12 @@ Telemetry -> Vision -> Incident Memory -> RCA -> Severity -> Human Approval
 
 | Investigation | Visual Inspection | Evaluation |
 | --- | --- | --- |
-| ![Agent trace placeholder](data/evals/full_run/charts/agent_trace_placeholder.svg) | ![Annotated MVTec cable defect](data/vision_examples/cable-000-patch_distance-bb12792ea7-annotated.png) | ![Evaluation completeness](data/evals/full_run/charts/evaluation_completeness.svg) |
+| ![Agent trace placeholder](docs/assets/Workflow%20Trace.png) | ![Annotated MVTec cable defect](data/vision_examples/cable-000-patch_distance-bb12792ea7-annotated.png) | ![Evaluation completeness](docs/assets/evals.png) |
 | Visible workflow trace | Bounding-box style visual evidence | Packaged evaluation coverage |
 
 ## Architecture
 
-![Current implemented architecture](docs/diagrams/current_architecture.svg)
+![Current implemented architecture](docs/assets/architecture_hero.svg)
 
 | Layer | Implementation |
 | --- | --- |
@@ -220,7 +220,7 @@ rocBLAS + Triton
 | Candidates/sec | `30,802,253,299.700` |
 | Top-k overlap | `0.997` |
 
-![ROCm optimization ladder](docs/diagrams/rocm_optimization_ladder.svg)
+![ROCm optimization ladder](docs/assets/Rocm_ladder.png)
 
 ## Tech Stack
 
