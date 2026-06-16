@@ -1,0 +1,1914 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Industrial AI Assistant - Final Technical Report</title>
+  <style>
+:root {
+  color-scheme: light;
+  --ink: #17202a;
+  --muted: #5d6978;
+  --line: #d8dee8;
+  --soft: #f4f7fb;
+  --panel: #ffffff;
+  --accent: #0f766e;
+  --accent-2: #9333ea;
+  --code-bg: #111827;
+  --code-ink: #e5e7eb;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: linear-gradient(180deg, #eef5f8 0, #fff 520px);
+  font: 16px/1.65 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+a { color: #0f5f8f; text-decoration-thickness: 0.08em; text-underline-offset: 0.18em; }
+.shell { display: grid; grid-template-columns: minmax(220px, 280px) minmax(0, 1fr); gap: 36px; max-width: 1380px; margin: 0 auto; padding: 28px; }
+.sidebar { position: sticky; top: 0; align-self: start; max-height: 100vh; padding: 26px 8px 26px 0; overflow: auto; }
+.brand { padding: 20px 18px; border-left: 4px solid var(--accent); background: rgba(255,255,255,.72); box-shadow: 0 16px 50px rgba(15, 42, 58, .08); }
+.brand .eyebrow { margin: 0 0 8px; color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.brand h2 { margin: 0; font-size: 22px; line-height: 1.15; }
+.nav { display: grid; gap: 4px; margin-top: 18px; font-size: 13px; }
+.nav a { display: block; padding: 7px 12px; border-radius: 6px; color: #354253; text-decoration: none; }
+.nav a:hover { background: #e8f3f2; color: #0b4f49; }
+.document { min-width: 0; }
+.article {
+  background: rgba(255,255,255,.96);
+  border: 1px solid rgba(216,222,232,.9);
+  box-shadow: 0 24px 80px rgba(20, 35, 50, .11);
+  padding: clamp(28px, 5vw, 72px);
+}
+h1 { margin: 0 0 8px; font-size: clamp(38px, 5vw, 68px); line-height: 1.02; letter-spacing: 0; color: #0d1b2a; }
+h2 { margin: 60px 0 18px; padding-top: 8px; font-size: clamp(25px, 3vw, 36px); line-height: 1.15; color: #102033; border-top: 1px solid var(--line); }
+h3 { margin: 34px 0 12px; font-size: 22px; line-height: 1.25; color: #14324a; }
+h4 { margin: 26px 0 10px; font-size: 18px; }
+p { margin: 14px 0; max-width: 82ch; }
+.article > p:first-of-type, h1 + h2 + p { color: var(--muted); font-size: 18px; }
+ul, ol { margin: 12px 0 22px; padding-left: 26px; max-width: 82ch; }
+li { margin: 5px 0; }
+strong { color: #111827; }
+code { padding: .14em .34em; border-radius: 5px; background: #edf2f7; color: #8a1c4a; font-size: .92em; }
+pre { margin: 22px 0; padding: 18px 20px; overflow: auto; border-radius: 8px; background: var(--code-bg); color: var(--code-ink); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+pre code { padding: 0; background: transparent; color: inherit; font-size: 14px; line-height: 1.55; white-space: pre-wrap; word-break: break-word; }
+.table-wrap { margin: 22px 0 30px; overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+table { width: 100%; border-collapse: collapse; min-width: 680px; font-size: 14px; }
+th { background: #edf5f5; color: #18323b; font-weight: 800; text-align: left; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tbody tr:nth-child(even) { background: #fafbfd; }
+tbody tr:hover { background: #f1f7f7; }
+.align-right { text-align: right; white-space: nowrap; }
+.align-center { text-align: center; }
+.report-figure { margin: 30px 0 8px; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.report-figure img { display: block; width: 100%; max-height: 680px; object-fit: contain; }
+.caption { margin: 6px 0 26px; color: var(--muted); font-size: 14px; font-style: italic; }
+.page-break { height: 22px; margin: 44px 0; border-top: 2px solid #dce7ee; }
+#table-of-contents + ul { columns: 2; column-gap: 36px; }
+#what-was-actually-built + p + ul li, #what-was-actually-built + p + ul + p + ul li { list-style: none; margin-left: -22px; }
+@media (max-width: 980px) { .shell { display: block; padding: 0; } .sidebar { position: static; max-height: none; padding: 0; } .brand { border-left: 0; border-bottom: 4px solid var(--accent); } .nav { display: none; } .article { border: 0; box-shadow: none; padding: 24px; } #table-of-contents + ul { columns: 1; } table { min-width: 560px; } }
+@media print { body { background: #fff; font-size: 12px; } .shell { display: block; max-width: none; padding: 0; } .sidebar { display: none; } .article { box-shadow: none; border: 0; padding: 0; } a { color: inherit; text-decoration: none; } .page-break { break-after: page; border: 0; height: 0; margin: 0; } h2 { break-after: avoid; } pre, table, figure { break-inside: avoid; } }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Report navigation">
+      <div class="brand">
+        <p class="eyebrow">Final Technical Report</p>
+        <h2>Industrial AI Assistant</h2>
+      </div>
+      <nav class="nav"><a href="#final-technical-report">Final Technical Report</a>
+<a href="#table-of-contents">Table of Contents</a>
+<a href="#executive-summary">Executive Summary</a>
+<a href="#what-was-actually-built">What Was Actually Built</a>
+<a href="#key-contributions">Key Contributions</a>
+<a href="#industrial-ai-assistant">Industrial AI Assistant</a>
+<a href="#technical-innovations">Technical Innovations</a>
+<a href="#at-a-glance">At a Glance</a>
+<a href="#project-thesis">Project Thesis</a>
+<a href="#why-not-use-llm-alone">Why Not Use LLM Alone?</a>
+<a href="#system-overview">System Overview</a>
+<a href="#industrial-investigation-lifecycle">Industrial Investigation Lifecycle</a>
+<a href="#investigation-timeline">Investigation Timeline</a>
+<a href="#why-this-is-a-system-not-a-chatbot">Why This Is A System, Not A Chatbot</a>
+<a href="#business-relevance">Business Relevance</a>
+<a href="#why-amd-cloud">Why AMD Cloud</a>
+<a href="#why-retrieval-matters-more-than-fine-tuning">Why Retrieval Matters More Than Fine-Tuning</a>
+<a href="#engineering-tradeoffs">Engineering Tradeoffs</a>
+<a href="#engineering-lessons-learned">Engineering Lessons Learned</a>
+<a href="#data-and-intelligence-layers">Data and Intelligence Layers</a>
+<a href="#agent-workflow">Agent Workflow</a>
+<a href="#evaluation-stack">Evaluation Stack</a>
+<a href="#rocm-optimization">ROCm Optimization</a>
+<a href="#production-scaling-vision">Production Scaling Vision</a>
+<a href="#langsmith-future-stack">LangSmith Future Stack</a>
+<a href="#security-and-governance">Security and Governance</a>
+<a href="#limitations">Limitations</a>
+<a href="#roadmap">Roadmap</a>
+<a href="#results-snapshot">Results Snapshot</a>
+<a href="#conclusion">Conclusion</a>
+<a href="#appendix-a-generated-diagrams-and-chart-assets">Appendix A: Generated Diagrams and Chart Assets</a>
+<a href="#appendix-b-component-inventory">Appendix B: Component Inventory</a>
+<a href="#appendix-c-key-file-paths">Appendix C: Key File Paths</a>
+<a href="#appendix-d-detailed-metric-tables">Appendix D: Detailed Metric Tables</a>
+<a href="#appendix-e-thresholds-and-policy-details">Appendix E: Thresholds and Policy Details</a>
+<a href="#appendix-f-missing-metrics">Appendix F: Missing Metrics</a>
+<a href="#appendix-g-verification-commands-used-for-v2">Appendix G: Verification Commands Used For v2</a></nav>
+    </aside>
+    <main class="document">
+      <article class="article">
+<h1 id="industrial-ai-assistant">Industrial AI Assistant</h1>
+<h2 id="final-technical-report">Final Technical Report</h2>
+<p class="caption"><em>Judge-Facing and Portfolio Review Edition</em></p>
+<p>Generated from repository artifacts on 2026-06-12.</p>
+<p>Primary thesis:</p>
+<pre><code class="language-text">Reliable industrial AI = predictive signals + visual evidence + incident memory + policy + human oversight.</code></pre>
+<p>Prepared for:</p>
+<ul><li>Hackathon judges</li><li>Engineering hiring managers</li><li>ML engineers</li><li>Platform and applied AI engineers</li></ul>
+<p>Scope note: this document separates the implemented local-first demo from the future production architecture. It does not change metrics, invent results, or claim production impact.</p>
+<div class="page-break" aria-hidden="true"></div>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul><li><a href="#executive-summary">Executive Summary</a></li><li><a href="#what-was-actually-built">What Was Actually Built</a></li><li><a href="#key-contributions">Key Contributions</a></li><li><a href="#industrial-ai-assistant">Industrial AI Assistant</a></li><li><a href="#technical-innovations">Technical Innovations</a></li><li><a href="#at-a-glance">At a Glance</a></li><li><a href="#project-thesis">Project Thesis</a></li><li><a href="#why-not-use-llm-alone">Why Not Use LLM Alone?</a></li><li><a href="#system-overview">System Overview</a></li><li><a href="#investigation-timeline">Investigation Timeline</a></li><li><a href="#why-this-is-a-system-not-a-chatbot">Why This Is A System, Not A Chatbot</a></li><li><a href="#business-relevance">Business Relevance</a></li><li><a href="#why-amd-cloud">Why AMD Cloud</a></li><li><a href="#why-retrieval-matters-more-than-fine-tuning">Why Retrieval Matters More Than Fine-Tuning</a></li><li><a href="#engineering-tradeoffs">Engineering Tradeoffs</a></li><li><a href="#engineering-lessons-learned">Engineering Lessons Learned</a></li><li><a href="#data-and-intelligence-layers">Data and Intelligence Layers</a></li><li><a href="#agent-workflow">Agent Workflow</a></li><li><a href="#evaluation-stack">Evaluation Stack</a></li><li><a href="#rocm-optimization">ROCm Optimization</a></li><li><a href="#production-scaling-vision">Production Scaling Vision</a></li><li><a href="#langsmith-future-stack">LangSmith Future Stack</a></li><li><a href="#security-and-governance">Security and Governance</a></li><li><a href="#limitations">Limitations</a></li><li><a href="#roadmap">Roadmap</a></li><li><a href="#conclusion">Conclusion</a></li><li><a href="#appendix-a-generated-diagrams-and-chart-assets">Appendices</a></li></ul>
+<div class="page-break" aria-hidden="true"></div>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>The Industrial AI Assistant is a local-first industrial incident investigation copilot. It combines telemetry prediction, visual inspection, similar-incident retrieval, RAG answer generation, deterministic severity policy, human approval, LangGraph orchestration, Streamlit UX, LLM-as-judge evaluation, LoRA experimentation, AMD MI300X runtime telemetry, and ROCm reranking benchmarks.</p>
+<p>Metric policy: this report does not invent metrics. Exact measured values are used where artifacts exist. Missing metrics remain explicitly marked as <code>NOT AVAILABLE</code>.</p>
+<p>Metric interpretation:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Metric Class</th>
+<th>Interpretation</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Current Measured Run</td>
+<td>Metrics generated from the final evaluation package and AMD experiments.</td>
+</tr>
+<tr>
+<td>Historical Development Results</td>
+<td>Metrics generated during iterative development and retained for context.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Historical results are clearly labeled and are not mixed with current measured runs.</p>
+<p>The project demonstrates a practical applied AI pattern for industrial operations: AI should not be a single chatbot bolted onto plant data. It should be an evidence-driven workflow that connects machine telemetry, inspection images, prior incidents, operational policy, and human review. The project deliberately favors system design, evaluation, and governance over model-centric experimentation.</p>
+<p>Current working flow:</p>
+<pre><code class="language-text">Telemetry or plant event
+  -&gt; telemetry_agent: XGBoost failure probability and evidence
+  -&gt; vision_agent: optional MVTec defect detection and localization
+  -&gt; memory_agent: Qdrant similar incident retrieval with telemetry-aware reranking
+  -&gt; rag_agent: deterministic or Ollama-backed grounded answer with fallback
+  -&gt; severity_agent: deterministic SEV policy
+  -&gt; approval_agent: JSON-backed approval state
+  -&gt; Streamlit dashboard and evaluation artifacts</code></pre>
+<p>Measured highlights:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Area</th>
+<th class="align-right">Result</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Historical telemetry ROC AUC</td>
+<td class="align-right"><code>0.97</code></td>
+</tr>
+<tr>
+<td>Historical telemetry average precision</td>
+<td class="align-right"><code>0.70</code></td>
+</tr>
+<tr>
+<td>Incident corpus</td>
+<td class="align-right"><code>300</code> documents from <code>100</code> AI4I failure rows</td>
+</tr>
+<tr>
+<td>Qdrant vector size</td>
+<td class="align-right"><code>384</code> cosine embeddings</td>
+</tr>
+<tr>
+<td>Severity scenario accuracy</td>
+<td class="align-right"><code>1.0</code> across <code>12</code> scenarios</td>
+</tr>
+<tr>
+<td>LLM-as-judge set</td>
+<td class="align-right"><code>10</code> incidents, <code>20</code> candidate responses, <code>20</code> judge records</td>
+</tr>
+<tr>
+<td>LoRA RCA quality</td>
+<td class="align-right"><code>4.2</code> vs base <code>3.7</code></td>
+</tr>
+<tr>
+<td>LoRA severity reasoning</td>
+<td class="align-right"><code>4.2</code> vs base <code>3.8</code></td>
+</tr>
+<tr>
+<td>Hallucination score</td>
+<td class="align-right"><code>1.0</code> base and LoRA, lower is better</td>
+</tr>
+<tr>
+<td>Best ROCm speedup</td>
+<td class="align-right"><code>6.2×</code></td>
+</tr>
+<tr>
+<td>Best ROCm latency</td>
+<td class="align-right"><code>1.04 ms</code></td>
+</tr>
+<tr>
+<td>Evaluation package completeness</td>
+<td class="align-right"><code>70.5%</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Telemetry performance metrics were generated during development and are retained as historical benchmark results. The final packaged evaluation run did not include the original telemetry metrics artifact and therefore marks those fields unavailable.</p>
+<p>The project is intentionally not a production deployment. The implemented system is a reliable local demo using JSON files, generated artifacts, local Qdrant, deterministic fallbacks, and optional local model serving. The production vision is included separately and clearly labeled as future work.</p>
+<div class="page-break" aria-hidden="true"></div>
+<h2 id="what-was-actually-built">What Was Actually Built</h2>
+<p>This project includes implemented demo components, historical experiments, and future production architecture. The implemented system is the local-first investigation workflow and evaluation package.</p>
+<p>Implemented:</p>
+<ul><li>✓ XGBoost telemetry model</li><li>✓ Vision anomaly detection</li><li>✓ Qdrant memory</li><li>✓ Telemetry-aware reranking</li><li>✓ LangGraph workflow</li><li>✓ Severity policy engine</li><li>✓ Human approval workflow</li><li>✓ Streamlit dashboard</li><li>✓ Evaluation framework</li><li>✓ LoRA training on AMD MI300X</li><li>✓ LLM-as-judge evaluation</li><li>✓ ROCm optimization benchmark</li></ul>
+<p>Not Implemented:</p>
+<ul><li>✗ Kafka</li><li>✗ Flink</li><li>✗ Snowflake</li><li>✗ LangSmith</li><li>✗ Production deployment</li><li>✗ SHAP explainability</li></ul>
+<div class="page-break" aria-hidden="true"></div>
+<h2 id="key-contributions">Key Contributions</h2>
+<p>This project contributes five capabilities:</p>
+<ol><li>Industrial investigation workflow combining telemetry, vision, retrieval, policy, and approval.</li><li>Retrieval-first architecture where incident memory is the factual authority.</li><li>Unified evaluation framework covering telemetry, vision, retrieval, LoRA, ROCm, and governance.</li><li>AMD MI300X experimentation including LoRA training, LLM-as-judge evaluation, and ROCm optimization.</li><li>Production architecture roadmap from local prototype to enterprise deployment.</li></ol>
+<h2 id="industrial-ai-assistant">Industrial AI Assistant</h2>
+<pre><code class="language-text">Industrial AI Assistant
+
+Telemetry
+    \
+     \
+Vision ----&gt; Incident Investigation ----&gt; Human Approval
+     /
+    /
+Memory
+
+        |
+        v
+
+ Root Cause
+ Severity
+ Actions
+
+        |
+        v
+
+ AMD Optimized Evaluation</code></pre>
+<h2 id="technical-innovations">Technical Innovations</h2>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Innovation</th>
+<th>Why It Matters</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Telemetry-aware reranking</td>
+<td>Uses operational context beyond vector similarity</td>
+</tr>
+<tr>
+<td>Retrieval-first design</td>
+<td>Reduces stale model knowledge</td>
+</tr>
+<tr>
+<td>Deterministic severity engine</td>
+<td>Auditable governance</td>
+</tr>
+<tr>
+<td>Human approval workflow</td>
+<td>Safe operational deployment</td>
+</tr>
+<tr>
+<td>Unified evaluation package</td>
+<td>Reproducible assessment</td>
+</tr>
+<tr>
+<td>ROCm kernel optimization</td>
+<td>Demonstrates hardware-aware engineering</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break" aria-hidden="true"></div>
+<h2 id="at-a-glance">At a Glance</h2>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Category</th>
+<th>Summary</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Problem</td>
+<td>Industrial incidents require fast, evidence-grounded investigation across telemetry, visual inspection, prior incidents, policy, and approval state. A generic chatbot cannot reliably own that workflow.</td>
+</tr>
+<tr>
+<td>Solution</td>
+<td>A local-first investigation assistant that sequences telemetry prediction, visual defect detection, Qdrant incident memory, RAG answer generation, deterministic severity policy, and human approval.</td>
+</tr>
+<tr>
+<td>Inputs</td>
+<td>AI4I-style telemetry, optional MVTec inspection image, generated incident corpus, local Qdrant index, evaluation artifacts, AMD benchmark artifacts.</td>
+</tr>
+<tr>
+<td>Models</td>
+<td>XGBoost telemetry classifier; MVTec comparison, autoencoder, and ResNet vision detectors; <code>sentence-transformers/all-MiniLM-L6-v2</code> embeddings; optional Ollama RAG; Qwen LoRA and judge artifacts.</td>
+</tr>
+<tr>
+<td>Evaluation</td>
+<td>Historical telemetry metrics, vision baseline metrics, deterministic severity scenarios, LLM-as-judge, LoRA comparison, ROCm kernel benchmarks, hardware telemetry, and full-run coverage report.</td>
+</tr>
+<tr>
+<td>AMD Result</td>
+<td>Best ROCm kernel comparison result: <code>rocblas_plus_triton_score</code> BF16 at <code>1.04 ms</code>, <code>30802253299.70</code> candidates/s, <code>6.2×</code> speedup, <code>1.00</code> top-k overlap.</td>
+</tr>
+<tr>
+<td>Production Vision</td>
+<td>Kafka or managed streams, Flink/Spark, feature store, lakehouse/Snowflake, shared vector DB, model gateway, policy service, approval workflow, audit logs, and LangSmith/OpenTelemetry observability.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Key positioning:</p>
+<ul><li>Retrieval and incident memory are the factual authority.</li><li>LoRA is domain adaptation, not the main knowledge store.</li><li>Deterministic policy owns severity.</li><li>Human approval gates high-impact recommendations.</li><li>ROCm/Triton is the AMD-specific performance optimization path.</li></ul>
+<div class="page-break" aria-hidden="true"></div>
+<h2 id="project-thesis">Project Thesis</h2>
+<p>Industrial AI needs telemetry, vision, retrieval, policy, and human approval. A single chatbot is not enough.</p>
+<p>In industrial operations, incidents are multi-evidence events. A motor fault, fan issue, cable defect, or thermal anomaly is rarely explained by one text prompt. Operators need to know what changed in the telemetry, whether inspection imagery shows a defect, whether similar incidents happened before, what the policy says, and whether the recommended action needs human approval.</p>
+<p>The thesis of this project is:</p>
+<pre><code class="language-text">Reliable industrial AI = predictive signals + visual evidence + incident memory + policy + human oversight.</code></pre>
+<p>The objective is not to replace engineers. The objective is to assemble evidence and reduce investigation time before a human decision is made.</p>
+<p>The project therefore separates the work into specialized stages:</p>
+<ul><li><strong>Telemetry:</strong> XGBoost is used for structured machine risk because tabular supervised learning is the right tool for AI4I-style data.</li><li><strong>Vision:</strong> MVTec image checks provide defect evidence, heatmaps, and bounding boxes.</li><li><strong>Retrieval:</strong> Qdrant memory brings prior incidents into the current investigation.</li><li><strong>RAG:</strong> the answer layer drafts root cause and action recommendations from evidence, with deterministic fallback.</li><li><strong>Policy:</strong> severity is assigned by deterministic rules rather than by model opinion.</li><li><strong>Human approval:</strong> SEV1 actions are gated by a review state.</li></ul>
+<p>This architecture makes the assistant auditable. Each stage has a bounded responsibility, visible output, and testable behavior.</p>
+<h2 id="why-not-use-llm-alone">Why Not Use LLM Alone?</h2>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Approach</th>
+<th>Limitation</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Pure chatbot</td>
+<td>No telemetry awareness</td>
+</tr>
+<tr>
+<td>Pure RAG</td>
+<td>No predictive capability</td>
+</tr>
+<tr>
+<td>Pure ML model</td>
+<td>No explanation layer</td>
+</tr>
+<tr>
+<td>This architecture</td>
+<td>Combines prediction, retrieval, explanation, policy, approval</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="system-overview">System Overview</h2>
+<p>Current architecture diagram:</p>
+<figure class="report-figure"><img src="diagrams/current_architecture.svg" alt="Current implemented architecture" loading="lazy"></figure>
+<p class="caption">Figure 1. Current implemented local-first architecture. Source Mermaid: <code>docs/diagrams/current_architecture.mmd</code>. Rendered SVG: <code>docs/diagrams/current_architecture.svg</code>.</p>
+<p>Implemented component inventory:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Layer</th>
+<th>Implemented Component</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Telemetry</td>
+<td>XGBoost pipeline</td>
+<td>Predict machine failure probability and risk level</td>
+</tr>
+<tr>
+<td>Vision</td>
+<td>Comparison, autoencoder, ResNet detector</td>
+<td>Detect and localize visual anomalies</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>Local Qdrant with MiniLM embeddings</td>
+<td>Retrieve similar incident reports, RCA notes, and maintenance notes</td>
+</tr>
+<tr>
+<td>RAG</td>
+<td>Deterministic answer plus optional Ollama JSON response</td>
+<td>Produce grounded RCA and action recommendation</td>
+</tr>
+<tr>
+<td>Policy</td>
+<td>Deterministic severity engine</td>
+<td>Assign SEV1, SEV2, or SEV3</td>
+</tr>
+<tr>
+<td>Approval</td>
+<td>JSON approval records</td>
+<td>Gate SEV1 actions through human review</td>
+</tr>
+<tr>
+<td>Orchestration</td>
+<td>LangGraph with sequential fallback</td>
+<td>Keep investigation stages visible</td>
+</tr>
+<tr>
+<td>UX</td>
+<td>Streamlit dashboard</td>
+<td>Demo investigation, evaluation, policy, and stream views</td>
+</tr>
+<tr>
+<td>Evaluation</td>
+<td>Unified artifact package</td>
+<td>Aggregate metrics, charts, missing metric reasons</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>LoRA and ROCm benchmark scripts</td>
+<td>Demonstrate MI300X-oriented experimentation</td>
+</tr>
+</tbody>
+</table></div>
+<p>The architecture is deliberately local-first. It proves the investigation loop without requiring distributed infrastructure. Kafka, Flink, Spark, Snowflake, Kubernetes, Postgres, and cloud services are future production elements, not current implementation dependencies.</p>
+<div class="page-break" aria-hidden="true"></div>
+<h2 id="industrial-investigation-lifecycle">Industrial Investigation Lifecycle</h2>
+<pre><code class="language-text">Machine Alert
+      ↓
+Telemetry Risk Assessment
+      ↓
+Visual Inspection
+      ↓
+Incident Memory Retrieval
+      ↓
+Root Cause Analysis
+      ↓
+Severity Assignment
+      ↓
+Human Approval
+      ↓
+Operator Action</code></pre>
+<h2 id="investigation-timeline">Investigation Timeline</h2>
+<p>The demo investigation is designed to read like an operations timeline rather than a chat transcript:</p>
+<pre><code class="language-text">Machine alert
+  -&gt; telemetry risk
+  -&gt; visual defect
+  -&gt; similar incidents retrieved
+  -&gt; RCA generated
+  -&gt; severity assigned
+  -&gt; human approval required</code></pre>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Step</th>
+<th>System Behavior</th>
+<th>Why It Matters</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Machine alert</td>
+<td>Plant event or AI4I-style telemetry row starts the investigation.</td>
+<td>The assistant begins from machine evidence, not from a generic user prompt.</td>
+</tr>
+<tr>
+<td>Telemetry risk</td>
+<td>XGBoost returns failure probability, risk band, feature importance, and evidence strings.</td>
+<td>Supervised tabular prediction gives structured risk scoring.</td>
+</tr>
+<tr>
+<td>Visual defect</td>
+<td>Optional MVTec image inspection detects a defect and can produce heatmap and bounding box artifacts.</td>
+<td>Visual evidence makes the investigation inspectable.</td>
+</tr>
+<tr>
+<td>Similar incidents retrieved</td>
+<td>Qdrant retrieves incident reports, RCA reports, and maintenance notes; telemetry-aware reranking adds match reasons.</td>
+<td>Incident memory is the factual authority for changing operational facts.</td>
+</tr>
+<tr>
+<td>RCA generated</td>
+<td>Deterministic RAG or optional Ollama synthesis drafts root cause and recommended action from retrieved evidence.</td>
+<td>The answer is grounded and fallback-safe.</td>
+</tr>
+<tr>
+<td>Severity assigned</td>
+<td>Deterministic policy assigns SEV1, SEV2, or SEV3.</td>
+<td>Policy is auditable and testable.</td>
+</tr>
+<tr>
+<td>Human approval required</td>
+<td>SEV1 creates a pending approval record.</td>
+<td>High-impact action remains human-controlled.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Example defect explainability visual:</p>
+<figure class="report-figure"><img src="../data/evals/full_run/charts/cable-000-patch_distance-bb12792ea7-heatmap.png" alt="Cable defect heatmap" loading="lazy"></figure>
+<p class="caption">Figure 2. Example visual anomaly heatmap copied into the full evaluation package.</p>
+<figure class="report-figure"><img src="../data/evals/full_run/charts/cable-000-patch_distance-bb12792ea7-annotated.png" alt="Cable defect overlay" loading="lazy"></figure>
+<p class="caption">Figure 3. Example annotated visual inspection overlay with approximate anomaly region.</p>
+<div class="page-break" aria-hidden="true"></div>
+<h2 id="why-this-is-a-system-not-a-chatbot">Why This Is A System, Not A Chatbot</h2>
+<p>This project is not a wrapper around a text model. It is a composed industrial AI workflow with bounded responsibilities:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Capability</th>
+<th>Implemented Role</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Supervised telemetry prediction</td>
+<td>XGBoost predicts failure probability from structured AI4I telemetry and exposes feature importances.</td>
+</tr>
+<tr>
+<td>Visual evidence</td>
+<td>MVTec detectors provide defect flags, anomaly scores, heatmaps, and annotated overlays.</td>
+</tr>
+<tr>
+<td>Retrieval grounding</td>
+<td>Qdrant incident memory retrieves similar prior incidents; this is the factual authority.</td>
+</tr>
+<tr>
+<td>Deterministic policy</td>
+<td>Severity assignment is implemented as testable code, not model opinion.</td>
+</tr>
+<tr>
+<td>Human approval</td>
+<td>SEV1 incidents require an explicit approval state.</td>
+</tr>
+<tr>
+<td>Evaluation harness</td>
+<td>The project packages telemetry, policy, LLM judge, LoRA, ROCm, hardware, and missing-metric reports.</td>
+</tr>
+<tr>
+<td>AMD optimization</td>
+<td>ROCm, rocBLAS, Triton, BF16, FP16, and FP8 benchmark paths show platform-specific performance work.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The LLM layer is useful, but it is not trusted as the sole source of truth. It drafts explanations from retrieved evidence and falls back to deterministic behavior when unavailable.</p>
+<div class="page-break" aria-hidden="true"></div>
+<h2 id="business-relevance">Business Relevance</h2>
+<p>The project targets operational problems that matter to industrial teams:</p>
+<ul><li><strong>Downtime:</strong> earlier detection and faster triage can reduce avoidable stoppage.</li><li><strong>MTTR:</strong> similar incident retrieval reduces time spent searching prior RCA notes.</li><li><strong>Maintenance efficiency:</strong> recommended actions are linked to telemetry, visual evidence, and historical failures.</li><li><strong>Knowledge retention:</strong> generated incident memory and approval records keep institutional knowledge available.</li><li><strong>Governance:</strong> deterministic policy and approval records keep high-impact actions under human control.</li></ul>
+<p>No production business impact metrics are claimed. The evaluation package labels business impact as illustrative only.</p>
+<h2 id="why-amd-cloud">Why AMD Cloud</h2>
+<h3 id="amd-cloud-contribution-summary">AMD Cloud Contribution Summary</h3>
+<p>AMD Cloud enabled four capabilities that would have been difficult to execute on a consumer workstation:</p>
+<ul><li>BF16 LoRA training on Qwen3-4B</li><li>Qwen3-14B LLM-as-Judge evaluation</li><li>MI300X hardware telemetry capture</li><li>ROCm optimization benchmarking using rocBLAS and Triton</li></ul>
+<p>Outcome:</p>
+<ul><li>LoRA improved RCA quality and severity reasoning.</li><li>ROCm optimization achieved 6.2× speedup over the PyTorch FP32 eager baseline while maintaining high ranking agreement.</li></ul>
+<p>AMD Cloud is relevant because this project includes both model adaptation and kernel-level retrieval acceleration work. The AMD path is not a branding layer; it is tied to measured artifacts in the repository.</p>
+<h3 id="bf16-lora">BF16 LoRA</h3>
+<p>The AMD LoRA experiment path uses BF16 for LoRA training, candidate generation, and vLLM judge serving. BF16 is a practical precision choice for MI300X-class hardware because it gives reduced memory pressure and strong matrix throughput while retaining a wider exponent range than FP16.</p>
+<p>Packaged full-run LoRA metrics:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Metric</th>
+<th class="align-right">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>base_model</td>
+<td class="align-right"><code>Qwen/Qwen3-4B-Instruct-2507</code></td>
+</tr>
+<tr>
+<td>lora_model</td>
+<td class="align-right"><code>Qwen/Qwen3-4B-Instruct-2507+data/amd/lora/qwen4b_adapter</code></td>
+</tr>
+<tr>
+<td>adapter_size_mb</td>
+<td class="align-right"><code>141.22</code></td>
+</tr>
+<tr>
+<td>train_loss</td>
+<td class="align-right"><code>0.19</code></td>
+</tr>
+<tr>
+<td>eval_loss</td>
+<td class="align-right"><code>0.03</code></td>
+</tr>
+<tr>
+<td>train_runtime_seconds</td>
+<td class="align-right"><code>288.47</code></td>
+</tr>
+<tr>
+<td>gpu_hours</td>
+<td class="align-right"><code>0.08</code></td>
+</tr>
+<tr>
+<td>examples</td>
+<td class="align-right"><code>10</code></td>
+</tr>
+<tr>
+<td>successes</td>
+<td class="align-right"><code>10</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Important artifact caveat: the checked-out <code>data/amd/lora/training_metrics.json</code> is a Gemma dry-run artifact with <code>8</code> train examples and <code>2</code> eval examples. The measured Qwen LoRA values above come from <code>data/evals/full_run/evaluation_summary.json</code>.</p>
+<h3 id="qwen3-14b-judge">Qwen3-14B Judge</h3>
+<p>The LLM-as-judge evaluation used <code>Qwen/Qwen3-14B</code> through an OpenAI-compatible endpoint at <code>http://localhost:8000/v1/chat/completions</code>.</p>
+<p>Judge setup:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Field</th>
+<th>Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Judge model</td>
+<td><code>Qwen/Qwen3-14B</code></td>
+</tr>
+<tr>
+<td>Provider</td>
+<td><code>openai-compatible</code></td>
+</tr>
+<tr>
+<td>Candidate base model</td>
+<td><code>Qwen/Qwen3-4B-Instruct-2507</code></td>
+</tr>
+<tr>
+<td>Candidate LoRA model</td>
+<td><code>Qwen/Qwen3-4B-Instruct-2507+data/amd/lora/qwen4b_adapter</code></td>
+</tr>
+<tr>
+<td>Examples evaluated</td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td>Candidate responses</td>
+<td><code>20</code></td>
+</tr>
+<tr>
+<td>Judge records</td>
+<td><code>20</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Judge results:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Metric</th>
+<th class="align-right">Base</th>
+<th class="align-right">LoRA</th>
+<th class="align-right">Improvement</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>hallucination_score</td>
+<td class="align-right"><code>1.0</code></td>
+<td class="align-right"><code>1.0</code></td>
+<td class="align-right"><code>0.0</code></td>
+</tr>
+<tr>
+<td>rca_quality</td>
+<td class="align-right"><code>3.7</code></td>
+<td class="align-right"><code>4.2</code></td>
+<td class="align-right"><code>13.51</code></td>
+</tr>
+<tr>
+<td>actionability</td>
+<td class="align-right"><code>4.4</code></td>
+<td class="align-right"><code>4.1</code></td>
+<td class="align-right"><code>-6.82</code></td>
+</tr>
+<tr>
+<td>severity_reasoning</td>
+<td class="align-right"><code>3.8</code></td>
+<td class="align-right"><code>4.2</code></td>
+<td class="align-right"><code>10.53</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>The chart asset <code>data/evals/full_run/charts/report_v2_lora_improvement.svg</code> visualizes this comparison.</p>
+<figure class="report-figure"><img src="../data/evals/full_run/charts/report_v2_lora_improvement.svg" alt="LoRA judge score change" loading="lazy"></figure>
+<p class="caption">Figure 4. LoRA changed judge-scored RCA quality, severity reasoning, hallucination score, and actionability. Source: <code>data/evals/summary.json</code>.</p>
+<h3 id="rocm-benchmark">ROCm Benchmark</h3>
+<p>The ROCm benchmark demonstrates that a retrieval-related workload can be optimized beyond PyTorch eager execution. The best measured kernel comparison result was:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Field</th>
+<th class="align-right">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>implementation</td>
+<td class="align-right"><code>rocblas_plus_triton_score</code></td>
+</tr>
+<tr>
+<td>precision</td>
+<td class="align-right"><code>bf16</code></td>
+</tr>
+<tr>
+<td>latency_ms</td>
+<td class="align-right"><code>1.04 ms</code></td>
+</tr>
+<tr>
+<td>candidates/s</td>
+<td class="align-right"><code>30802253299.70</code></td>
+</tr>
+<tr>
+<td>speedup_vs_baseline</td>
+<td class="align-right"><code>6.2×</code></td>
+</tr>
+<tr>
+<td>top_k_overlap_vs_fp32</td>
+<td class="align-right"><code>1.00</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>The ROCm optimization ladder is stored at <code>docs/diagrams/rocm_optimization_ladder.mmd</code>, and the chart asset is <code>data/evals/full_run/charts/report_v2_rocm_speedup_ladder.svg</code>.</p>
+<figure class="report-figure"><img src="../data/evals/full_run/charts/report_v2_rocm_speedup_ladder.svg" alt="ROCm speedup ladder" loading="lazy"></figure>
+<p class="caption">Figure 5. ROCm rerank optimization ladder from PyTorch eager baseline to rocBLAS plus Triton BF16.</p>
+<h3 id="mi300x-hardware-telemetry">MI300X Hardware Telemetry</h3>
+<p>The full evaluation package captured AMD runtime telemetry:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Metric</th>
+<th class="align-right">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>GPU memory</td>
+<td class="align-right"><code>191.98 GB</code></td>
+</tr>
+<tr>
+<td>peak_vram_gb</td>
+<td class="align-right"><code>191.37</code></td>
+</tr>
+<tr>
+<td>average_vram_gb</td>
+<td class="align-right"><code>187.88</code></td>
+</tr>
+<tr>
+<td>peak_gpu_utilization</td>
+<td class="align-right"><code>100.0</code></td>
+</tr>
+<tr>
+<td>average_gpu_utilization</td>
+<td class="align-right"><code>75.85</code></td>
+</tr>
+<tr>
+<td>peak_power_draw</td>
+<td class="align-right"><code>749.0 W</code></td>
+</tr>
+<tr>
+<td>average_power_draw</td>
+<td class="align-right"><code>330.63 W</code></td>
+</tr>
+<tr>
+<td>peak_temperature</td>
+<td class="align-right"><code>73.0 C</code></td>
+</tr>
+<tr>
+<td>average_temperature</td>
+<td class="align-right"><code>46.38 C</code></td>
+</tr>
+<tr>
+<td>sample_count</td>
+<td class="align-right"><code>232</code></td>
+</tr>
+<tr>
+<td>wall_clock_runtime_seconds</td>
+<td class="align-right"><code>493.96</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>The GPU telemetry chart is stored at <code>data/evals/full_run/charts/report_v2_amd_gpu_utilization.svg</code>.</p>
+<figure class="report-figure"><img src="../data/evals/full_run/charts/report_v2_amd_gpu_utilization.svg" alt="AMD GPU utilization" loading="lazy"></figure>
+<p class="caption">Figure 6. AMD runtime telemetry snapshot from <code>data/evals/full_run/system_metrics.json</code>.</p>
+<div class="page-break" aria-hidden="true"></div>
+<h2 id="why-retrieval-matters-more-than-fine-tuning">Why Retrieval Matters More Than Fine-Tuning</h2>
+<p>Fine-tuning and retrieval solve different problems. In industrial operations, retrieval is more important for operational facts because plant state, maintenance history, parts, procedures, and recent incidents change over time.</p>
+<p>Fine-tuning adapts:</p>
+<ul><li>style</li><li>domain vocabulary</li><li>response structure</li><li>root-cause reasoning patterns</li><li>severity explanation style</li><li>maintenance-summary phrasing</li></ul>
+<p>Retrieval preserves:</p>
+<ul><li>current incident evidence</li><li>recent RCA notes</li><li>updated maintenance history</li><li>similar incident records</li><li>changing operating conditions</li><li>plant-specific details</li></ul>
+<p>This project uses both, but gives retrieval the factual authority. The model can be adapted to write better industrial explanations, but the answer should still be grounded in retrieved incidents. That design reduces the risk of stale model memory and supports auditability.</p>
+<h3 id="telemetry-aware-reranking">Telemetry-Aware Reranking</h3>
+<p>Vector similarity alone can retrieve incidents that are semantically similar but operationally different.</p>
+<p>Telemetry-aware reranking adjusts retrieval scores using machine context:</p>
+<ul><li>tool wear</li><li>torque</li><li>rotational speed</li><li>process temperature</li><li>air temperature</li></ul>
+<p>This allows retrieval to prioritize incidents that are both semantically and operationally similar.</p>
+<p>The current retrieval layer already captures:</p>
+<ul><li><code>300</code> incident documents</li><li>Qdrant cosine embeddings with vector size <code>384</code></li><li>telemetry-aware reranking</li><li>match reasons such as similar tool wear, torque, rotational speed, and temperature band</li><li>no-evidence fallback behavior</li></ul>
+<p>The LoRA results are useful because RCA quality and severity reasoning improved in the measured run. They do not replace retrieval. They make the answer layer better at using retrieved evidence.</p>
+<h2 id="engineering-tradeoffs">Engineering Tradeoffs</h2>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Decision</th>
+<th>Chosen Path</th>
+<th>Alternative</th>
+<th>Why This Choice Fits The Project</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>XGBoost vs LLM for telemetry</td>
+<td>XGBoost</td>
+<td>Ask an LLM to infer failure risk from tabular inputs</td>
+<td>AI4I is structured supervised data. XGBoost gives calibrated probabilities, threshold metrics, feature importances, and deterministic runtime behavior.</td>
+</tr>
+<tr>
+<td>RAG vs fine-tuning for operational facts</td>
+<td>RAG</td>
+<td>Put all knowledge into the model through fine-tuning</td>
+<td>Operational facts change. Retrieval keeps current incident evidence external, inspectable, and replaceable. Fine-tuning is used for style and reasoning adaptation.</td>
+</tr>
+<tr>
+<td>Deterministic policy vs LLM policy</td>
+<td>Deterministic policy</td>
+<td>Let an LLM assign severity</td>
+<td>Severity is a governance decision. Deterministic rules are testable, auditable, and produced <code>1.0</code> accuracy on <code>12</code> policy scenarios.</td>
+</tr>
+<tr>
+<td>Local-first vs cloud-native</td>
+<td>Local-first for v0</td>
+<td>Build cloud-native platform immediately</td>
+<td>A hackathon demo needs reliability and inspectability. JSON files, local Qdrant, deterministic fallback, and Streamlit prove the workflow with low operational overhead.</td>
+</tr>
+<tr>
+<td>BF16 vs FP16/FP8</td>
+<td>BF16 for final AMD story</td>
+<td>FP16 or FP8</td>
+<td>BF16 was the fastest best-path ROCm result and had top-k overlap <code>1.00</code>. FP16 was close with overlap <code>1.0</code>; FP8 had lower top-k overlap <code>0.96</code> in the kernel comparison and was skipped in the fused sweep.</td>
+</tr>
+<tr>
+<td>rocBLAS+Triton vs PyTorch eager</td>
+<td>rocBLAS plus Triton score combine for benchmark result</td>
+<td>PyTorch eager baseline</td>
+<td>PyTorch eager is simple, but rocBLAS+Triton BF16 measured <code>6.2×</code> speedup on the target benchmark while preserving high top-k overlap.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="page-break" aria-hidden="true"></div>
+<h2 id="engineering-lessons-learned">Engineering Lessons Learned</h2>
+<ol><li>Retrieval quality mattered more than fine tuning.</li><li>Evaluation infrastructure took longer than model training.</li><li>Deterministic policy reduced ambiguity.</li><li>Vision explainability was more persuasive than raw metrics.</li><li>ROCm optimization produced larger gains than model tuning.</li><li>Missing metrics should be reported explicitly.</li></ol>
+<h2 id="data-and-intelligence-layers">Data and Intelligence Layers</h2>
+<h3 id="telemetry-intelligence">Telemetry Intelligence</h3>
+<p>The telemetry model is an XGBoost classifier in a scikit-learn pipeline. It uses AI4I features for machine type, temperature, speed, torque, and tool wear. It excludes failure-type columns to avoid label leakage.</p>
+<p>Historical telemetry metrics from <code>docs/progress.md</code>:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Metric</th>
+<th class="align-right">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>ROC AUC</td>
+<td class="align-right"><code>0.97</code></td>
+</tr>
+<tr>
+<td>Average precision</td>
+<td class="align-right"><code>0.70</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>The current full-run package marks telemetry metrics as <code>NOT AVAILABLE</code> because <code>models/telemetry_metrics.json</code> is not present in this checkout. This is intentional metric hygiene, not a fabricated omission.</p>
+<h3 id="vision-intelligence">Vision Intelligence</h3>
+<p>The vision stack includes comparison, autoencoder, and ResNet detectors. The strongest judge-facing story is visual explainability:</p>
+<ul><li>image anomaly score</li><li>defect flag</li><li>defect type when inferable from MVTec path</li><li>heatmap</li><li>approximate bounding box</li><li>annotated image</li></ul>
+<p>Historical comparison baseline overall metrics:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Metric</th>
+<th class="align-right">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>total</td>
+<td class="align-right"><code>603</code></td>
+</tr>
+<tr>
+<td>accuracy</td>
+<td class="align-right"><code>0.68</code></td>
+</tr>
+<tr>
+<td>precision</td>
+<td class="align-right"><code>0.68</code></td>
+</tr>
+<tr>
+<td>recall</td>
+<td class="align-right"><code>0.99</code></td>
+</tr>
+<tr>
+<td>F1</td>
+<td class="align-right"><code>0.81</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Historical cable ResNet calibration:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Metric</th>
+<th class="align-right">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>threshold</td>
+<td class="align-right"><code>0.28</code></td>
+</tr>
+<tr>
+<td>accuracy</td>
+<td class="align-right"><code>0.73</code></td>
+</tr>
+<tr>
+<td>precision</td>
+<td class="align-right"><code>0.72</code></td>
+</tr>
+<tr>
+<td>recall</td>
+<td class="align-right"><code>0.91</code></td>
+</tr>
+<tr>
+<td>F1</td>
+<td class="align-right"><code>0.81</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>The full-run package copies example heatmaps and annotated overlays, but aggregate vision metrics are <code>NOT AVAILABLE</code> because no persisted aggregate vision metrics artifact was found.</p>
+<h3 id="incident-memory-and-rag">Incident Memory and RAG</h3>
+<p>The incident corpus contains <code>300</code> documents from <code>100</code> AI4I failure rows. Qdrant stores <code>384</code>-dimensional cosine embeddings in the <code>incident_documents</code> collection. Retrieval supports vector search, document type filtering, score thresholds, and telemetry-aware reranking.</p>
+<p>Full-run retrieval metrics:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Metric</th>
+<th class="align-right">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>corpus_size</td>
+<td class="align-right"><code>300</code></td>
+</tr>
+<tr>
+<td>duplicate_rate</td>
+<td class="align-right"><code>0.0</code></td>
+</tr>
+<tr>
+<td>recall_at_k</td>
+<td class="align-right"><code>NOT AVAILABLE</code></td>
+</tr>
+<tr>
+<td>precision_at_k</td>
+<td class="align-right"><code>NOT AVAILABLE</code></td>
+</tr>
+<tr>
+<td>mrr</td>
+<td class="align-right"><code>NOT AVAILABLE</code></td>
+</tr>
+<tr>
+<td>ndcg</td>
+<td class="align-right"><code>NOT AVAILABLE</code></td>
+</tr>
+<tr>
+<td>retrieval_latency_ms</td>
+<td class="align-right"><code>NOT AVAILABLE</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Ranking metrics require a labeled relevance set. The framework correctly marks those fields unavailable.</p>
+<h3 id="policy-and-human-approval">Policy and Human Approval</h3>
+<p>Severity assignment is deterministic:</p>
+<pre><code class="language-text">Failure probability &gt; 80% and visual defect detected -&gt; SEV1
+Failure probability &gt; 80% and RAG confidence is high -&gt; SEV1
+Failure probability &gt; 50% -&gt; SEV2
+Failure probability &lt;= 50% -&gt; SEV3</code></pre>
+<p>Policy metrics:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Metric</th>
+<th class="align-right">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>severity_accuracy</td>
+<td class="align-right"><code>1.0</code></td>
+</tr>
+<tr>
+<td>scenario_count</td>
+<td class="align-right"><code>12</code></td>
+</tr>
+<tr>
+<td>false_sev1</td>
+<td class="align-right"><code>0</code></td>
+</tr>
+<tr>
+<td>missed_sev1</td>
+<td class="align-right"><code>0</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Human approval is currently JSON-backed. SEV1 creates a pending approval record. SEV2 and SEV3 produce <code>not_required</code>.</p>
+<h2 id="agent-workflow">Agent Workflow</h2>
+<p>The workflow is implemented as LangGraph nodes with a sequential fallback:</p>
+<pre><code class="language-text">START
+  -&gt; telemetry_agent
+  -&gt; vision_agent
+  -&gt; memory_agent
+  -&gt; rag_agent
+  -&gt; severity_agent
+  -&gt; approval_agent
+  -&gt; END</code></pre>
+<p>Each node appends trace text. This is important because judge-facing demos can show what happened at each stage:</p>
+<ul><li>telemetry predicted a risk band and probability</li><li>vision detected or skipped image inspection</li><li>memory retrieved a number of incidents</li><li>RAG produced a deterministic or LLM-backed answer</li><li>severity assigned SEV1, SEV2, or SEV3</li><li>approval status was recorded</li></ul>
+<p>The current full-run package does not persist full agent traces as an artifact, so workflow completion rate, structured output success rate, tool success rate, retry count, average steps, average runtime, and failure breakdown are marked unavailable.</p>
+<h2 id="evaluation-stack">Evaluation Stack</h2>
+<p>Evaluation architecture:</p>
+<figure class="report-figure"><img src="diagrams/evaluation_stack.svg" alt="Evaluation stack" loading="lazy"></figure>
+<p class="caption">Figure 7. Evaluation artifact stack. Source Mermaid: <code>docs/diagrams/evaluation_stack.mmd</code>. Rendered SVG: <code>docs/diagrams/evaluation_stack.svg</code>.</p>
+<p>Full-run evaluation package:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Metric</th>
+<th class="align-right">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>metrics_collected</td>
+<td class="align-right"><code>93</code></td>
+</tr>
+<tr>
+<td>metrics_missing</td>
+<td class="align-right"><code>39</code></td>
+</tr>
+<tr>
+<td>total_metric_fields</td>
+<td class="align-right"><code>132</code></td>
+</tr>
+<tr>
+<td>estimated_report_completeness_percent</td>
+<td class="align-right"><code>70.5</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>The chart asset <code>data/evals/full_run/charts/report_v2_evaluation_coverage.svg</code> visualizes this coverage.</p>
+<figure class="report-figure"><img src="../data/evals/full_run/charts/report_v2_evaluation_coverage.svg" alt="Evaluation coverage" loading="lazy"></figure>
+<p class="caption">Figure 8. Full-run evaluation coverage: <code>93</code> collected metric fields, <code>39</code> missing metric fields, <code>70.5%</code> estimated completeness.</p>
+<p>The evaluation framework&#x27;s main strength is honesty. It reports missing metrics with reasons rather than backfilling optimistic estimates. That matters for engineering credibility.</p>
+<h3 id="test-rig-validation">Test Rig Validation</h3>
+<p>The held-out demo correctness rig was executed against AI4I telemetry rows, MVTec test images, severity rules, and approval behavior.</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Metric</th>
+<th class="align-right">Result</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Total scenarios</td>
+<td class="align-right"><code>14</code></td>
+</tr>
+<tr>
+<td>Passed</td>
+<td class="align-right"><code>12</code></td>
+</tr>
+<tr>
+<td>Failed</td>
+<td class="align-right"><code>2</code></td>
+</tr>
+<tr>
+<td>Pass rate</td>
+<td class="align-right"><code>85.7%</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Passing coverage included held-out telemetry positive and negative cases, severity assignment, approval workflow behavior, and most sampled MVTec good/defect image scenarios.</p>
+<p>The two failing scenarios were:</p>
+<ul><li><code>grid_defect_image</code></li><li><code>screw_defect_image</code></li></ul>
+<p>These failures were traced to missed defect detections and are documented as current vision recall limitations rather than policy or workflow failures.</p>
+<div class="page-break" aria-hidden="true"></div>
+<h2 id="rocm-optimization">ROCm Optimization</h2>
+<p>The ROCm benchmark targets telemetry-aware incident memory reranking. It combines embedding similarity, telemetry penalties, score combination, and top-k selection.</p>
+<p>The benchmark targets retrieval reranking acceleration rather than model inference acceleration. The goal is to reduce latency in memory retrieval pipelines where thousands of candidate incidents must be scored before generation.</p>
+<p>Optimization ladder:</p>
+<figure class="report-figure"><img src="diagrams/rocm_optimization_ladder.svg" alt="ROCm optimization ladder" loading="lazy"></figure>
+<p class="caption">Figure 9. ROCm optimization ladder. Source Mermaid: <code>docs/diagrams/rocm_optimization_ladder.mmd</code>. Rendered SVG: <code>docs/diagrams/rocm_optimization_ladder.svg</code>.</p>
+<p>Technical interpretation:</p>
+<ul><li>PyTorch eager is simple and reliable, but it is the baseline.</li><li><code>torch.compile</code> improves the eager graph in this workload but does not reach custom fusion performance.</li><li>ROCm graph capture did not help this specific benchmark enough to beat eager.</li><li>rocBLAS improves the similarity GEMM.</li><li>Triton score fusion reduces overhead in the telemetry penalty and score combine stage.</li><li>BF16 won the final recommendation because it produced the fastest best-path latency while preserving high top-k overlap.</li><li>FP8 was not selected as the final recommendation because its kernel comparison top-k overlap was <code>0.96</code>, and FP8 was skipped in the fused sweep where native FP8 matmul was not exposed cleanly by the PyTorch build.</li></ul>
+<h3 id="why-rocblas-triton-won">Why rocBLAS + Triton Won</h3>
+<p>The PyTorch eager baseline executes the reranking path as separate operations:</p>
+<pre><code class="language-text">score = Q @ K.T
+telemetry_penalty()
+combine()
+topk()</code></pre>
+<p>That structure is simple and readable, but it creates multiple kernel launches and moves intermediate tensors through memory between stages.</p>
+<p>The rocBLAS plus Triton path separates the workload into a fast GEMM and a fused scoring stage:</p>
+<pre><code class="language-text">score = GEMM
+penalty + combine fused</code></pre>
+<p>rocBLAS handles the dense similarity computation efficiently, while Triton fuses the telemetry penalty and score-combination logic. This reduces memory traffic, cuts kernel launch overhead, and improves GPU utilization for the reranking workload.</p>
+<h3 id="precision-selection-summary">Precision Selection Summary</h3>
+<p>FP16</p>
+<ul><li>Strong performance</li><li>100% top-k overlap</li></ul>
+<p>BF16</p>
+<ul><li>Best measured end-to-end result</li><li>6.2× speedup</li><li>Selected recommendation</li></ul>
+<p>FP8</p>
+<ul><li>Experimentally evaluated</li><li>Lower ranking agreement</li><li>Not selected</li></ul>
+<h3 id="why-this-matters">Why This Matters</h3>
+<p>Industrial retrieval systems may need to score thousands or millions of candidate incidents before presenting evidence to operators.</p>
+<p>Reducing reranking latency directly improves investigation response time and system scalability.</p>
+<h2 id="production-scaling-vision">Production Scaling Vision</h2>
+<p>Future production architecture:</p>
+<figure class="report-figure"><img src="diagrams/future_architecture.svg" alt="Future production architecture" loading="lazy"></figure>
+<p class="caption">Figure 10. Future production architecture vision. Source Mermaid: <code>docs/diagrams/future_architecture.mmd</code>. Rendered SVG: <code>docs/diagrams/future_architecture.svg</code>.</p>
+<h3 id="architecture-evolution-path">Architecture Evolution Path</h3>
+<pre><code class="language-text">V0
+  ↓
+Pilot
+  ↓
+Plant Deployment
+  ↓
+Enterprise Deployment</code></pre>
+<h3 id="expected-production-kpis">Expected Production KPIs</h3>
+<p>Future deployments would likely track:</p>
+<ul><li>Mean Time To Resolution (MTTR)</li><li>False alarm rate</li><li>Incident retrieval success rate</li><li>Root cause analysis quality</li><li>Approval turnaround time</li><li>Operator adoption and override rates</li></ul>
+<h3 id="implemented-today">Implemented Today</h3>
+<ul><li>Telemetry prediction</li><li>Vision inspection</li><li>Qdrant memory</li><li>RAG</li><li>Severity policy</li><li>Human approval</li><li>Streamlit UI</li><li>LangGraph orchestration</li><li>LoRA training</li><li>LLM judge</li><li>ROCm benchmarks</li></ul>
+<h3 id="future-work">Future Work</h3>
+<ul><li>Kafka</li><li>Flink</li><li>Snowflake</li><li>LangSmith</li><li>Feature Store</li><li>Production Approval Service</li></ul>
+<p>Current vs future:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Capability</th>
+<th>Current Implementation</th>
+<th>Production Vision</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Event ingestion</td>
+<td>Local plant event simulation</td>
+<td>Kafka or managed streaming</td>
+</tr>
+<tr>
+<td>Stream processing</td>
+<td>Demo event stream</td>
+<td>Flink or Spark Streaming</td>
+</tr>
+<tr>
+<td>Analytical storage</td>
+<td>JSON and generated artifacts</td>
+<td>Lakehouse or Snowflake</td>
+</tr>
+<tr>
+<td>Telemetry features</td>
+<td>Local feature construction</td>
+<td>Feature store with online/offline consistency</td>
+</tr>
+<tr>
+<td>Vector memory</td>
+<td>Local Qdrant</td>
+<td>Shared vector database with backup and monitoring</td>
+</tr>
+<tr>
+<td>Model serving</td>
+<td>Local model files, Ollama/vLLM-compatible paths</td>
+<td>Model gateway with base, LoRA, and fallback routing</td>
+</tr>
+<tr>
+<td>Policy</td>
+<td>In-code deterministic policy</td>
+<td>Versioned policy service</td>
+</tr>
+<tr>
+<td>Approval</td>
+<td>JSON approval records</td>
+<td>Workflow-backed approval system</td>
+</tr>
+<tr>
+<td>Audit</td>
+<td>Local artifacts</td>
+<td>Immutable audit logs</td>
+</tr>
+<tr>
+<td>Observability</td>
+<td>Runtime traces and evaluation package</td>
+<td>LangSmith, OpenTelemetry, monitoring dashboards</td>
+</tr>
+</tbody>
+</table></div>
+<p>This future architecture should only be introduced when the workflow needs multi-user access, high event volume, durable audit requirements, governed model operations, or production reliability.</p>
+<h2 id="langsmith-future-stack">LangSmith Future Stack</h2>
+<p>LangSmith is a natural future layer because the project already uses LangGraph-style node boundaries.</p>
+<p>Future stack:</p>
+<ul><li><strong>LangGraph traces:</strong> persist telemetry, vision, memory, RAG, severity, and approval steps.</li><li><strong>Prompt versioning:</strong> track RAG prompts, judge prompts, and structured-output schemas.</li><li><strong>Regression tests:</strong> replay fixed incident scenarios after prompt, retriever, or model changes.</li><li><strong>Retrieval debugging:</strong> inspect query text, retrieved incident IDs, vector scores, telemetry rerank reasons, and no-evidence cases.</li><li><strong>Model quality monitoring:</strong> track RCA quality, severity reasoning, hallucination score, relevance, and groundedness over time.</li><li><strong>Production monitoring:</strong> connect traces to latency, error rates, retry behavior, approval outcomes, and override rates.</li></ul>
+<p>Future feedback loop:</p>
+<pre><code class="language-text">Operator Feedback
+  -&gt; LangSmith
+  -&gt; Evaluation
+  -&gt; Prompt Updates
+  -&gt; LoRA Refresh
+  -&gt; Deployment</code></pre>
+<p>Expected benefits:</p>
+<ul><li>faster debugging of failed investigations</li><li>auditable model and prompt changes</li><li>safer iteration on agent behavior</li><li>measurable quality regressions before deployment</li><li>better demos because traces can be shown directly</li></ul>
+<h2 id="security-and-governance">Security and Governance</h2>
+<p>Implemented governance controls:</p>
+<ul><li>deterministic severity policy</li><li>SEV1 human approval requirement</li><li>JSON-backed approval state</li><li>deterministic fallback when LLMs fail</li><li>no-evidence response when retrieval fails</li><li>artifact-based evaluation with missing metric reasons</li></ul>
+<p>Future governance controls:</p>
+<ul><li>role-based access control</li><li>approval escalation paths</li><li>override logs</li><li>immutable audit logs</li><li>prompt and adapter versioning</li><li>model risk reviews</li><li>data retention policies</li><li>endpoint credential management</li></ul>
+<p>The central governance decision is to keep operational policy outside the LLM. The LLM can draft explanations, but policy assigns severity and human approval gates high-impact action.</p>
+<h2 id="limitations">Limitations</h2>
+<p>Current limitations:</p>
+<ul><li>The system is single-node and demo-scale.</li><li>AI4I and MVTec are public datasets, not live plant data.</li><li>The incident corpus is generated from AI4I rows.</li><li>Current checkout lacks <code>models/telemetry_metrics.json</code>.</li><li>Persisted aggregate vision metrics are not present in the full-run package.</li><li>Retrieval ranking metrics require a labeled relevance set.</li><li>LLM-as-judge evaluation covers <code>10</code> incidents in current artifacts.</li><li>Candidate generation does not include token or latency traces.</li><li>Agent traces are visible but not persisted as a full trace artifact.</li><li>Approval state is JSON-backed.</li><li>ROCm benchmarks use synthetic reranking workloads, not a full production retrieval service.</li></ul>
+<p>These limitations are acceptable for the hackathon goal: prove the industrial investigation workflow with measured artifacts and a credible path to production.</p>
+<h2 id="roadmap">Roadmap</h2>
+<h3 id="30-days">30 Days</h3>
+<ul><li>Add feature attribution explainability (SHAP or equivalent).</li><li>Add a labeled retrieval relevance set.</li><li>Persist LangGraph traces as JSONL.</li><li>Add retrieval latency measurement.</li><li>Improve similar incident explainability in Streamlit.</li><li>Preserve AMD Cloud run outputs as versioned evaluation packages.</li></ul>
+<h3 id="90-days">90 Days</h3>
+<ul><li>Add LangSmith or OpenTelemetry trace export.</li><li>Expand LLM-as-judge beyond <code>10</code> incidents.</li><li>Add citation accuracy scoring.</li><li>Capture token usage and first-token latency.</li><li>Persist aggregate vision metrics.</li><li>Add approval override and escalation logging.</li></ul>
+<h3 id="180-days">180 Days</h3>
+<ul><li>Pilot production architecture with streaming ingestion and durable storage.</li><li>Add shared vector memory and model gateway.</li><li>Add feature-store style telemetry consistency.</li><li>Add audit-grade approval workflows.</li><li>Train and evaluate LoRA adapters on richer human-reviewed incident data.</li><li>Validate against realistic operator workflows.</li></ul>
+<h2 id="results-snapshot">Results Snapshot</h2>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Category</th>
+<th>Result</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Telemetry ROC AUC</td>
+<td>0.97</td>
+</tr>
+<tr>
+<td>Telemetry Average Precision</td>
+<td>0.70</td>
+</tr>
+<tr>
+<td>Incident Corpus</td>
+<td>300 incident documents</td>
+</tr>
+<tr>
+<td>Embedding Size</td>
+<td>384</td>
+</tr>
+<tr>
+<td>Severity Accuracy</td>
+<td>12/12 scenarios</td>
+</tr>
+<tr>
+<td>Judge Evaluation</td>
+<td>20 responses, 20 judge records</td>
+</tr>
+<tr>
+<td>LoRA RCA Quality</td>
+<td>4.2 vs 3.7 (+13.5%)</td>
+</tr>
+<tr>
+<td>LoRA Severity Reasoning</td>
+<td>4.2 vs 3.8 (+10.5%)</td>
+</tr>
+<tr>
+<td>Hallucination Score</td>
+<td>1.0 (base and LoRA)</td>
+</tr>
+<tr>
+<td>Best ROCm Speedup</td>
+<td>6.2×</td>
+</tr>
+<tr>
+<td>ROCm Top-k Agreement</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Peak GPU Utilization</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Average GPU Utilization</td>
+<td>75.9%</td>
+</tr>
+<tr>
+<td>Evaluation Coverage</td>
+<td>70.5%</td>
+</tr>
+</tbody>
+</table></div>
+<p>Key takeaway:</p>
+<p>The project successfully demonstrates an evidence-grounded industrial investigation workflow combining telemetry prediction, visual inspection, incident memory retrieval, deterministic governance, human approval, and AMD ROCm optimization.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The primary contribution of this project is the orchestration of telemetry prediction, visual inspection, incident memory, deterministic governance, and human approval into a single evidence-grounded investigation workflow.</p>
+<p>That workflow is supported by AMD-accelerated evaluation and packaged as a local-first operational system.</p>
+<p>The architecture demonstrates a practical path from local prototype to production-scale industrial AI.</p>
+<div class="page-break" aria-hidden="true"></div>
+<h2 id="appendix-a-generated-diagrams-and-chart-assets">Appendix A: Generated Diagrams and Chart Assets</h2>
+<p>Mermaid diagrams:</p>
+<ul><li><code>docs/diagrams/current_architecture.mmd</code></li><li><code>docs/diagrams/future_architecture.mmd</code></li><li><code>docs/diagrams/rocm_optimization_ladder.mmd</code></li><li><code>docs/diagrams/evaluation_stack.mmd</code></li></ul>
+<p>SVG chart assets:</p>
+<ul><li><code>data/evals/full_run/charts/report_v2_lora_improvement.svg</code></li><li><code>data/evals/full_run/charts/report_v2_rocm_speedup_ladder.svg</code></li><li><code>data/evals/full_run/charts/report_v2_amd_gpu_utilization.svg</code></li><li><code>data/evals/full_run/charts/report_v2_evaluation_coverage.svg</code></li></ul>
+<h2 id="appendix-b-component-inventory">Appendix B: Component Inventory</h2>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Component</th>
+<th>Status</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Telemetry</td>
+<td>Implemented</td>
+</tr>
+<tr>
+<td>Vision</td>
+<td>Implemented</td>
+</tr>
+<tr>
+<td>Incident Memory</td>
+<td>Implemented</td>
+</tr>
+<tr>
+<td>RAG</td>
+<td>Implemented</td>
+</tr>
+<tr>
+<td>Severity Policy</td>
+<td>Implemented</td>
+</tr>
+<tr>
+<td>Human Approval</td>
+<td>Implemented</td>
+</tr>
+<tr>
+<td>LangGraph</td>
+<td>Implemented</td>
+</tr>
+<tr>
+<td>LoRA</td>
+<td>Implemented</td>
+</tr>
+<tr>
+<td>LLM Judge</td>
+<td>Implemented</td>
+</tr>
+<tr>
+<td>ROCm Benchmark</td>
+<td>Implemented</td>
+</tr>
+<tr>
+<td>LangSmith</td>
+<td>Future</td>
+</tr>
+<tr>
+<td>Kafka/Flink</td>
+<td>Future</td>
+</tr>
+<tr>
+<td>Lakehouse</td>
+<td>Future</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="appendix-c-key-file-paths">Appendix C: Key File Paths</h2>
+<p>Source files:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Area</th>
+<th>Path</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Telemetry training</td>
+<td><code>src/industrial_ai/telemetry/train.py</code></td>
+</tr>
+<tr>
+<td>Telemetry prediction</td>
+<td><code>src/industrial_ai/telemetry/predict.py</code></td>
+</tr>
+<tr>
+<td>Incident generation</td>
+<td><code>src/industrial_ai/incidents/generate.py</code></td>
+</tr>
+<tr>
+<td>Qdrant memory</td>
+<td><code>src/industrial_ai/incidents/memory.py</code></td>
+</tr>
+<tr>
+<td>RAG answer layer</td>
+<td><code>src/industrial_ai/rag/answer.py</code></td>
+</tr>
+<tr>
+<td>Severity policy</td>
+<td><code>src/industrial_ai/policy/severity.py</code></td>
+</tr>
+<tr>
+<td>Approval workflow</td>
+<td><code>src/industrial_ai/approvals/approval.py</code></td>
+</tr>
+<tr>
+<td>LangGraph workflow</td>
+<td><code>src/industrial_ai/demo/graph_workflow.py</code></td>
+</tr>
+<tr>
+<td>Streamlit UI</td>
+<td><code>src/industrial_ai/demo/streamlit_app.py</code></td>
+</tr>
+<tr>
+<td>Vision comparison</td>
+<td><code>src/industrial_ai/vision/mvtec_compare.py</code></td>
+</tr>
+<tr>
+<td>Vision ResNet</td>
+<td><code>src/industrial_ai/vision/mvtec_resnet.py</code></td>
+</tr>
+<tr>
+<td>Vision localization</td>
+<td><code>src/industrial_ai/vision/localization.py</code></td>
+</tr>
+<tr>
+<td>Full evaluation</td>
+<td><code>scripts/evals/run_full_evaluation.py</code></td>
+</tr>
+<tr>
+<td>Evaluation report generation</td>
+<td><code>scripts/evals/generate_evaluation_report.py</code></td>
+</tr>
+<tr>
+<td>AMD LoRA training/generation</td>
+<td><code>scripts/amd/train_gemma_lora.py</code></td>
+</tr>
+<tr>
+<td>ROCm fused rerank benchmark</td>
+<td><code>scripts/amd/rocm_fused_rerank_benchmark.py</code></td>
+</tr>
+<tr>
+<td>ROCm kernel comparison benchmark</td>
+<td><code>scripts/amd/rocm_kernel_comparison_benchmark.py</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Generated artifacts:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Area</th>
+<th>Path</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Incident corpus</td>
+<td><code>data/incidents/ai4i_incident_corpus.jsonl</code></td>
+</tr>
+<tr>
+<td>Incident manifest</td>
+<td><code>data/incidents/manifest.json</code></td>
+</tr>
+<tr>
+<td>Qdrant metadata</td>
+<td><code>data/qdrant/meta.json</code></td>
+</tr>
+<tr>
+<td>LoRA train split</td>
+<td><code>data/lora/train.jsonl</code></td>
+</tr>
+<tr>
+<td>LoRA eval split</td>
+<td><code>data/lora/eval.jsonl</code></td>
+</tr>
+<tr>
+<td>LoRA dry-run metrics</td>
+<td><code>data/amd/lora/training_metrics.json</code></td>
+</tr>
+<tr>
+<td>LoRA dry-run log</td>
+<td><code>data/amd/lora/training_log.txt</code></td>
+</tr>
+<tr>
+<td>LLM judge summary</td>
+<td><code>data/evals/summary.json</code></td>
+</tr>
+<tr>
+<td>LLM judge report</td>
+<td><code>data/evals/llm_judge_report.md</code></td>
+</tr>
+<tr>
+<td>Full evaluation summary</td>
+<td><code>data/evals/full_run/evaluation_summary.json</code></td>
+</tr>
+<tr>
+<td>Hardware profile</td>
+<td><code>data/evals/full_run/hardware_profile.json</code></td>
+</tr>
+<tr>
+<td>System metrics</td>
+<td><code>data/evals/full_run/system_metrics.json</code></td>
+</tr>
+<tr>
+<td>ROCm kernel comparison</td>
+<td><code>data/benchmarks/kernel_comparison.csv</code></td>
+</tr>
+<tr>
+<td>Fused rerank results</td>
+<td><code>data/benchmarks/rocm_fused_rerank_results.csv</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="appendix-d-detailed-metric-tables">Appendix D: Detailed Metric Tables</h2>
+<h3 id="telemetry-historical-threshold-metrics">Telemetry Historical Threshold Metrics</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th class="align-right">Threshold</th>
+<th class="align-right">TN</th>
+<th class="align-right">FP</th>
+<th class="align-right">FN</th>
+<th class="align-right">TP</th>
+<th class="align-right">Precision</th>
+<th class="align-right">Recall</th>
+<th class="align-right">F1</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="align-right"><code>0.3</code></td>
+<td class="align-right"><code>1743</code></td>
+<td class="align-right"><code>189</code></td>
+<td class="align-right"><code>4</code></td>
+<td class="align-right"><code>64</code></td>
+<td class="align-right"><code>0.25</code></td>
+<td class="align-right"><code>0.94</code></td>
+<td class="align-right"><code>0.40</code></td>
+</tr>
+<tr>
+<td class="align-right"><code>0.5</code></td>
+<td class="align-right"><code>1809</code></td>
+<td class="align-right"><code>123</code></td>
+<td class="align-right"><code>9</code></td>
+<td class="align-right"><code>59</code></td>
+<td class="align-right"><code>0.32</code></td>
+<td class="align-right"><code>0.87</code></td>
+<td class="align-right"><code>0.47</code></td>
+</tr>
+<tr>
+<td class="align-right"><code>0.7</code></td>
+<td class="align-right"><code>1874</code></td>
+<td class="align-right"><code>58</code></td>
+<td class="align-right"><code>13</code></td>
+<td class="align-right"><code>55</code></td>
+<td class="align-right"><code>0.49</code></td>
+<td class="align-right"><code>0.81</code></td>
+<td class="align-right"><code>0.61</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="vision-historical-comparison-metrics">Vision Historical Comparison Metrics</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Category</th>
+<th class="align-right">Total</th>
+<th class="align-right">Accuracy</th>
+<th class="align-right">Precision</th>
+<th class="align-right">Recall</th>
+<th class="align-right">F1</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>cable</td>
+<td class="align-right"><code>150</code></td>
+<td class="align-right"><code>0.61</code></td>
+<td class="align-right"><code>0.61</code></td>
+<td class="align-right"><code>1.00</code></td>
+<td class="align-right"><code>0.76</code></td>
+</tr>
+<tr>
+<td>grid</td>
+<td class="align-right"><code>78</code></td>
+<td class="align-right"><code>0.73</code></td>
+<td class="align-right"><code>0.73</code></td>
+<td class="align-right"><code>1.00</code></td>
+<td class="align-right"><code>0.84</code></td>
+</tr>
+<tr>
+<td>metal_nut</td>
+<td class="align-right"><code>115</code></td>
+<td class="align-right"><code>0.81</code></td>
+<td class="align-right"><code>0.81</code></td>
+<td class="align-right"><code>1.00</code></td>
+<td class="align-right"><code>0.89</code></td>
+</tr>
+<tr>
+<td>screw</td>
+<td class="align-right"><code>160</code></td>
+<td class="align-right"><code>0.74</code></td>
+<td class="align-right"><code>0.74</code></td>
+<td class="align-right"><code>1.00</code></td>
+<td class="align-right"><code>0.85</code></td>
+</tr>
+<tr>
+<td>transistor</td>
+<td class="align-right"><code>100</code></td>
+<td class="align-right"><code>0.51</code></td>
+<td class="align-right"><code>0.45</code></td>
+<td class="align-right"><code>0.95</code></td>
+<td class="align-right"><code>0.61</code></td>
+</tr>
+<tr>
+<td>overall</td>
+<td class="align-right"><code>603</code></td>
+<td class="align-right"><code>0.68</code></td>
+<td class="align-right"><code>0.68</code></td>
+<td class="align-right"><code>0.99</code></td>
+<td class="align-right"><code>0.81</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="severity-confusion-matrix">Severity Confusion Matrix</h3>
+<pre><code class="language-json">{
+  &quot;SEV1&quot;: {&quot;SEV1&quot;: 3, &quot;SEV2&quot;: 0, &quot;SEV3&quot;: 0},
+  &quot;SEV2&quot;: {&quot;SEV1&quot;: 0, &quot;SEV2&quot;: 5, &quot;SEV3&quot;: 0},
+  &quot;SEV3&quot;: {&quot;SEV1&quot;: 0, &quot;SEV2&quot;: 0, &quot;SEV3&quot;: 4}
+}</code></pre>
+<h3 id="rocm-kernel-comparison">ROCm Kernel Comparison</h3>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Implementation</th>
+<th>Precision</th>
+<th class="align-right">Latency ms</th>
+<th class="align-right">Candidates/s</th>
+<th class="align-right">Speedup</th>
+<th class="align-right">Peak VRAM GB</th>
+<th class="align-right">Top-k overlap</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>pytorch_eager</td>
+<td>fp32</td>
+<td class="align-right"><code>6.45</code></td>
+<td class="align-right"><code>4964748705.30</code></td>
+<td class="align-right"><code>1.0</code></td>
+<td class="align-right"><code>8.09</code></td>
+<td class="align-right"><code>1.0</code></td>
+</tr>
+<tr>
+<td>pytorch_eager</td>
+<td>fp16</td>
+<td class="align-right"><code>6.10</code></td>
+<td class="align-right"><code>5246188035.91</code></td>
+<td class="align-right"><code>1.06</code></td>
+<td class="align-right"><code>6.60</code></td>
+<td class="align-right"><code>1.0</code></td>
+</tr>
+<tr>
+<td>pytorch_eager</td>
+<td>bf16</td>
+<td class="align-right"><code>6.41</code></td>
+<td class="align-right"><code>4995749717.32</code></td>
+<td class="align-right"><code>1.01</code></td>
+<td class="align-right"><code>6.60</code></td>
+<td class="align-right"><code>1.00</code></td>
+</tr>
+<tr>
+<td>rocblas_precomputed_index</td>
+<td>fp32</td>
+<td class="align-right"><code>3.39</code></td>
+<td class="align-right"><code>9431951908.35</code></td>
+<td class="align-right"><code>1.90</code></td>
+<td class="align-right"><code>7.64</code></td>
+<td class="align-right"><code>1.0</code></td>
+</tr>
+<tr>
+<td>rocblas_precomputed_index</td>
+<td>fp16</td>
+<td class="align-right"><code>2.88</code></td>
+<td class="align-right"><code>11102298758.16</code></td>
+<td class="align-right"><code>2.24</code></td>
+<td class="align-right"><code>9.03</code></td>
+<td class="align-right"><code>1.0</code></td>
+</tr>
+<tr>
+<td>rocblas_precomputed_index</td>
+<td>bf16</td>
+<td class="align-right"><code>2.87</code></td>
+<td class="align-right"><code>11135028354.43</code></td>
+<td class="align-right"><code>2.24</code></td>
+<td class="align-right"><code>9.03</code></td>
+<td class="align-right"><code>1.00</code></td>
+</tr>
+<tr>
+<td>rocblas_plus_triton_score</td>
+<td>fp32</td>
+<td class="align-right"><code>1.57</code></td>
+<td class="align-right"><code>20427992057.49</code></td>
+<td class="align-right"><code>4.11</code></td>
+<td class="align-right"><code>6.45</code></td>
+<td class="align-right"><code>1.0</code></td>
+</tr>
+<tr>
+<td>rocblas_plus_triton_score</td>
+<td>fp16</td>
+<td class="align-right"><code>1.05</code></td>
+<td class="align-right"><code>30399265110.75</code></td>
+<td class="align-right"><code>6.12</code></td>
+<td class="align-right"><code>7.90</code></td>
+<td class="align-right"><code>1.0</code></td>
+</tr>
+<tr>
+<td>rocblas_plus_triton_score</td>
+<td>bf16</td>
+<td class="align-right"><code>1.04 ms</code></td>
+<td class="align-right"><code>30802253299.70</code></td>
+<td class="align-right"><code>6.2×</code></td>
+<td class="align-right"><code>7.90</code></td>
+<td class="align-right"><code>1.00</code></td>
+</tr>
+<tr>
+<td>torch_scaled_mm_fp8</td>
+<td>fp8</td>
+<td class="align-right"><code>2.56</code></td>
+<td class="align-right"><code>12513892353.85</code></td>
+<td class="align-right"><code>2.52</code></td>
+<td class="align-right"><code>9.80</code></td>
+<td class="align-right"><code>0.96</code></td>
+</tr>
+<tr>
+<td>torch_compile_inductor</td>
+<td>fp32</td>
+<td class="align-right"><code>5.31</code></td>
+<td class="align-right"><code>6021988882.00</code></td>
+<td class="align-right"><code>1.21</code></td>
+<td class="align-right"><code>13.09</code></td>
+<td class="align-right"><code>1.0</code></td>
+</tr>
+<tr>
+<td>torch_compile_inductor</td>
+<td>fp16</td>
+<td class="align-right"><code>4.21</code></td>
+<td class="align-right"><code>7593812657.10</code></td>
+<td class="align-right"><code>1.53</code></td>
+<td class="align-right"><code>11.65</code></td>
+<td class="align-right"><code>1.0</code></td>
+</tr>
+<tr>
+<td>torch_compile_inductor</td>
+<td>bf16</td>
+<td class="align-right"><code>4.27</code></td>
+<td class="align-right"><code>7502206135.49</code></td>
+<td class="align-right"><code>1.51</code></td>
+<td class="align-right"><code>11.65</code></td>
+<td class="align-right"><code>1.0</code></td>
+</tr>
+<tr>
+<td>rocm_graph_capture</td>
+<td>fp32</td>
+<td class="align-right"><code>6.56</code></td>
+<td class="align-right"><code>4877524580.36</code></td>
+<td class="align-right"><code>0.98</code></td>
+<td class="align-right"><code>3.63</code></td>
+<td class="align-right"><code>1.0</code></td>
+</tr>
+<tr>
+<td>rocm_graph_capture</td>
+<td>fp16</td>
+<td class="align-right"><code>6.34</code></td>
+<td class="align-right"><code>5044165631.42</code></td>
+<td class="align-right"><code>1.02</code></td>
+<td class="align-right"><code>3.63</code></td>
+<td class="align-right"><code>1.0</code></td>
+</tr>
+<tr>
+<td>rocm_graph_capture</td>
+<td>bf16</td>
+<td class="align-right"><code>6.33</code></td>
+<td class="align-right"><code>5052790638.83</code></td>
+<td class="align-right"><code>1.02</code></td>
+<td class="align-right"><code>3.63</code></td>
+<td class="align-right"><code>1.00</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="appendix-e-thresholds-and-policy-details">Appendix E: Thresholds and Policy Details</h2>
+<p>Telemetry risk bands:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Risk Level</th>
+<th class="align-right">Probability</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>HIGH</td>
+<td class="align-right"><code>&amp;gt;= 0.7</code></td>
+</tr>
+<tr>
+<td>MEDIUM</td>
+<td class="align-right"><code>&amp;gt;= 0.5</code></td>
+</tr>
+<tr>
+<td>LOW</td>
+<td class="align-right"><code>&amp;lt; 0.5</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Vision comparison thresholds:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Category</th>
+<th class="align-right">Threshold</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>cable</code></td>
+<td class="align-right"><code>0.17</code></td>
+</tr>
+<tr>
+<td><code>grid</code></td>
+<td class="align-right"><code>0.12</code></td>
+</tr>
+<tr>
+<td><code>metal_nut</code></td>
+<td class="align-right"><code>0.13</code></td>
+</tr>
+<tr>
+<td><code>screw</code></td>
+<td class="align-right"><code>0.22</code></td>
+</tr>
+<tr>
+<td><code>transistor</code></td>
+<td class="align-right"><code>0.14</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>RAG confidence thresholds:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th class="align-right">Top retrieval score</th>
+<th>Confidence</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="align-right"><code>&amp;gt;= 0.7</code></td>
+<td><code>high</code></td>
+</tr>
+<tr>
+<td class="align-right"><code>&amp;gt;= 0.5</code></td>
+<td><code>medium</code></td>
+</tr>
+<tr>
+<td class="align-right"><code>&amp;lt; 0.5</code></td>
+<td><code>low</code></td>
+</tr>
+<tr>
+<td class="align-right">no results</td>
+<td><code>none</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Telemetry reranking fields:</p>
+<ul><li><code>tool_wear_min</code></li><li><code>torque_nm</code></li><li><code>rotational_speed_rpm</code></li><li><code>air_temperature_k</code></li><li><code>process_temperature_k</code></li></ul>
+<h2 id="appendix-f-missing-metrics">Appendix F: Missing Metrics</h2>
+<p>Major unavailable metrics in the full-run package:</p>
+<div class="table-wrap"><table>
+<thead><tr>
+<th>Area</th>
+<th>Missing Metric</th>
+<th>Reason</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Telemetry</td>
+<td>accuracy, precision, recall, F1, ROC AUC, PR AUC, confusion matrix</td>
+<td><code>models/telemetry_metrics.json</code> is not present in this checkout</td>
+</tr>
+<tr>
+<td>Telemetry</td>
+<td>SHAP global and local explanations</td>
+<td>SHAP was not run; no SHAP artifact was found</td>
+</tr>
+<tr>
+<td>Vision</td>
+<td>aggregate accuracy, precision, recall, F1</td>
+<td>No persisted aggregate vision metrics artifact was found</td>
+</tr>
+<tr>
+<td>Retrieval</td>
+<td>Recall@K, Precision@K, MRR, NDCG</td>
+<td>No labeled retrieval relevance set was found</td>
+</tr>
+<tr>
+<td>Retrieval</td>
+<td>retrieval latency</td>
+<td>No persisted retrieval latency artifact was found</td>
+</tr>
+<tr>
+<td>LLM</td>
+<td>citation accuracy</td>
+<td>Current judge rubric does not score citation accuracy</td>
+</tr>
+<tr>
+<td>LLM</td>
+<td>first-token latency, full-response latency, token usage</td>
+<td>Candidate generation traces do not include these fields</td>
+</tr>
+<tr>
+<td>Agent</td>
+<td>workflow completion, tool success, retries, average steps, runtime</td>
+<td>No persisted agent trace artifact was found</td>
+</tr>
+<tr>
+<td>Policy</td>
+<td>override rate, escalation rate</td>
+<td>No override or escalation log artifact was found</td>
+</tr>
+<tr>
+<td>LoRA</td>
+<td>peak training VRAM</td>
+<td>LoRA training did not persist peak VRAM in <code>training_metrics.json</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="appendix-g-verification-commands-used-for-v2">Appendix G: Verification Commands Used For v2</h2>
+<p>The v2 report and assets were verified with:</p>
+<pre><code class="language-bash">test -s docs/final_technical_report_v2.md
+wc -l -w docs/final_technical_report_v2.md
+LC_ALL=C rg -n &quot;[^\\x00-\\x7F]&quot; docs/final_technical_report_v2.md docs/diagrams data/evals/full_run/charts/report_v2_*.svg
+git status --short docs/final_technical_report_v2.md docs/diagrams data/evals/full_run/charts/report_v2_*.svg</code></pre>
+      </article>
+    </main>
+  </div>
+</body>
+</html>

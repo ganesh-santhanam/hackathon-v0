@@ -8,12 +8,17 @@ __pycache__/
 .mypy_cache/
 
 .env
+.env.*
+!.env.example
 
 data/raw/
 data/processed/
 data/qdrant/
+data/qdrant_service/
 data/vision_outputs/
 models/
+exports/
+backup_generated/
 
 ai4i_dataset/
 dev_data_fan/
@@ -22,5 +27,6 @@ mvtec_anomaly_detection/
 
 *.db
 *.sqlite
+*.sqlite3
 *.Zone.Identifier
 Hackathon.pdf

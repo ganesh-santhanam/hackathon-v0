@@ -1,0 +1,7 @@
+flowchart TB
+    A[PyTorch eager fp32<br/>6.445442035328597 ms<br/>1.0x baseline] --> B[torch.compile Inductor bf16<br/>4.265411989763379 ms<br/>1.5110948369810704x]
+    B --> C[ROCm graph capture bf16<br/>6.333133962471038 ms<br/>1.0177334118499743x]
+    C --> D[rocBLAS precomputed index bf16<br/>2.8738139662891626 ms<br/>2.242818119382769x]
+    D --> E[torch scaled mm fp8<br/>2.5571580044925213 ms<br/>2.5205489938458934x<br/>top-k overlap 0.95625]
+    E --> F[rocBLAS plus Triton score bf16<br/>1.0388850350864232 ms<br/>6.2041918187727205x<br/>top-k overlap 0.996875]
+    F --> G[Recommended hackathon result<br/>BF16 keeps strong retrieval quality<br/>while maximizing measured speedup]

@@ -1,6 +1,5 @@
 import argparse
 import json
-import os
 import time
 import urllib.error
 import urllib.request
@@ -9,6 +8,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
+from industrial_ai.config.settings import DEFAULT_OLLAMA_MODEL as SETTINGS_DEFAULT_OLLAMA_MODEL, load_settings
 from industrial_ai.incidents.memory import (
     DEFAULT_COLLECTION_NAME,
     DEFAULT_EMBEDDING_MODEL,
@@ -19,9 +19,10 @@ from industrial_ai.incidents.memory import (
     retrieve_incidents,
 )
 from industrial_ai.paths import QDRANT_DATA_DIR
+from industrial_ai.security.secrets import redact_text
 
-DEFAULT_OLLAMA_MODEL = "gemma3:4b"
 DEFAULT_OLLAMA_URL = "http://localhost:11434/api/generate"
+DEFAULT_OLLAMA_MODEL = SETTINGS_DEFAULT_OLLAMA_MODEL
 MAX_CONTEXT_CHARS = 6000
 
 
@@ -236,7 +237,11 @@ class OllamaUnavailableError(RuntimeError):
 
 
 def ollama_model_from_env() -> str:
-    return os.environ.get("OLLAMA_MODEL", DEFAULT_OLLAMA_MODEL)
+    return load_settings().ollama_model
+
+
+def ollama_generate_url_from_env() -> str:
+    return load_settings().ollama_generate_url
 
 
 def call_ollama(
@@ -356,7 +361,7 @@ def build_llm_answer_from_results(
     fallback: bool = True,
 ) -> RagAnswer:
     model_name = ollama_model_from_env()
-    endpoint_url = DEFAULT_OLLAMA_URL
+    endpoint_url = ollama_generate_url_from_env()
     if not results:
         answer = build_answer_from_results(question, results)
         fallback_reason = "No retrieved incidents met the threshold; Ollama was skipped because there was no evidence context."
@@ -399,7 +404,7 @@ def build_llm_answer_from_results(
         latency_ms = int((time.perf_counter() - started_at) * 1000)
         if not fallback:
             raise OllamaUnavailableError(f"Ollama unavailable and fallback disabled: {exc}") from exc
-        error_message = str(exc)
+        error_message = redact_text(exc)
         answer = build_answer_from_results(question, results)
         return RagAnswer(
             question=answer.question,
@@ -425,10 +430,11 @@ def build_llm_answer_from_results(
 
 def test_ollama_connection(
     model_name: str | None = None,
-    endpoint_url: str = DEFAULT_OLLAMA_URL,
+    endpoint_url: str | None = None,
     timeout_seconds: float = 10.0,
 ) -> OllamaConnectionCheck:
     model_name = model_name or ollama_model_from_env()
+    endpoint_url = endpoint_url or ollama_generate_url_from_env()
     prompt = 'Return only valid JSON: {"status":"ok"}.'
     started_at = time.perf_counter()
     try:
@@ -453,7 +459,7 @@ def test_ollama_connection(
             model_name=model_name,
             endpoint_url=endpoint_url,
             latency_ms=int((time.perf_counter() - started_at) * 1000),
-            error_message=str(exc),
+            error_message=redact_text(exc),
         )
 
 

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="380" viewBox="0 0 920 380">
+  <rect width="920" height="380" fill="#ffffff"/>
+  <text x="28" y="38" font-family="Arial" font-size="22" font-weight="700" fill="#111827">AMD Runtime Telemetry Snapshot</text>
+  <text x="28" y="66" font-family="Arial" font-size="13" fill="#4b5563">Captured from data/evals/full_run/system_metrics.json. Values are labels from the measured artifact.</text>
+  <text x="40" y="118" font-family="Arial" font-size="14" fill="#111827">GPU utilization</text>
+  <rect x="210" y="100" width="520" height="24" fill="#dbeafe"/>
+  <rect x="210" y="100" width="394" height="24" fill="#2563eb"/>
+  <text x="742" y="118" font-family="Arial" font-size="13" fill="#111827">avg 75.8534%, peak 100.0%</text>
+  <text x="40" y="166" font-family="Arial" font-size="14" fill="#111827">VRAM used</text>
+  <rect x="210" y="148" width="520" height="24" fill="#dcfce7"/>
+  <rect x="210" y="148" width="509" height="24" fill="#059669"/>
+  <text x="742" y="166" font-family="Arial" font-size="13" fill="#111827">avg 187.8833 GB, peak 191.3731 GB</text>
+  <text x="40" y="214" font-family="Arial" font-size="14" fill="#111827">Power draw</text>
+  <rect x="210" y="196" width="520" height="24" fill="#ffedd5"/>
+  <rect x="210" y="196" width="230" height="24" fill="#ea580c"/>
+  <text x="742" y="214" font-family="Arial" font-size="13" fill="#111827">avg 330.6336 W, peak 749.0 W</text>
+  <text x="40" y="262" font-family="Arial" font-size="14" fill="#111827">Temperature</text>
+  <rect x="210" y="244" width="520" height="24" fill="#fee2e2"/>
+  <rect x="210" y="244" width="330" height="24" fill="#dc2626"/>
+  <text x="742" y="262" font-family="Arial" font-size="13" fill="#111827">avg 46.3793 C, peak 73.0 C</text>
+  <text x="40" y="314" font-family="Arial" font-size="14" fill="#111827">Samples</text>
+  <text x="210" y="314" font-family="Arial" font-size="14" fill="#111827">232 samples, wall clock 493.9645 seconds</text>
+  <text x="40" y="344" font-family="Arial" font-size="12" fill="#6b7280">Bar widths are normalized for readability within each metric, not a shared physical unit.</text>
+</svg>

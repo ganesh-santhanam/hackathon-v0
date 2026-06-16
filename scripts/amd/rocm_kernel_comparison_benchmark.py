@@ -500,9 +500,9 @@ def run_graph_capture_only() -> int:
         "bf16": torch_module.bfloat16,
     }.items():
         try:
-            static_runner = lambda dtype=dtype: full_rerank_eager(
-                torch_module, functional, inputs, dtype, workload
-            )
+            def static_runner(dtype=dtype):
+                return full_rerank_eager(torch_module, functional, inputs, dtype, workload)
+
             for _ in range(3):
                 static_runner()
             synchronize(torch_module)
@@ -585,9 +585,10 @@ def main() -> int:
         torch_module, functional, inputs, torch_module.float32, workload
     )
     synchronize(torch_module)
-    baseline_runner = lambda: full_rerank_eager(
-        torch_module, functional, inputs, torch_module.float32, workload
-    )
+
+    def baseline_runner():
+        return full_rerank_eager(torch_module, functional, inputs, torch_module.float32, workload)
+
     baseline_row = measure_runner(
         torch_module,
         "pytorch_eager",

@@ -10,8 +10,6 @@ import platform
 import socket
 import statistics
 import subprocess
-import sys
-import threading
 import time
 from datetime import UTC, datetime
 from pathlib import Path

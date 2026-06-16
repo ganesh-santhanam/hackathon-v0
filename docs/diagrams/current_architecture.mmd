@@ -1,0 +1,13 @@
+flowchart LR
+    T[AI4I telemetry row or plant event] --> TA[telemetry_agent<br/>XGBoost risk prediction]
+    V[MVTec inspection image<br/>optional] --> VA[vision_agent<br/>comparison or ResNet detector]
+    TA --> E[Evidence builder]
+    VA --> E
+    E --> M[memory_agent<br/>Qdrant vector search<br/>telemetry-aware rerank]
+    M --> R[rag_agent<br/>deterministic RAG<br/>optional Ollama JSON answer]
+    R --> S[severity_agent<br/>deterministic SEV policy]
+    S --> A[approval_agent<br/>JSON approval record]
+    A --> UI[Streamlit dashboard<br/>investigation, policy, eval views]
+    M --> Q[(Local Qdrant<br/>incident_documents)]
+    R --> F[Deterministic fallback<br/>keeps demo operational]
+    S --> P[Human approval required<br/>for SEV1]

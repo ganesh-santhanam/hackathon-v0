@@ -1,5 +1,4 @@
 from pathlib import Path
-import re
 
 import streamlit as st
 
@@ -17,6 +16,8 @@ from industrial_ai.plant.stream import (
 )
 from industrial_ai.policy.severity import SeverityDecision, severity_policy, severity_policy_rules
 from industrial_ai.rag.answer import deterministic_metadata, test_ollama_connection
+from industrial_ai.security.secrets import redact_text
+from industrial_ai.security.validation import safe_upload_path
 from industrial_ai.telemetry.predict import TelemetryReading
 
 
@@ -29,7 +30,6 @@ EVALUATION_DATA_SOURCES = [
     "JSON approval workflow",
 ]
 PLANT_STREAM_RAG_MODE = "ollama"
-SAFE_FILENAME_PATTERN = re.compile(r"[^A-Za-z0-9_.-]+")
 ALLOWED_UPLOAD_SUFFIXES = {".png", ".jpg", ".jpeg"}
 DEFAULT_TELEMETRY_INPUTS = {
     "machine_id": "FAN-023",
@@ -119,25 +119,19 @@ DEMO_SCENARIOS = {
 }
 
 
-def safe_filename_part(value: str, fallback: str) -> str:
-    cleaned = SAFE_FILENAME_PATTERN.sub("_", value).strip("._")
-    return cleaned or fallback
-
-
 def build_vision_upload_path(
     machine_id: str,
     vision_category: str,
     uploaded_filename: str,
     upload_dir: Path = VISION_UPLOAD_DIR,
 ) -> Path:
-    suffix = Path(uploaded_filename).suffix.lower()
-    if suffix not in ALLOWED_UPLOAD_SUFFIXES:
-        suffix = ".png"
-    filename = (
-        f"{safe_filename_part(machine_id, 'machine')}-"
-        f"{safe_filename_part(vision_category, 'category')}{suffix}"
+    return safe_upload_path(
+        base_dir=upload_dir,
+        machine_id=machine_id,
+        category=vision_category,
+        uploaded_filename=uploaded_filename,
+        allowed_suffixes=ALLOWED_UPLOAD_SUFFIXES,
     )
-    return upload_dir / filename
 
 
 def initialize_demo_state() -> None:
@@ -205,7 +199,7 @@ def rag_metadata_display(metadata) -> dict:
         "fallback_used": getattr(metadata, "fallback_used", False),
         "fallback_reason": getattr(metadata, "fallback_reason", None),
         "latency_ms": getattr(metadata, "latency_ms", None),
-        "raw_error": getattr(metadata, "raw_error", getattr(metadata, "error_message", None)),
+        "raw_error": redact_text(getattr(metadata, "raw_error", getattr(metadata, "error_message", None))),
     }
 
 
@@ -511,7 +505,7 @@ def render_investigation_tab() -> None:
                 f"Ollama check failed for {check.model_name} at {check.endpoint_url} "
                 f"after {check.latency_ms} ms."
             )
-            st.write(f"Error: {check.error_message}")
+            st.write(f"Error: {redact_text(check.error_message)}")
 
     with st.form("telemetry_form"):
         machine_id = st.text_input("Machine ID", key="machine_id")

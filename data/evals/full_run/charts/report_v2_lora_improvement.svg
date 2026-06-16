@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="360" viewBox="0 0 920 360">
+  <rect width="920" height="360" fill="#ffffff"/>
+  <text x="28" y="38" font-family="Arial" font-size="22" font-weight="700" fill="#111827">LoRA Judge Score Change</text>
+  <text x="28" y="66" font-family="Arial" font-size="13" fill="#4b5563">Mean-score improvement from base to LoRA. Hallucination score is lower-is-better and remained unchanged.</text>
+  <line x1="330" y1="96" x2="330" y2="308" stroke="#9ca3af" stroke-width="1"/>
+  <line x1="140" y1="96" x2="780" y2="96" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="140" y1="149" x2="780" y2="149" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="140" y1="202" x2="780" y2="202" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="140" y1="255" x2="780" y2="255" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="28" y="122" font-family="Arial" font-size="14" fill="#111827">RCA quality</text>
+  <rect x="330" y="104" width="257" height="28" fill="#2563eb"/>
+  <text x="598" y="123" font-family="Arial" font-size="14" fill="#111827">+13.51%</text>
+  <text x="28" y="175" font-family="Arial" font-size="14" fill="#111827">Severity reasoning</text>
+  <rect x="330" y="157" width="200" height="28" fill="#059669"/>
+  <text x="541" y="176" font-family="Arial" font-size="14" fill="#111827">+10.53%</text>
+  <text x="28" y="228" font-family="Arial" font-size="14" fill="#111827">Hallucination score</text>
+  <rect x="330" y="210" width="2" height="28" fill="#6b7280"/>
+  <text x="344" y="229" font-family="Arial" font-size="14" fill="#111827">0.0%</text>
+  <text x="28" y="281" font-family="Arial" font-size="14" fill="#111827">Actionability</text>
+  <rect x="200" y="263" width="130" height="28" fill="#dc2626"/>
+  <text x="142" y="282" font-family="Arial" font-size="14" fill="#111827">-6.82%</text>
+  <text x="140" y="330" font-family="Arial" font-size="12" fill="#6b7280">Source: data/evals/summary.json and data/evals/llm_judge_report.md</text>
+</svg>

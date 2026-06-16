@@ -1,425 +1,318 @@
-# Industrial AI Hackathon
+# Industrial AI Assistant
 
-Industrial incident investigation assistant.
+![Industrial AI architecture hero](docs/assets/architecture_hero.svg)
 
-Datasets:
-- AI4I predictive maintenance
-- Fan telemetry
-- Pump telemetry
-- MVTec anomaly detection
+**A local-first industrial incident investigation copilot that connects telemetry, vision, similar-incident memory, root-cause analysis, severity policy, and human approval.**
 
-## Current Scope
+The project demonstrates a production-minded pattern for industrial AI: do not bolt a chatbot onto plant data. Build an evidence workflow.
 
-This repo is being built in small steps. The current working slice is the Tier 0
-incident-analysis pipeline:
+<p>
+  <img alt="Python" src="https://img.shields.io/badge/Python-3.12-blue">
+  <img alt="Streamlit" src="https://img.shields.io/badge/UI-Streamlit-ff4b4b">
+  <img alt="LangGraph" src="https://img.shields.io/badge/Orchestration-LangGraph-1f6feb">
+  <img alt="Qdrant" src="https://img.shields.io/badge/Memory-Qdrant-22c55e">
+  <img alt="ROCm" src="https://img.shields.io/badge/AMD-ROCm%207.0-ed1c24">
+  <img alt="Local First" src="https://img.shields.io/badge/Mode-Local--First-111827">
+  <img alt="Tests" src="https://img.shields.io/badge/Tests-124%20passed-brightgreen">
+  <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg">
+</p>
 
-```text
-AI4I telemetry row
-  -> failure prediction
-  -> incident corpus generation
-  -> local Qdrant retrieval
-  -> deterministic RAG answer
-  -> severity policy
-  -> human approval
-  -> evaluation harness
-```
+## Live Demo
 
-## AI4I Telemetry Agent
+![Industrial AI Assistant Demo](docs/assets/demo.gif)
 
-Train the baseline model:
+Demo GIF generated from the hackathon dashboard workflow.
 
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.telemetry.train
-```
+## Key Results
 
-The model and metrics are written under `models/`, which is ignored by Git.
-Metrics include confusion matrices for thresholds `0.3`, `0.5`, and `0.7`.
-
-Run a prediction:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.telemetry.predict \
-  --machine-id FAN-023 \
-  --type M \
-  --air-temperature-k 301.1 \
-  --process-temperature-k 311.6 \
-  --rotational-speed-rpm 1266 \
-  --torque-nm 55.5 \
-  --tool-wear-min 210
-```
-
-The prediction output is demo-oriented:
-
-```text
-Machine: FAN-023
-Failure Probability: 81%
-Risk Level: HIGH
-Top Feature Importances:
-- torque_nm
-- tool_wear_min
-- rotational_speed_rpm
-Evidence:
-- Tool wear unusually high
-- Torque outside normal range
-- Rotational speed anomaly
-```
-
-Run tests:
-
-```bash
-.venv/bin/pytest -q
-```
+| Metric | Result |
+| --- | ---: |
+| ROC AUC | 0.97 |
+| Policy Accuracy | 12/12 |
+| LoRA RCA Score | 4.2 |
+| ROCm Speedup | 6.2× |
+| Tests Passing | 124 |
+| Incident Corpus | 300 |
 
 ## Repository Status
 
-The current implementation includes:
-
-- AI4I telemetry prediction
-- structured incident corpus generation
-- local Qdrant indexing and retrieval
-- deterministic RAG-style answer formatting
-- severity assignment
-- JSON-backed human approval records
-- deterministic evaluation scenarios
-- thin Streamlit demo UI
-- MVTec comparison and autoencoder vision anomaly CLIs
-
-The remaining work is to replace the deterministic stand-ins with the
-fuller agentic workflow described in the hackathon brief.
-
-## AMD LoRA Evaluation Results
-
-Latest AMD Cloud recovery run:
-
-| Field | Value |
+| Area | Status |
 | --- | --- |
-| Base Model | `Qwen/Qwen3-4B-Instruct-2507` |
-| LoRA Model | `Qwen/Qwen3-4B-Instruct-2507` with adapter `data/amd/lora/qwen4b_adapter` |
-| Judge Model | `Qwen/Qwen3-14B` served through vLLM's OpenAI-compatible API |
-| Hardware | AMD MI300X-class `gfx942` GPU on ROCm 7.0 / HIP 7.0 |
-| Precision | BF16 for LoRA training, candidate generation, and vLLM judge serving |
+| Demo Application | Complete |
+| Evaluation Framework | Complete |
+| ROCm Benchmarking | Complete |
+| LoRA Experiment | Complete |
+| Documentation | Complete |
+| Security Hardening | Complete |
 
-Training used 40 generated LoRA examples and 10 eval examples with
-`LIMIT=10`.
+## Project Highlights
 
-| Training Metric | Value |
+| Highlight | What It Proves |
+| --- | --- |
+| **Multi-evidence workflow** | Telemetry, images, prior incidents, policy, and approval state are handled as one investigation. |
+| **Retrieval-first RCA** | Qdrant incident memory is treated as the factual authority, not model memory. |
+| **Human approval by design** | High-impact recommendations are gated by deterministic policy and approval records. |
+| **AMD path is real** | MI300X-class evaluation artifacts, BF16 LoRA, ROCm runtime telemetry, and reranking benchmarks are included. |
+| **Demo remains local-first** | JSON files, local Qdrant, Ollama-compatible RAG, deterministic fallback, and Docker Compose. |
+| **Evaluation-first engineering** | Severity scenarios, LLM-as-judge, LoRA comparison, ROCm benchmark, and completeness reporting. |
+
+## Investigation Workflow
+
+```text
+🚨 Detect Failure
+      ↓
+👁️ Localize Defect
+      ↓
+🧠 Retrieve Similar Incidents
+      ↓
+📋 Generate RCA
+      ↓
+⚠️ Assign Severity
+      ↓
+👤 Request Approval
+```
+
+Each investigation moves from machine and visual signals into grounded memory, policy, and human review.
+
+## Industrial AI Is Not A Chatbot Problem
+
+Industrial incidents are not solved by one prompt. Operators need to know:
+
+| Question | Evidence Source |
+| --- | --- |
+| Is this machine likely to fail? | XGBoost telemetry model |
+| Is there visible damage? | MVTec anomaly detection and localization |
+| Have we seen this before? | Qdrant similar-incident memory |
+| What is the likely root cause? | Grounded RAG answer with deterministic fallback |
+| How severe is it? | Deterministic severity policy |
+| Can the action proceed? | Human approval workflow |
+
+```text
+Telemetry -> Vision -> Incident Memory -> RCA -> Severity -> Human Approval
+```
+
+## What Makes This Different
+
+| Traditional Chatbot | Industrial AI Assistant |
+| --- | --- |
+| Single prompt in, answer out | Multi-stage investigation workflow |
+| Relies on model memory | Grounds RCA in retrieved incidents |
+| Weak connection to sensor state | Uses telemetry risk and telemetry-aware reranking |
+| No visual explainability | Uses anomaly scores, heatmaps, and annotated outputs |
+| Lets the model imply severity | Uses deterministic severity policy |
+| No operational control point | Creates human approval records |
+| Hard to evaluate | Ships deterministic tests, LLM judge, and benchmark artifacts |
+
+## Demo
+
+| Investigation | Visual Inspection | Evaluation |
+| --- | --- | --- |
+| ![Agent trace placeholder](data/evals/full_run/charts/agent_trace_placeholder.svg) | ![Annotated MVTec cable defect](data/vision_examples/cable-000-patch_distance-bb12792ea7-annotated.png) | ![Evaluation completeness](data/evals/full_run/charts/evaluation_completeness.svg) |
+| Visible workflow trace | Bounding-box style visual evidence | Packaged evaluation coverage |
+
+## Architecture
+
+![Current implemented architecture](docs/diagrams/current_architecture.svg)
+
+| Layer | Implementation |
+| --- | --- |
+| Telemetry | AI4I-style XGBoost failure prediction |
+| Vision | Comparison detector, autoencoder, ResNet detector, localization artifacts |
+| Memory | Qdrant with `sentence-transformers/all-MiniLM-L6-v2` embeddings |
+| RAG | Deterministic answer generation plus optional local Ollama synthesis |
+| Workflow | LangGraph node sequence with visible traces |
+| Policy | Deterministic SEV1/SEV2/SEV3 rules |
+| Approval | JSON-backed human approval lifecycle |
+| UI | Streamlit dashboard |
+| Evaluation | Scenario harness, LLM judge, report packaging, ROCm benchmarks |
+
+## Features
+
+| Capability | Status | Notes |
+| --- | --- | --- |
+| Predictive maintenance telemetry | Built | XGBoost over AI4I-style features |
+| Visual anomaly detection | Built | MVTec comparison, autoencoder, ResNet paths |
+| Similar incident retrieval | Built | Qdrant local vector memory |
+| Telemetry-aware reranking | Built | Combines vector similarity with operating context |
+| Grounded RCA assistant | Built | Deterministic fallback remains operational |
+| Local LLM mode | Built | Ollama-compatible, optional |
+| LangGraph orchestration | Built | Linear, inspectable agent trace |
+| Severity policy engine | Built | Deterministic, tested policy |
+| Human approval workflow | Built | JSON persistence for demo |
+| Unified evaluation package | Built | Markdown/HTML/JSON/CSV/charts |
+| AMD LoRA experiment | Built | BF16 Qwen run captured in artifacts |
+| ROCm reranking benchmark | Built | rocBLAS + Triton benchmark path |
+
+## Evaluation
+
+Metric policy: this README uses measured repository artifacts only. Missing metrics stay out of the headline table.
+
+| Area | Measured Result |
 | --- | ---: |
-| train_loss | `0.1870` |
-| eval_loss | `0.02746` |
-| elapsed_seconds | `290.289` |
+| Historical telemetry ROC AUC | `0.97` |
+| Historical telemetry average precision | `0.70` |
+| Incident corpus | `300` documents from `100` AI4I failure rows |
+| Embedding size | `384` |
+| Severity scenario accuracy | `12/12` |
+| LLM judge set | `20` candidate responses, `20` judge records |
+| LoRA RCA quality | `4.2` vs base `3.7` |
+| LoRA severity reasoning | `4.2` vs base `3.8` |
+| Hallucination score | `1.0` base and LoRA |
+| Evaluation package completeness | `70.5%` |
+| Tests after hardening pass | `124 passed` |
 
-LLM-as-Judge evaluated 10 incidents, producing 20 scored candidate responses
-with `20/20` successful judge records.
+![LLM judge scores](data/evals/full_run/charts/llm_judge_scores.svg)
 
-| Judge Metric | Base | LoRA | Improvement |
-| --- | ---: | ---: | ---: |
-| hallucination_score | `1.0` | `1.0` | `0.0%` |
-| rca_quality | `3.7` | `4.6` | `24.32%` |
-| actionability | `4.4` | `4.4` | `0.0%` |
-| severity_reasoning | `3.8` | `4.6` | `21.05%` |
+## Why Retrieval Matters More Than Fine-Tuning
 
-Generated evaluation artifacts are written under `data/evals/`; LoRA training
-metrics are written under `data/amd/lora/`. These generated artifacts are not
-committed by default.
+Fine-tuning and retrieval solve different problems.
 
-## Streamlit Demo UI
+| Fine-Tuning Helps With | Retrieval Must Own |
+| --- | --- |
+| Domain vocabulary | Current incident evidence |
+| Response structure | Recent maintenance history |
+| RCA writing style | Similar incident records |
+| Severity explanation style | Changing plant conditions |
+| Maintenance phrasing | Audit-ready grounding |
 
-Run the one-page demo app:
+This project uses both, but retrieval is the factual authority. LoRA can make the answer layer better at using evidence; it should not become the source of operational truth.
 
-```bash
-PYTHONPATH=src .venv/bin/streamlit run src/industrial_ai/demo/streamlit_app.py
-```
+## Why Human Approval Matters
 
-The app accepts telemetry inputs and runs the local investigation workflow:
+Industrial recommendations can affect safety, downtime, maintenance cost, and production quality. The assistant is a copilot, not an autonomous actor.
+
+| Control | Implementation |
+| --- | --- |
+| Severity assignment | Deterministic policy engine |
+| High-impact action gate | Approval required for SEV1 |
+| Auditability | JSON approval records in demo mode |
+| Fallback behavior | Deterministic investigation remains available without LLM |
+| Future production path | Durable approvals, RBAC, audit logs, monitoring |
+
+## AMD Optimization
+
+AMD is not a logo in this project. It is tied to measured artifacts:
+
+| AMD Area | Artifact |
+| --- | --- |
+| BF16 LoRA | Qwen3-4B adapter evaluation on MI300X-class environment |
+| LLM-as-judge | Qwen3-14B via OpenAI-compatible local endpoint |
+| ROCm runtime | Torch `2.8.0`, ROCm `7.0`, vLLM runtime capture |
+| Reranking benchmark | rocBLAS + Triton score fusion |
+
+### Optimization Path
 
 ```text
-prediction -> optional visual inspection -> retrieval -> deterministic RAG answer -> severity -> approval
+PyTorch FP32 Eager
+      ↓
+rocBLAS
+      ↓
+rocBLAS + Triton
+      ↓
+6.2× Speedup
 ```
 
-It does not use LangGraph or external LLM calls.
+| ROCm Benchmark Result | Value |
+| --- | ---: |
+| Best path | `rocblas_plus_triton_score` BF16 |
+| Latency | `1.039 ms` |
+| Speedup vs PyTorch FP32 eager | `6.204x` |
+| Candidates/sec | `30,802,253,299.700` |
+| Top-k overlap | `0.997` |
 
-The dashboard also includes an `Evaluation` tab. It reuses the held-out test rig
-and shows:
+![ROCm optimization ladder](docs/diagrams/rocm_optimization_ladder.svg)
 
-- data sources used
-- scenario count
-- pass/fail counts
-- pass rate
-- scenario table with expected, actual, result, and key inputs
-- filters for all, passed, and failed scenarios
+## Tech Stack
 
-The investigation view includes an expandable `Severity Rules` section loaded
-from the production severity policy source. It shows criteria, approval
-requirements, the triggered rule reason, and the exact inputs used.
+| Layer | Stack |
+| --- | --- |
+| App | Streamlit |
+| Workflow | LangGraph |
+| Telemetry ML | pandas, scikit-learn, XGBoost |
+| Vision | PyTorch, torchvision, MVTec-style detectors |
+| Vector memory | Qdrant, sentence-transformers |
+| RAG | deterministic formatter, optional Ollama |
+| Governance | severity policy, JSON approvals |
+| Evaluation | pytest, LLM-as-judge, report packaging |
+| AMD | ROCm, rocBLAS, Triton, BF16 LoRA |
+| Packaging | Docker, Docker Compose, Makefile |
 
-The `Policy Management` tab shows the active production policy name, version,
-last modified timestamp, active rules, approval requirements, and the currently
-triggered severity decision. Its `Edit Policy` action is simulated/read-only.
-
-## MVTec Vision Checks
-
-Run the transparent comparison baseline first:
+## Quick Start
 
 ```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_compare \
-  mvtec_anomaly_detection/cable/test/bent_wire/000.png
+python -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+cp .env.example .env
+make test
+make run-ui
 ```
 
-This compares the image against good MVTec references and reports a local patch
-anomaly score. It is useful as a baseline, but subtle defects can overlap with
-normal images.
+Useful commands:
 
-Evaluate the comparison baseline by active MVTec category:
+| Task | Command |
+| --- | --- |
+| Run UI | `make run-ui` |
+| Run tests | `make test` |
+| Run deterministic eval | `make eval` |
+| Check lint | `make lint` |
+| Start Docker demo | `make docker-up` |
 
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.evaluate comparison
-```
+Full setup, data prep, troubleshooting, Docker, evaluation, and operations notes live in [docs/README_DETAILED.md](docs/README_DETAILED.md).
 
-Train the small deep-learning autoencoder on good references:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_autoencoder train cable \
-  --epochs 5 \
-  --reference-limit 50
-```
-
-Run the learned detector:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_autoencoder predict \
-  mvtec_anomaly_detection/cable/test/bent_wire/000.png \
-  --model-path models/mvtec_autoencoder_cable.pt
-```
-
-The autoencoder reconstructs images learned from good examples and uses
-reconstruction error as the anomaly score. It does not call external services.
-
-Train a ResNet18 embedding profile for one category:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet train cable \
-  --reference-limit 50
-```
-
-Calibrate that category threshold:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet calibrate \
-  --model-path models/mvtec_resnet_cable.npz \
-  --metric f1
-```
-
-Train and calibrate all active industrial categories:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet train-all \
-  --reference-limit 50 \
-  --metric f1
-```
-
-Predict with the ResNet embedding detector:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet predict \
-  mvtec_anomaly_detection/cable/test/bent_wire/000.png \
-  --model-path models/mvtec_resnet_cable.npz
-```
-
-Evaluate the ResNet detector for the trained category:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.vision.mvtec_resnet evaluate \
-  --model-path models/mvtec_resnet_cable.npz
-```
-
-The ResNet detector uses embeddings rather than supervised defect labels:
-good images define the normal feature center, and distance from that center is
-the anomaly score. For best accuracy, use pretrained ResNet weights. If weights
-are not available locally, the first run may need to download them.
-
-Run the held-out demo correctness rig:
-
-```bash
-TORCH_HOME=/tmp/torch-cache PYTHONPATH=src .venv/bin/python -m industrial_ai.evaluation.test_rig \
-  --category cable \
-  --category grid \
-  --category metal_nut \
-  --category screw \
-  --category transistor
-```
-
-The rig checks AI4I held-out rows, MVTec `test/` images, severity rules, and
-approval behavior. It exits non-zero if any scenario fails.
-
-## Incident Corpus
-
-Generate local structured incident documents from AI4I failure rows:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.incidents.generate \
-  --source-failure-rows 100
-```
-
-This writes:
-
-- `data/incidents/ai4i_incident_corpus.jsonl`
-- `data/incidents/manifest.json`
-
-The default output is 300 documents: 100 incident reports, 100 RCA reports, and
-100 maintenance notes. Qdrant is intentionally not part of this step.
-
-## Local Qdrant Memory
-
-Index the generated incident corpus into a local Qdrant collection:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.incidents.memory index
-```
-
-Search the indexed corpus:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.incidents.memory search \
-  "tool wear and torque anomaly" \
-  --top-k 2 \
-  --score-threshold 0.5
-```
-
-Filter by document type:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.incidents.memory search \
-  "tool wear and torque anomaly" \
-  --top-k 2 \
-  --document-type rca_report \
-  --score-threshold 0.5
-```
-
-The local Qdrant index is written under `data/qdrant/`, which is ignored by Git.
-This step only retrieves similar documents; it does not generate LLM/RAG answers.
-Search output includes `top_score`, `score_threshold`, and a message. If all
-retrieved documents are below the threshold, the message is
-`No relevant incidents found` and `results` is empty.
-
-Search can optionally rerank vector results using exact telemetry inputs:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.incidents.memory search \
-  "tool wear and torque anomaly" \
-  --top-k 3 \
-  --score-threshold 0.5 \
-  --telemetry-rerank \
-  --tool-wear-min 210 \
-  --torque-nm 55.5 \
-  --rotational-speed-rpm 1266 \
-  --air-temperature-k 301.1 \
-  --process-temperature-k 311.6
-```
-
-Telemetry-aware results include `vector_score`,
-`telemetry_similarity_score`, and `combined_score`.
-
-## Simple RAG Answer
-
-Generate a deterministic evidence-based answer from retrieved incident
-documents:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.rag.answer \
-  "What is the likely cause of a tool wear failure?"
-```
-
-Optionally synthesize the answer with a local Ollama model:
-
-```bash
-OLLAMA_MODEL=gemma3:4b PYTHONPATH=src .venv/bin/python -m industrial_ai.rag.answer \
-  "What is the likely cause of a tool wear failure?" \
-  --llm
-```
-
-`OLLAMA_MODEL` defaults to `gemma3:4b`. If Ollama is unavailable, the command
-falls back to deterministic RAG and reports the fallback reason in
-`limitations`. Use `--no-fallback` to fail instead.
-
-The command retrieves the top 3 relevant incident documents and formats an
-answer with:
-
-- `likely_root_cause`
-- `confidence`
-- `supporting_incidents`
-- `evidence`
-- `recommended_action`
-- `limitations`
-
-No cloud LLM is used. If retrieval finds no relevant incidents, it returns a
-clear no-evidence response.
-
-## Severity Policy
-
-Assign deterministic incident severity from failure probability and retrieval
-confidence:
-
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.policy.severity \
-  --failure-probability 0.82 \
-  --rag-confidence high
-```
-
-Rules:
+## Repository Structure
 
 ```text
-Failure probability > 80% AND visual defect detected -> SEV1
-Failure probability > 80% AND RAG confidence = high -> SEV1
-Failure probability > 50% -> SEV2
-Else -> SEV3
+src/industrial_ai/
+  telemetry/    predictive maintenance
+  vision/       visual anomaly detection
+  incidents/    Qdrant memory and reranking
+  rag/          RCA answer generation
+  policy/       severity rules
+  approvals/    human approval records
+  demo/         Streamlit and workflow facade
+  evaluation/   test rigs and judge utilities
+  config/       settings and logging
+  security/     redaction and validation
 ```
 
-## Human Approval
+## Future Roadmap
 
-Create a JSON-backed approval record:
+| Horizon | Direction |
+| --- | --- |
+| 30 days | SHAP-style telemetry explainability, labeled retrieval relevance set, persisted LangGraph traces |
+| 90 days | LangSmith or OpenTelemetry traces, larger judge set, citation accuracy scoring, token/TTFT capture |
+| 180 days | Streaming ingestion pilot, shared vector memory, model gateway, audit-grade approvals |
 
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.approvals.approval create \
-  INCIDENT-001 \
-  --severity SEV1
-```
+## Project Showcase
 
-Approve or reject:
+This repository includes:
 
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.approvals.approval approve INCIDENT-001
-PYTHONPATH=src .venv/bin/python -m industrial_ai.approvals.approval reject INCIDENT-001
-```
+- Streamlit dashboard
+- LangGraph workflow
+- Retrieval-augmented investigations
+- Visual anomaly detection
+- Deterministic governance
+- Human approval workflow
+- LoRA adaptation experiments
+- ROCm optimization benchmarks
+- Unified evaluation package
 
-Show current status:
+## Acknowledgements
 
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.approvals.approval show INCIDENT-001
-```
+| Project / Platform | Role |
+| --- | --- |
+| AMD Developer Cloud | MI300X-class experimentation, BF16 LoRA, ROCm runtime capture |
+| Qdrant | Local incident vector memory |
+| LangGraph | Explicit workflow orchestration |
+| Streamlit | Demo dashboard |
+| Ollama / OpenAI-compatible local serving | Optional local RAG synthesis and judge path |
+| MVTec AD | Visual inspection dataset pattern |
+| AI4I | Predictive maintenance telemetry dataset pattern |
 
-SEV1 incidents require approval and start as `pending`. SEV2 and SEV3 incidents
-do not require approval and start as `not_required`. The local approval store is
-written to `data/approvals/`, which is ignored by Git.
+## License
 
-## Evaluation Harness
+Released under the MIT License.
 
-Run deterministic evaluation scenarios:
+---
 
-```bash
-PYTHONPATH=src .venv/bin/python -m industrial_ai.evaluation.harness
-```
-
-Scenarios live in:
-
-```text
-data/evaluation/scenarios.json
-```
-
-The harness reports:
-
-- scenario
-- expected severity
-- actual severity
-- pass/fail
-
-The current scenario set contains 12 severity-policy scenarios.
+For the full technical reference, see [docs/README_DETAILED.md](docs/README_DETAILED.md).

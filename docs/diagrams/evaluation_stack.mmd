@@ -1,0 +1,19 @@
+flowchart TB
+    A[Repository artifacts] --> B[Unified evaluation scripts]
+    B --> C[Telemetry metrics<br/>available when models/telemetry_metrics.json exists]
+    B --> D[Vision examples<br/>heatmaps and annotated overlays]
+    B --> E[Retrieval profile<br/>corpus size and duplicate rate]
+    B --> F[Policy scenarios<br/>12 scenarios, severity accuracy 1.0]
+    B --> G[LLM-as-judge<br/>10 incidents, 20 candidate responses]
+    B --> H[LoRA summary<br/>Qwen adapter metrics]
+    B --> I[AMD ROCm benchmarks<br/>kernel and fused rerank results]
+    B --> J[System metrics<br/>ROCm runtime, GPU telemetry]
+    C --> K[evaluation_summary.json]
+    D --> K
+    E --> K
+    F --> K
+    G --> K
+    H --> K
+    I --> K
+    J --> K
+    K --> L[evaluation_report.md/html<br/>charts and missing metric table]

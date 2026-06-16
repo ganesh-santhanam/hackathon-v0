@@ -8,6 +8,8 @@ __pycache__/
 .ruff_cache/
 
 .env
+.env.*
+!.env.example
 
 data/processed/
 data/raw/
@@ -16,8 +18,11 @@ data/amd/lora/
 data/lora/*.jsonl
 data/plant/events.jsonl
 data/qdrant/
+data/qdrant_service/
 data/vision_outputs/
 models/
+exports/
+backup_generated/
 
 *.safetensors
 *.pt
@@ -26,6 +31,7 @@ models/
 
 *.db
 *.sqlite
+*.sqlite3
 
 # datasets
 ai4i_dataset/

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="420" viewBox="0 0 980 420">
+  <rect width="980" height="420" fill="#ffffff"/>
+  <text x="28" y="38" font-family="Arial" font-size="22" font-weight="700" fill="#111827">ROCm Rerank Optimization Ladder</text>
+  <text x="28" y="66" font-family="Arial" font-size="13" fill="#4b5563">Speedup versus PyTorch eager fp32 baseline for the 32 x 1,000,000 x 768 benchmark.</text>
+  <line x1="260" y1="96" x2="260" y2="352" stroke="#d1d5db"/>
+  <text x="28" y="122" font-family="Arial" font-size="14" fill="#111827">PyTorch eager fp32</text>
+  <rect x="260" y="104" width="82" height="26" fill="#6b7280"/>
+  <text x="354" y="123" font-family="Arial" font-size="13" fill="#111827">1.0x</text>
+  <text x="28" y="166" font-family="Arial" font-size="14" fill="#111827">ROCm graph capture bf16</text>
+  <rect x="260" y="148" width="84" height="26" fill="#64748b"/>
+  <text x="356" y="167" font-family="Arial" font-size="13" fill="#111827">1.0177334118499743x</text>
+  <text x="28" y="210" font-family="Arial" font-size="14" fill="#111827">torch.compile bf16</text>
+  <rect x="260" y="192" width="124" height="26" fill="#0891b2"/>
+  <text x="396" y="211" font-family="Arial" font-size="13" fill="#111827">1.5110948369810704x</text>
+  <text x="28" y="254" font-family="Arial" font-size="14" fill="#111827">rocBLAS precomputed bf16</text>
+  <rect x="260" y="236" width="184" height="26" fill="#2563eb"/>
+  <text x="456" y="255" font-family="Arial" font-size="13" fill="#111827">2.242818119382769x</text>
+  <text x="28" y="298" font-family="Arial" font-size="14" fill="#111827">torch scaled mm fp8</text>
+  <rect x="260" y="280" width="207" height="26" fill="#7c3aed"/>
+  <text x="479" y="299" font-family="Arial" font-size="13" fill="#111827">2.5205489938458934x</text>
+  <text x="28" y="342" font-family="Arial" font-size="14" fill="#111827">rocBLAS + Triton bf16</text>
+  <rect x="260" y="324" width="509" height="26" fill="#059669"/>
+  <text x="781" y="343" font-family="Arial" font-size="13" fill="#111827">6.2041918187727205x</text>
+  <text x="28" y="392" font-family="Arial" font-size="12" fill="#6b7280">Source: data/benchmarks/kernel_comparison.csv</text>
+</svg>

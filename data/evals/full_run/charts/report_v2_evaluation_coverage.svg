@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="300" viewBox="0 0 820 300">
+  <rect width="820" height="300" fill="#ffffff"/>
+  <text x="28" y="38" font-family="Arial" font-size="22" font-weight="700" fill="#111827">Evaluation Coverage</text>
+  <text x="28" y="66" font-family="Arial" font-size="13" fill="#4b5563">The framework reports measured metrics and marks unavailable fields with reasons.</text>
+  <rect x="90" y="112" width="560" height="42" fill="#e5e7eb"/>
+  <rect x="90" y="112" width="394" height="42" fill="#2563eb"/>
+  <text x="90" y="100" font-family="Arial" font-size="13" fill="#111827">Estimated report completeness: 70.5%</text>
+  <text x="662" y="138" font-family="Arial" font-size="14" fill="#111827">70.5%</text>
+  <text x="90" y="202" font-family="Arial" font-size="14" fill="#111827">Collected metric fields</text>
+  <rect x="290" y="184" width="279" height="26" fill="#059669"/>
+  <text x="580" y="203" font-family="Arial" font-size="13" fill="#111827">93</text>
+  <text x="90" y="246" font-family="Arial" font-size="14" fill="#111827">Missing metric fields</text>
+  <rect x="290" y="228" width="117" height="26" fill="#dc2626"/>
+  <text x="418" y="247" font-family="Arial" font-size="13" fill="#111827">39</text>
+  <text x="28" y="282" font-family="Arial" font-size="12" fill="#6b7280">Source: data/evals/full_run/evaluation_summary.json</text>
+</svg>
